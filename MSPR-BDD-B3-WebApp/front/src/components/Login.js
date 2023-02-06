@@ -11,27 +11,31 @@ const LoginPage = () => {
             <div className="justify-content-center">
                 <div className="card text-center ">
                     <div className="card-body">
-                        <h1 className="card-title">A'Rosa-Je</h1>
+                        <h1 className="card-title, text-center">A'Rosa-Je</h1>
                     </div>
                 </div>
             </div>
-            <div className="justify-content-center">
-                <form>
-                    <div className="mb-3">
-                        <label for="exampleInputEmail1" className="form-label">Email address</label>
-                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
-                        <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-                    </div>
-                    <div className="mb-3">
-                        <label for="exampleInputPassword1" className="form-label">Password</label>
-                        <input type="password" className="form-control" id="exampleInputPassword1"/>
-                    </div>
-                    <div className="mb-3 form-check">
-                        <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                        <label className="form-check-label" for="exampleCheck1">Check me out</label>
-                    </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                </form>
+            <br/>
+            <div className="card mx-auto" style={{width: "33%", borderRadius: "50px", border: "1px solid black"}}>
+                <div className="card-body mx-auto">
+                    <div class="d-flex justify-content-center">
+                        <form class="mx-auto" style={{width: "60%"}}>
+                            <div class="form-group">
+                            <label for="exampleInputEmail1">Adresse Mail</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+                            </div>
+                            <br/>
+                            <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"/>
+                            </div>
+                            <br/>
+                            <div className="d-flex align-items-center justify-content-center">
+                                    <button className="btn btn-dark" type="submit">Login</button>
+                            </div>
+                        </form>
+                        </div>
+            </div>
             </div>
         </>
     )

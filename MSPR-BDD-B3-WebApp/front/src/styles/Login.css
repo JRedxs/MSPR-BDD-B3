@@ -1,7 +1,4 @@
 
-.card{
-    background-color: #0d6efd;
-}
 .nav-link{
     color: white;
     font-family: Arial;
@@ -12,12 +9,7 @@
 
 
 
-.box-login{
-    border: 2px solid black;
-    padding: 6%;
-    margin-top: 9%;
-    margin-left: 25%;
-    margin-right: 25%;
 
+.card {
+    height: 70%;
 }
-
