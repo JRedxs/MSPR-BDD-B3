@@ -31,8 +31,8 @@ const LoginPage = () => {
                             <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
                             <label className="form-check-label" for="exampleCheck1">Check me out</label>
                         </div>
-                        <div className="justify-content-center">
-                            <button type="submit" className="btn btn-primary">Submit</button>
+                        <div className="d-flex align-items-center justify-content-center">
+                            <button type="submit" className="btn btn-dark">Submit</button>
                         </div>
                     </form>
                 </div>
