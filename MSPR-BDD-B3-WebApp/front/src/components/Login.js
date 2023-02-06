@@ -15,6 +15,7 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
+
             <br/>
             <div className="card mx-auto" style={{width: "33%", borderRadius: "50px", border: "1px solid black"}}>
                 <div className="card-body mx-auto">
@@ -36,10 +37,9 @@ const LoginPage = () => {
                         </form>
                         </div>
             </div>
+
             </div>
         </>
     )
 }
-
-
 export default LoginPage;
