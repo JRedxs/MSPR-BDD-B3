@@ -22,4 +22,15 @@ def get_users():
     except:
         return {"erreur": "aucun user récupéré"}, 500
 
+@app.get("/users/{user_id}")
+def get_user_by_id(user_id: int):
+    cursor = connection.cursor()
+
+    sql = "SELECT * FROM Person WHERE id_person=%s"
+
+    cursor.execute(sql, (user_id,))
+
+    result = cursor.fetchone()
+    return {"Person": result}
+
 # Exécutez l'application FastAPI
