@@ -19,13 +19,6 @@ const Register = () => {
         confirmPassword: ""
     });
 
-    const handleInputChange = event => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value
-        });
-    };
-
     const NAVIGATE = useNavigate();
     const handleSubmit = event => {
         event.preventDefault();
@@ -98,8 +91,8 @@ const Register = () => {
 
     return (
     <>  
-        <div className="d-flex align-items-center justify-content-center">
-            <div className="card card-register  card-color  d-flex align-items-center justify-content-center">
+        <div className="d-flex align-items-center justify-content-center mx-auto" >
+            <div className="card card-register  card-color  d-flex align-items-center justify-content-center" style={{width: "33%" ,  borderRadius: "75px", border: "1px solid black"}}>
                     <form onSubmit={handleSubmit}>
                         <div>
                             <label className="form_label" htmlFor="firstName">Prénom :</label>

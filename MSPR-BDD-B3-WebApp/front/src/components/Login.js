@@ -9,9 +9,9 @@ const LoginPage = () => {
     return(
         <>
             <div className="justify-content-center">
-                <div className="card text-center ">
-                    <div className="card-body">
-                        <h1 className="card-title, text-center">A'Rosa-Je</h1>
+                <div className="card text-center mx-auto" style={{width: "50%", borderRadius: "50px", border: "1px solid black"}}>
+                    <div className="card-body" >
+                        <h1 className="card-title, text-center ">A'Rosa-Je</h1>
                     </div>
                 </div>
             </div>
@@ -20,14 +20,14 @@ const LoginPage = () => {
             <div className="card card-login mx-auto" style={{width: "33%", borderRadius: "50px", border: "1px solid black"}}>
                 <div className="card-body mx-auto">
                     <div className="d-flex justify-content-center">
-                        <form className="mx-auto" style={{width: "60%"}}>
+                        <form className="mx-auto" style={{width: "100%"}}>
                             <div className="form-group">
-                            <label className="form-label" htmlFor="exampleInputEmail1">Adresse Mail</label>
+                            <label className="form-label" htmlFor="exampleInputEmail1">Email : </label>
                             <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
                             </div>
                             <br/>
                             <div className="form-group">
-                            <label className="form-label" htmlFor="exampleInputPassword1">Password</label>
+                            <label className="form-label" htmlFor="exampleInputPassword1">Password : </label>
                             <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
                             </div>
                             <br/>
