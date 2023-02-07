@@ -27,7 +27,7 @@ const Register = () => {
             alert("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial")
         } else {
             axios
-                .post("API_URL", formData)
+                .post("http://127.0.0.1:8000/docs/create", formData)
                 .then(res => console.log(res))
                 .catch(err => console.error(err));
             
