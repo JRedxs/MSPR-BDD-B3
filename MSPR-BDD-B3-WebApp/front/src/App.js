@@ -13,7 +13,7 @@ const App = () => {
           <ul className="navbar-nav mr-auto">
             <li><Link to="/" className="nav-link"> Login </Link></li>
             <li><Link to="/Map" className="nav-link">Map</Link></li>
-            <li><Link to="/Register" className="nav-link">SIGN IN</Link></li>
+            <li><Link to="/Register" className="nav-link">Sign-In</Link></li>
             
           </ul>
           </nav>
