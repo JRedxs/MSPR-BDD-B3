@@ -27,9 +27,16 @@ const Register = () => {
             alert("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial")
         } else {
             axios
+<<<<<<< HEAD
                 .post("http://127.0.0.1:8000/docs/create", formData)
                 .then(res => console.log(res))
                 .catch(err => console.error(err));
+=======
+                .post("API_URL", formData)
+
+                    .then(res => console.log(res))
+                        .catch(err => console.error(err));
+>>>>>>> b9ac76999f9fff524c1e2087a9be3f8797ecb208
             
         }
         if (!formData.firstName || !formData.lastName || !formData.phone || !formData.email || !formData.password || !formData.confirmPassword) {
@@ -42,7 +49,6 @@ const Register = () => {
             console.log("TEST 2")
             return;
         }
-
     };
 
 
@@ -77,6 +83,7 @@ const Register = () => {
         }
     };
 
+
     const handlePasswordChange = event => {
         const password = event.target.value
         setFormData({...formData, password})
@@ -86,8 +93,6 @@ const Register = () => {
         const confirmPassword = event.target.value
         setFormData({...formData, confirmPassword})
     }
-
-
 
     return (
     <>  
@@ -101,8 +106,7 @@ const Register = () => {
                                     type="text"
                                     id="firstName"
                                     onChange={handleFirstNameChange}
-                                    value={formData.firstName}
-                                    
+                                    value={formData.firstName}        
                                 />
                         </div>
                             <div>
@@ -163,9 +167,7 @@ const Register = () => {
                                     className="btn form-button btn-dark " 
                                 //    onClick={() => NAVIGATE("/")} // Le onclick prend le dessus sur le onSubmit
                                     type="submit">S'inscrire
-                                    
-                                </button>
-                                
+                                </button>  
                             </div>
                             {error && <p>{error}</p>}
                     </form>
@@ -174,6 +176,5 @@ const Register = () => {
         </>
     )
 }
-
 export default Register;
 
