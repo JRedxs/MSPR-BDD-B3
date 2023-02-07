@@ -17,25 +17,25 @@ const LoginPage = () => {
             </div>
 
             <br/>
-            <div className="card mx-auto" style={{width: "33%", borderRadius: "50px", border: "1px solid black"}}>
+            <div className="card card-login mx-auto" style={{width: "33%", borderRadius: "50px", border: "1px solid black"}}>
                 <div className="card-body mx-auto">
-                    <div class="d-flex justify-content-center">
-                        <form class="mx-auto" style={{width: "60%"}}>
-                            <div class="form-group">
-                            <label for="exampleInputEmail1">Adresse Mail</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+                    <div className="d-flex justify-content-center">
+                        <form className="mx-auto" style={{width: "60%"}}>
+                            <div className="form-group">
+                            <label className="form-label" htmlFor="exampleInputEmail1">Adresse Mail</label>
+                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
                             </div>
                             <br/>
-                            <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"/>
+                            <div className="form-group">
+                            <label className="form-label" htmlFor="exampleInputPassword1">Password</label>
+                            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
                             </div>
                             <br/>
                             <div className="d-flex align-items-center justify-content-center">
                                     <button className="btn btn-dark" type="submit">Login</button>
                             </div>
                         </form>
-                        </div>
+                    </div>
             </div>
 
             </div>

@@ -8,14 +8,17 @@
 
 
 
+.form-label{
+    color: black;
+}
 
 
-<<<<<<< HEAD
-.card {
+.card-login {
     height: 70%;
+    width: "33%";
+    border-radius: "50px";
+    border: "1px solid black";
 }
-=======
-label{
-    color: white;
-}
->>>>>>> bd6890089ac535b9b887f6d0e344a9bc07302b7f
+
+
+

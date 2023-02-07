@@ -19,7 +19,7 @@ const Register = () => {
     return (
         <>  
         <div className="d-flex align-items-center justify-content-center">
-        <div className="card  card-color w-25 d-flex align-items-center justify-content-center">
+        <div className="card card-register  card-color  d-flex align-items-center justify-content-center">
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label className="form_label" htmlFor="firstName">Prénom :</label>
@@ -50,7 +50,7 @@ const Register = () => {
                                 value={phone}
                                 onChange={(event) => setPhone(event.target.value)}
                             />
-                        </div>
+                        </div> 
                         <div>
                             <label htmlFor="email">Email :</label>
                             <input
@@ -82,7 +82,11 @@ const Register = () => {
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center">
-                            <button className="btn btn-dark" type="submit">S'inscrire</button>
+                            <button 
+                                 className="btn form-button btn-dark " 
+                                 onClick={() => NAVIGATE("/")}
+                                 type="submit">S'inscrire
+                            </button>
                         </div>
                 </form>
             </div>
