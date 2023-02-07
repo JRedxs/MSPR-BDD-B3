@@ -27,6 +27,25 @@ const Register = () => {
     };
 
     const NAVIGATE = useNavigate();
+    const handleSubmit = event => {
+        event.preventDefault();
+        if (!passwordRegex.test(formData.password)) {
+            console.error("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial");
+        } else {
+            axios
+                .post("API_URL", formData)
+                .then(res => console.log(res))
+                .catch(err => console.error(err));
+        }
+        if (!formData.firstName || !formData.lastName || !formData.phone || !formData.email || !formData.password || !formData.confirmPassword) {
+            setError("Tous les champs sont requis.");
+            return;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            setError("Les mots de passe ne correspondent pas.");
+            return;
+        }
+    };
 
     const handlePhoneChange = event => {
         const phone = event.target.value;
@@ -48,25 +67,7 @@ const Register = () => {
         }
     };
 
-    const handleSubmit = event => {
-        event.preventDefault();
-        if (!passwordRegex.test(formData.password)) {
-            console.error("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial");
-        } else {
-            axios
-                .post("API_URL", formData)
-                .then(res => console.log(res))
-                .catch(err => console.error(err));
-        }
-        if (!formData.firstName || !formData.lastName || !formData.phone || !formData.email || !formData.password || !formData.confirmPassword) {
-            setError("Tous les champs sont requis.");
-            return;
-        }
-        if (formData.password !== formData.confirmPassword) {
-            setError("Les mots de passe ne correspondent pas.");
-            return;
-        }
-    };
+
 
     return (
     <>  
@@ -80,7 +81,7 @@ const Register = () => {
                                     type="text"
                                     id="firstName"
                                     onChange={handleInputChange}
-                                    value={formData.firstName || ""}
+                                    value={formData.firstName}
                                 />
                         </div>
                             <div>
@@ -90,7 +91,7 @@ const Register = () => {
                                     type="text"
                                     id="lastName"
                                     onChange={handleInputChange}
-                                    value={ formData.lastName || ""}
+                                    value={ formData.lastName}
                                     
                                 />
                             </div>
@@ -101,7 +102,7 @@ const Register = () => {
                                     type="tel"
                                     id="phone"
                                     onChange={handlePhoneChange}
-                                    value={formData.phone || ""}
+                                    value={formData.phone}
                                 />
                             </div> 
                             <div>
@@ -111,7 +112,7 @@ const Register = () => {
                                     type="email"
                                     id="email"
                                     onChange={handleEmailChange}
-                                    value={formData.email || ""}
+                                    value={formData.email}
                                 />
                             </div>
                             <div>
@@ -121,7 +122,7 @@ const Register = () => {
                                     type="password"
                                     id="password"
                                     onChange={handleInputChange}
-                                    value={formData.password || ""}
+                                    value={formData.password}
                                 />
                             </div>
                             <div>
@@ -132,7 +133,7 @@ const Register = () => {
                                     id="confirmPassword"
                                     required 
                                     onChange={handleInputChange}
-                                    value={formData.confirmPassword || ""}
+                                    value={event => setFormData({ ...formData, confirmPassword: event.target.value })}
                                 />
                             </div>
                             <div className="d-flex align-items-center justify-content-center">
@@ -141,8 +142,9 @@ const Register = () => {
                                     onClick={() => NAVIGATE("/")}
                                     type="submit">S'inscrire
                                 </button>
-                                {error && <p>{error}</p>}
+                                
                             </div>
+                            {error && <p>{error}</p>}
                     </form>
                 </div>
             </div>
