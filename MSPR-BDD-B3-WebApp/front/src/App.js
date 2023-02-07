@@ -1,5 +1,4 @@
 import './App.css';
-
 import LoginPage             from './components/Login';
 import Map                   from './components/Map';
 import NotFound              from './components/NotFound'; 
