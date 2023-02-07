@@ -34,8 +34,8 @@ const Register = () => {
         } else {
             axios
                 .post("API_URL", formData)
-                .then(res => console.log(res))
-                .catch(err => console.error(err));
+                    .then(res => console.log(res))
+                        .catch(err => console.error(err));
         }
         if (!formData.firstName || !formData.lastName || !formData.phone || !formData.email || !formData.password || !formData.confirmPassword) {
             setError("Tous les champs sont requis.");
@@ -66,9 +66,6 @@ const Register = () => {
             setError("");
         }
     };
-
-
-
     return (
     <>  
         <div className="d-flex align-items-center justify-content-center">
@@ -141,8 +138,7 @@ const Register = () => {
                                     className="btn form-button btn-dark " 
                                     onClick={() => NAVIGATE("/")}
                                     type="submit">S'inscrire
-                                </button>
-                                
+                                </button>  
                             </div>
                             {error && <p>{error}</p>}
                     </form>
