@@ -31,21 +31,38 @@ const Register = () => {
         event.preventDefault();
         if (!passwordRegex.test(formData.password)) {
             console.error("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial");
+            alert("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial")
         } else {
             axios
                 .post("API_URL", formData)
+
                     .then(res => console.log(res))
                         .catch(err => console.error(err));
+            
         }
         if (!formData.firstName || !formData.lastName || !formData.phone || !formData.email || !formData.password || !formData.confirmPassword) {
             setError("Tous les champs sont requis.");
+            console.log("TEST 1")
             return;
         }
         if (formData.password !== formData.confirmPassword) {
             setError("Les mots de passe ne correspondent pas.");
+            console.log("TEST 2")
             return;
         }
     };
+
+
+    const handleFirstNameChange = event => {
+        const firstName = event.target.value
+        setFormData({...formData,firstName});
+
+    }
+
+    const handleLastNameChange = event =>{
+        const lastName = event.target.value
+        setFormData({...formData,lastName})
+    }
 
     const handlePhoneChange = event => {
         const phone = event.target.value;
@@ -66,6 +83,18 @@ const Register = () => {
             setError("");
         }
     };
+
+
+    const handlePasswordChange = event => {
+        const password = event.target.value
+        setFormData({...formData, password})
+    }
+
+    const handleConfirmPasswordChange = event => {
+        const confirmPassword = event.target.value
+        setFormData({...formData, confirmPassword})
+    }
+
     return (
     <>  
         <div className="d-flex align-items-center justify-content-center">
@@ -77,8 +106,8 @@ const Register = () => {
                                     className="form-control m-2 w-auto"
                                     type="text"
                                     id="firstName"
-                                    onChange={handleInputChange}
-                                    value={formData.firstName}
+                                    onChange={handleFirstNameChange}
+                                    value={formData.firstName}        
                                 />
                         </div>
                             <div>
@@ -87,8 +116,8 @@ const Register = () => {
                                     className="form-control m-2 w-auto"
                                     type="text"
                                     id="lastName"
-                                    onChange={handleInputChange}
-                                    value={ formData.lastName}
+                                    onChange={handleLastNameChange}
+                                    value={formData.lastName}
                                     
                                 />
                             </div>
@@ -118,7 +147,7 @@ const Register = () => {
                                     className="form-control m-2 w-auto"
                                     type="password"
                                     id="password"
-                                    onChange={handleInputChange}
+                                    onChange={handlePasswordChange}
                                     value={formData.password}
                                 />
                             </div>
@@ -129,14 +158,15 @@ const Register = () => {
                                     type="password"
                                     id="confirmPassword"
                                     required 
-                                    onChange={handleInputChange}
-                                    value={event => setFormData({ ...formData, confirmPassword: event.target.value })}
+                                    onChange={handleConfirmPasswordChange}
+                                    // value={event => setFormData({ ...formData, confirmPassword: event.target.value })}
+                                    value={formData.confirmPassword}
                                 />
                             </div>
                             <div className="d-flex align-items-center justify-content-center">
                                 <button 
                                     className="btn form-button btn-dark " 
-                                    onClick={() => NAVIGATE("/")}
+                                //    onClick={() => NAVIGATE("/")} // Le onclick prend le dessus sur le onSubmit
                                     type="submit">S'inscrire
                                 </button>  
                             </div>
@@ -147,6 +177,5 @@ const Register = () => {
         </>
     )
 }
-
 export default Register;
 
