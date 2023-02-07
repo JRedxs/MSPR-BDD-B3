@@ -7,9 +7,6 @@ WORKDIR /app
 # Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
 
-# Run npm update in the container
-RUN npm update
-
 # Install the dependencies
 RUN npm install
 
@@ -21,4 +18,5 @@ COPY . .
 EXPOSE 3000
 
 # Specify the command to start the Node server
+
 CMD [ "npm", "start" ]
