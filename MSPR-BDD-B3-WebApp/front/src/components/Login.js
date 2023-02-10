@@ -58,8 +58,8 @@ const LoginPage = () => {
                                 <h3> Pas encore inscrit ?</h3>
 
                             </div>
-                            <div className="d-flex align-items-center justify-content-center" >
-                                <Link className="btn btn-dark " to="/register">S'inscrire </Link>
+                            <div className="d-flex align-items-center justify-content-center register-btn">
+                                <Link className="btn" to="/register"><u>S'inscrire</u> </Link>
                             </div>
 
                         </form>
