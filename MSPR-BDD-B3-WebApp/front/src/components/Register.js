@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../styles/Register.css';
-
+import { Link } from "react-router-dom";
 
 const Register = () => {
 
@@ -161,7 +161,8 @@ const Register = () => {
                                     className="btn form-button btn-dark " 
                                 //    onClick={() => NAVIGATE("/")} // Le onclick prend le dessus sur le onSubmit
                                     type="submit">S'inscrire
-                                </button>  
+                                </button> 
+                                <Link className="btn btn-dark " to="/login">Retour</Link> 
                             </div>
                             {error && <p>{error}</p>}
                     </form>

@@ -1,17 +1,23 @@
 import React from "react";
 import '../styles/Login.css';
+import logo from '../assets/images/logo.png'
+import { Link } from "react-router-dom";
 
 
 const LoginPage = () => {
 
     //front commencé pour maintenant effectuer les tests de connexion / regex du mdp et email / button login
+    
+       
+    
 
     return(
         <>
             <div className="justify-content-center">
-                <div className="card text-center mx-auto" style={{width: "50%", borderRadius: "50px", border: "1px solid black"}}>
+                <div className="card text-center mx-auto" >
                     <div className="card-body" >
-                        <h1 className="card-title, text-center ">A'Rosa-Je</h1>
+                         <img src={logo} alt="logo"/>
+                        <logo/>
                     </div>
                 </div>
             </div>
@@ -19,7 +25,7 @@ const LoginPage = () => {
             <br/>
             <div className="card card-login mx-auto" style={{width: "33%", borderRadius: "50px", border: "1px solid black"}}>
                 <div className="card-body mx-auto">
-                    <div className="d-flex justify-content-center">
+                    <div className="d-flex justify-content-center margin-login-card">
                         <form className="mx-auto" style={{width: "100%"}}>
                             <div className="form-group">
                             <label className="form-label" htmlFor="exampleInputEmail1">Email : </label>
@@ -33,7 +39,17 @@ const LoginPage = () => {
                             <br/>
                             <div className="d-flex align-items-center justify-content-center">
                                     <button className="btn btn-dark" type="submit">Login</button>
+                                    
+                                    
                             </div>
+                            <div className="d-flex align-items-center justify-content-center">
+                                <h3> Pas encore inscrit ?</h3>
+                                
+                            </div>
+                            <div className="d-flex align-items-center justify-content-center" >
+                                <Link className="btn btn-dark " to="/register">S'inscrire </Link>
+                            </div>
+                            
                         </form>
                     </div>
             </div>
