@@ -1,61 +1,44 @@
-import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import axios from 'axios';
 import '../styles/Register.css';
-import logo from '../assets/images/logo.png'
-import { Link } from "react-router-dom";
 
 const Register = () => {
-
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const [error, setError] = useState("");
-
+    const baseUrl = "http://127.0.0.1:8000"
 
     const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        phone: "",
-        email: "",
+        name: "",
+        firstname: "",
         password: "",
-        confirmPassword: ""
+        email: "",
+        phone: "",
     });
 
-    const NAVIGATE = useNavigate();
-    const handleSubmit = event => {
-        event.preventDefault();
-        if (!passwordRegex.test(formData.password)) {
-            console.error("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial");
-            alert("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial")
-        } else {
-            axios
-                .post("http://127.0.0.1:8000/docs/create", formData)
-                .then(res => console.log(res))
-                .catch(err => console.error(err));
-            
-        }
-        if (!formData.firstName || !formData.lastName || !formData.phone || !formData.email || !formData.password || !formData.confirmPassword) {
-            setError("Tous les champs sont requis.");
-            console.log("TEST 1")
-            return;
-        }
-        if (formData.password !== formData.confirmPassword) {
-            setError("Les mots de passe ne correspondent pas.");
-            console.log("TEST 2")
-            return;
-        }
+    const handleChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value,
+        });
     };
 
-
-    const handleFirstNameChange = event => {
-        const firstName = event.target.value
-        setFormData({...formData,firstName});
-
-    }
-
-    const handleLastNameChange = event =>{
-        const lastName = event.target.value
-        setFormData({...formData,lastName})
-    }
+    const handleSubmit = event => {
+        event.preventDefault();
+        if (!formData.name || !formData.firstname || !formData.phone || !formData.email || !formData.password) {
+            setError("Tous les champs sont requis.");
+            return;
+        }
+        if (!passwordRegex.test(formData.password)) {
+            setError("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial");
+            return;
+        }
+        axios
+            .post(`${baseUrl}/persons`, formData)
+            .then(res => console.log(res))
+            .catch(err => console.error(err));
+    };
 
     const handlePhoneChange = event => {
         const phone = event.target.value;
@@ -67,114 +50,100 @@ const Register = () => {
         }
     };
 
-    const handleEmailChange = event => {
-        const email = event.target.value;
-        if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            setError("L'adresse email est incorrecte.");
-        } else {
-            setFormData({ ...formData, email });
-            setError("");
-        }
-    };
-
-
-    const handlePasswordChange = event => {
-        const password = event.target.value
-        setFormData({...formData, password})
-    }
-
-    const handleConfirmPasswordChange = event => {
-        const confirmPassword = event.target.value
-        setFormData({...formData, confirmPassword})
-    }
+    // const handleEmailChange = event => {
+    //     const email = event.target.value;
+    //     if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    //         setError("L'adresse email est incorrecte.");
+    //     } else {
+    //         setFormData({ ...formData, email });
+    //         setError("");
+    //     }
+    // };
 
     return (
-    <>  
-        <div className="card text-center mx-auto" >
-            <div className="card-body" >
-                <img src={logo} alt="logo"/>
-                    <logo/>
-                </div>
-        </div>
-        <div className="d-flex align-items-center justify-content-center mx-auto" >
-            <div className="card card-register  card-color  d-flex align-items-center justify-content-center" style={{width: "33%" ,  borderRadius: "75px", border: "1px solid black"}}>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <label className="form_label" htmlFor="firstName">Prénom :</label>
-                                <input
-                                    className="form-control m-2 w-auto"
-                                    type="text"
-                                    id="firstName"
-                                    onChange={handleFirstNameChange}
-                                    value={formData.firstName}        
-                                />
-                        </div>
-                            <div>
-                                <label htmlFor="lastName">Nom :</label>
-                                <input
-                                    className="form-control m-2 w-auto"
-                                    type="text"
-                                    id="lastName"
-                                    onChange={handleLastNameChange}
-                                    value={formData.lastName}
-                                    
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="phone">Téléphone :</label>
-                                <input
-                                    className="form-control m-2 w-auto"
-                                    type="tel"
-                                    id="phone"
-                                    onChange={handlePhoneChange}
-                                    value={formData.phone}
-                                />
-                            </div> 
-                            <div>
-                                <label htmlFor="email">Email :</label>
-                                <input
-                                    className="form-control m-2 w-auto"
-                                    type="email"
-                                    id="email"
-                                    onChange={handleEmailChange}
-                                    value={formData.email}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="password">Password :</label>
-                                <input
-                                    className="form-control m-2 w-auto"
-                                    type="password"
-                                    id="password"
-                                    onChange={handlePasswordChange}
-                                    value={formData.password}
-                                />
-                            </div>
-                            <div>
-                            <label htmlFor="confirmPassword">Confirm password :</label>
-                                <input
-                                    className="form-control m-2 w-auto"
-                                    type="password"
-                                    id="confirmPassword"
-                                    required 
-                                    onChange={handleConfirmPasswordChange}
-                                    // value={event => setFormData({ ...formData, confirmPassword: event.target.value })}
-                                    value={formData.confirmPassword}
-                                />
-                            </div>
-                            <div className="d-flex align-items-center justify-content-center">
-                                <button 
-                                    className="btn form-button btn-dark " 
-                                //    onClick={() => NAVIGATE("/")} // Le onclick prend le dessus sur le onSubmit
-                                    type="submit">S'inscrire
-                                </button> 
-                                <Link className="btn btn-dark " to="/login">Retour</Link> 
-                            </div>
-                            {error && <p>{error}</p>}
-                    </form>
-                </div>
+        <div className="d-flex align-items-center justify-content-center mx-auto">
+            <div className="card card-register card-color d-flex align-items-center justify-content-center" style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label className="form_label" htmlFor="name">Prénom :</label>
+                        <input
+                            className="form-control m-2 w-auto"
+                            type="text"
+                            id="name"
+                            name="name"
+                            onChange={handleChange}
+                            value={formData.name}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="firstname">Nom :</label>
+                        <input
+                            className="form-control m-2 w-auto"
+                            type="text"
+                            id="firstname"
+                            name="firstname"
+                            onChange={handleChange}
+                            value={formData.firstname}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="phone">Téléphone :</label>
+                        <input
+                            className="form-control m-2 w-auto"
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            onChange={handlePhoneChange}
+                            value={formData.phone}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="email">Email :</label>
+                        <input
+                            className="form-control m-2 w-auto"
+                            type="email"
+                            id="email"
+                            name="email"
+                            onChange={handleChange}
+                            value={formData.email}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password">Password :</label>
+                        <input
+                            className="form-control m-2 w-auto"
+                            type="password"
+                            id="password"
+                            name="password"
+                            onChange={handleChange}
+                            value={formData.password}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="confirmPassword">Confirm password :</label>
+                        <input
+                            className="form-control m-2 w-auto"
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            required
+                            onChange={handleChange}
+                            // value={event => setFormData({ ...formData, confirmPassword: event.target.value })}
+                            value={formData.confirmPassword}
+                        />
+                    </div>
+                    <div className="d-flex align-items-center justify-content-center">
+                        <button
+                            className="btn form-button btn-dark "
+                            //    onClick={() => NAVIGATE("/")} // Le onclick prend le dessus sur le onSubmit
+                            type="submit">S'inscrire
+                        </button>
+                        <Link className="btn btn-dark " to="/login">Retour</Link>
+                    </div>
+                    {error && <p>{error}</p>}
+                </form>
             </div>
-        </>
+        </div>
     )
 }
 export default Register;
