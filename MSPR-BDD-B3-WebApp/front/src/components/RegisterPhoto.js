@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
 import logo from '../assets/images/logo.png'
-
+import axios from "axios";
 
 
 const RegisterPhoto = () => {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const videoRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
+  const baseUrl = "http://127.0.0.1:8000";
+  const [idPlante, setIdPlante] = useState(1);
 
   const handleStartCamera = () => {
     setIsCameraActive(true);
@@ -31,13 +33,20 @@ const RegisterPhoto = () => {
     const image = new Image();
     image.src = canvas.toDataURL();
     handleStopCamera();
-    console.log(image.src);
     setImageSrc(image.src);
   };
 
   const handleUploadPhoto = () => {
-    console.log("Uploading");
+    async function postPhoto(){
+      await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc})
+      // need to become a real error managment
+        .then(res => console.log(res) )
+        .catch(err => console.error(err));
+    }
+    postPhoto();
+    setImageSrc(null);
   };
+
 
   const handleTakeNewPhoto = () => {
     setImageSrc(null);
@@ -68,7 +77,7 @@ const RegisterPhoto = () => {
         !isCameraActive && !imageSrc && (
           <div className="d-flex justify-content-center align-items-center" style={{margin:"5em"}}>
             <div className="card  d-flex justify-content-center align-items-center">
-            <img src={logo} class="card-img-top" alt="logo"/>
+            <img src={logo} className="card-img-top" alt="logo"/>
               <div className="card-body ">
                 <b><p className="card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
               </div>
