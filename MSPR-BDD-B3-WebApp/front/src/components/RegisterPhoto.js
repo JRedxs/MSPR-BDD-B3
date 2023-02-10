@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
 
-const RegisterPlante = () => {
+const RegisterPhoto = () => {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const videoRef = useRef(null);
+  const [imageSrc, setImageSrc] = useState(null);
 
   const handleStartCamera = () => {
     setIsCameraActive(true);
@@ -23,9 +24,20 @@ const RegisterPlante = () => {
     canvas.width = videoRef.current.videoWidth;
     canvas.height = videoRef.current.videoHeight;
     canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
+    
+    const image = new Image();
+    image.src = canvas.toDataURL();
+    handleStopCamera();
+    setImageSrc(image.src);
+  };
 
-    const dataUrl = canvas.toDataURL('image/jpeg');
-    // do something with the dataUrl, for example, send it to the server
+  const handleUploadPhoto = () => {
+    console.log("Uploading");
+  };
+
+  const handleTakeNewPhoto = () => {
+    setImageSrc(null);
+    handleStartCamera();
   };
 
   return (
@@ -34,18 +46,27 @@ const RegisterPlante = () => {
         isCameraActive && (
           <>
             <video ref={videoRef} autoPlay />
-            <button onClick={handleTakePhoto}>Take photo</button>
-            <button onClick={handleStopCamera}>Stop camera</button>
+            <button onClick={handleTakePhoto}>Prendre une Photo</button>
+            <button onClick={handleStopCamera}>Arreter la Camera</button>
           </>
         )
       }
       {
-        !isCameraActive && (
-          <button onClick={handleStartCamera}>Start camera</button>
+        !isCameraActive && !imageSrc && (
+          <button onClick={handleStartCamera}>Lancer la Camera</button>
+        )
+      }
+      {
+        imageSrc && (
+          <>
+            <img src={imageSrc} />
+            <button onClick={handleUploadPhoto}>Enregister la Photo</button>
+            <button onClick={handleTakeNewPhoto}>Prendre une nouvelle Photo</button>
+          </>
         )
       }
     </div>
   );
 };
 
-export default RegisterPlante;
+export default RegisterPhoto;
