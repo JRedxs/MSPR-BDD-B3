@@ -8,6 +8,7 @@ import Header                from './components/common/Header';
 import Footer                from './components/common/Footer';  
 import RegisterPhoto         from './components/RegisterPhoto'
 import {Routes, Route}       from 'react-router-dom';
+import UserProfil from './components/UserProfil';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="Map" element={<Map/>} />
             <Route path="/Register" element={<Register/>}/>
             <Route path="/DevGa" element={<RegisterPhoto/>}/>
+            <Route path="/UserProfil" element={<UserProfil/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
         <Footer/>
