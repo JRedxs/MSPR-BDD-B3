@@ -85,8 +85,8 @@ const RegisterPhoto = () => {
               <img src={imageSrc} alt="" />
               <div className="card-body">
                 <div className="d-flex justify-content-center align-items-center"> 
-                  <button onClick={handleUploadPhoto}>Enregister la Photo</button>
-                  <button onClick={handleTakeNewPhoto}>Prendre une nouvelle Photo</button>
+                  <button className='btn btn-success' onClick={handleUploadPhoto}>Enregister la Photo</button>
+                  <button className='btn btn-success' onClick={handleTakeNewPhoto}>Prendre une nouvelle Photo</button>
                 </div>
               </div>
             </div> 
