@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from models import Person
+from models import Person,NewImage,DBImage
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -72,3 +72,30 @@ async def add_user(person: Person):
     return {"message": "Ajout avec succès"}
 
       
+
+@app.post("/image")
+def register_image(image: NewImage):
+    request_select = "select id_plante from Plante where id_plante = %s limit 1;"
+    request_insert = "insert into Photo (image_data) values(%s);"
+
+    cursor = connection.cursor()
+    cursor.execute(request_select, (image.id_plante))
+    if cursor.fetchone() is None:
+        raise HTTPException(status_code=404, detail="Photo pour une plante inexistante")
+    
+    cursor.execute(request_insert, (image.data))
+    connection.commit()
+    cursor.close()
+    return {"message": "Photo enregistrée"}
+    
+@app.get("/image/{id}", response_model=DBImage)
+def send_image(id):
+    request_select = "select * from Photo where id_photo = %s limit 1;"
+    cursor = connection.cursor()
+    cursor.execute(request_select, (id))
+    image = cursor.fetchone()
+    if image is None:
+        raise HTTPException(status_code=404, detail="Photo inexistante")
+ 
+    cursor.close()
+    return image

@@ -31,6 +31,7 @@ const RegisterPhoto = () => {
     const image = new Image();
     image.src = canvas.toDataURL();
     handleStopCamera();
+    console.log(image.src);
     setImageSrc(image.src);
   };
 
