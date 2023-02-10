@@ -13,12 +13,11 @@ const LoginPage = () => {
             <div className="justify-content-center">
                 <div className="card text-center mx-auto" >
                     <div className="card-body" >
-                         <img src={logo} alt="logo"/>
+                        <img src={logo} alt="logo"/>
                         <logo/>
                     </div>
                 </div>
             </div>
-
             <br/>
             <div className="card card-login mx-auto" style={{width: "33%", borderRadius: "50px", border: "1px solid black"}}>
                 <div className="card-body mx-auto">
@@ -43,7 +42,7 @@ const LoginPage = () => {
                                 </div>
                             </div>
                             <div className="d-flex align-items-center justify-content-center register-btn">
-                                    <Link className="btn" to="/register"><u>S'inscrire</u> </Link>
+                                <Link className="btn" to="/register"><u>S'inscrire</u> </Link>
                             </div>
                         </form>
                     </div>
