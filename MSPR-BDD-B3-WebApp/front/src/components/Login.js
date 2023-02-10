@@ -1,6 +1,7 @@
 import React from "react";
 import '../styles/Login.css';
 import logo from '../assets/images/logo.png'
+import { Link } from "react-router-dom";
 
 
 const LoginPage = () => {
@@ -24,7 +25,7 @@ const LoginPage = () => {
             <br/>
             <div className="card card-login mx-auto" style={{width: "33%", borderRadius: "50px", border: "1px solid black"}}>
                 <div className="card-body mx-auto">
-                    <div className="d-flex justify-content-center m-xl-auto">
+                    <div className="d-flex justify-content-center margin-login-card">
                         <form className="mx-auto" style={{width: "100%"}}>
                             <div className="form-group">
                             <label className="form-label" htmlFor="exampleInputEmail1">Email : </label>
@@ -38,7 +39,17 @@ const LoginPage = () => {
                             <br/>
                             <div className="d-flex align-items-center justify-content-center">
                                     <button className="btn btn-dark" type="submit">Login</button>
+                                    
+                                    
                             </div>
+                            <div className="d-flex align-items-center justify-content-center">
+                                <h3> Pas encore inscrit ?</h3>
+                                
+                            </div>
+                            <div className="d-flex align-items-center justify-content-center" >
+                                <Link className="btn btn-dark " to="/register">S'inscrire </Link>
+                            </div>
+                            
                         </form>
                     </div>
             </div>
