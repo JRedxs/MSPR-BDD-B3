@@ -9,3 +9,17 @@ class Person(BaseModel):
         email: str
         phone: str
         id_role: int
+
+
+class Image(BaseModel):
+        data: str
+
+class NewImage(Image):
+        id_plante: int
+
+
+class DBImage(NewImage):
+        id_photo: int
+        advice_title: str
+        advice: str
+        
