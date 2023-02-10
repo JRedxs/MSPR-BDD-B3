@@ -1,12 +1,26 @@
 from fastapi import FastAPI, HTTPException
 from models import Person
 from database import *
+from fastapi.middleware.cors import CORSMiddleware
 
 # Connexion à la base de données
 connection = MSQL_LOCAL
 
 # Initialisez l'application 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Créez la route pour sélectionner tous les utilisateurs
@@ -38,6 +52,9 @@ def get_user_by_id(user_id: int):
 
 
 
+@app.options("/persons")
+async def add_user_options(person: Person):
+    return {"Allow": "POST"}
 
 
 @app.post("/persons")
@@ -50,7 +67,7 @@ async def add_user(person: Person):
     insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role) VALUES (%s, %s, %s, %s,%s,%s)"
     cursor.execute(insert_query, (person.name, person.firstname, person.password, person.email, person.phone,person.id_role))
     connection.commit()
-    cursor.close()
+
 
     return {"message": "Ajout avec succès"}
 
