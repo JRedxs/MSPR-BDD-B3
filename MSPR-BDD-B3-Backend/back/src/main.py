@@ -37,7 +37,7 @@ def get_user(email: str, password: str):
             else:
                 raise HTTPException(status_code=400, detail="Incorrect email or password")
     except:
-        raise HTTPException(status_code=500, detail="Database connection error")
+        raise HTTPException(status_code=500, detail="Database connection error !")
 
 
 @app.get("/users/{user_id}")
