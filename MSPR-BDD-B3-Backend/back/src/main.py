@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 import pymysql
 
 # Connexion à la base de données
@@ -7,6 +8,19 @@ connection = pymysql.connect(host='localhost', user='admin', password='admin', d
 
 # Initialisez l'application 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
@@ -16,7 +30,7 @@ class Person(BaseModel):
         password: str
         email: str
         phone: str
-        id_role: int
+        id_role: int = 2
 
 
 # Créez la route pour sélectionner tous les utilisateurs
@@ -48,6 +62,9 @@ def get_user_by_id(user_id: int):
 
 
 
+@app.options("/persons")
+async def add_user_options(person: Person):
+    return {"Allow": "POST"}
 
 
 @app.post("/persons")
@@ -60,7 +77,7 @@ async def add_user(person: Person):
     insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role) VALUES (%s, %s, %s, %s,%s,%s)"
     cursor.execute(insert_query, (person.name, person.firstname, person.password, person.email, person.phone,person.id_role))
     connection.commit()
-    cursor.close()
+
 
     return {"message": "Ajout avec succès"}
 
