@@ -6,22 +6,23 @@ import Home                  from './components/Home';
 import Register              from './components/Register';
 import Header                from './components/common/Header';
 import Footer                from './components/common/Footer';  
+import RegisterPhoto         from './components/RegisterPhoto';
 
-
-import {Routes, Route}       from 'react-router-dom';
-
+import {Routes, Route, Link} from 'react-router-dom';
 
 const App = () => {
   return (
       <div>
         <Header/>
-          <Routes>
+
+        <Routes>
             <Route exact path="/home" element={<Home/>}/>
             <Route path="/login" element={<LoginPage/>} />
             <Route path="Map" element={<Map/>} />
             <Route path="/Register" element={<Register/>}/>
+            <Route path="/DevGa" element={<RegisterPhoto/>}/>
             <Route path="*" element={<NotFound/>}/>
-          </Routes>
+        </Routes>
         <Footer/>
       </div>
   );

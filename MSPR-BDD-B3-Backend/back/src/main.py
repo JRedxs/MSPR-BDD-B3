@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from models import Person
+from database import *
 from fastapi.middleware.cors import CORSMiddleware
-import pymysql
 
 # Connexion à la base de données
-connection = pymysql.connect(host='localhost', user='admin', password='admin', db='Arosaje-db', port=3306)
+connection = MSQL_LOCAL
 
 # Initialisez l'application 
 app = FastAPI()
@@ -21,16 +21,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-
-class Person(BaseModel):
-        name: str
-        firstname: str
-        password: str
-        email: str
-        phone: str
-        id_role: int = 2
 
 
 # Créez la route pour sélectionner tous les utilisateurs

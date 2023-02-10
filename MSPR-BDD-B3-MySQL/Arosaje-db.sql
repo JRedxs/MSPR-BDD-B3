@@ -51,6 +51,7 @@ CREATE TABLE Photo(
    id_photo INT NOT NULL AUTO_INCREMENT,
    advice_title VARCHAR(150),
    advice VARCHAR(550),
+   image_data MEDIUMBLOB,
    id_plante INT NOT NULL,
    PRIMARY KEY(id_photo),
    FOREIGN KEY(id_plante) REFERENCES Plante(id_plante)
