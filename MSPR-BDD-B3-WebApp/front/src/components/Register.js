@@ -8,6 +8,7 @@ const Register = () => {
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const [error, setError] = useState("");
+    const baseUrl = "http://127.0.0.1:8000"
 
 
     const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ const Register = () => {
             alert("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial")
         } else {
             axios
-                .post("http://127.0.0.1:8000/docs/create", formData)
+                .post(baseUrl,"/docs/create", formData)
                 .then(res => console.log(res))
                 .catch(err => console.error(err));
             
