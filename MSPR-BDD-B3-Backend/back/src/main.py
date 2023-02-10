@@ -1,22 +1,12 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-import pymysql
+from models import Person
+from database import *
 
 # Connexion à la base de données
-connection = pymysql.connect(host='localhost', user='admin', password='admin', db='Arosaje-db', port=3306)
+connection = MSQL_LOCAL
 
 # Initialisez l'application 
 app = FastAPI()
-
-
-
-class Person(BaseModel):
-        name: str
-        firstname: str
-        password: str
-        email: str
-        phone: str
-        id_role: int
 
 
 # Créez la route pour sélectionner tous les utilisateurs
