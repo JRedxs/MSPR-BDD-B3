@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
 
-
-
 const Header = () => {
     return (
         <>
@@ -12,8 +10,9 @@ const Header = () => {
                     <img src={logo} alt="logo" style={{width: "25%", height: "25%" }}/>
                 </div>
                 <div className="d-flex align-items-center" >
-                    <button className='btn btn-success m-1'>Garder une plante </button>
-                    <button className='btn btn-success'>localiser une plante </button>
+                    
+                    <Link to="/Map" className='btn btn-success m-1'>Garder une plante </Link>
+                    <Link to="*" className='btn btn-success'>localiser une plante </Link>
                 </div>
                 <ul className="navbar-nav mr-auto">
                     <li><Link to="/login" className="nav-link"> Login </Link></li>

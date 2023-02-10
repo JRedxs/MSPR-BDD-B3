@@ -55,8 +55,7 @@ const LoginPage = () => {
                                 <button className="btn btn-dark" type="submit" to="/DevGa">Login</button>
                             </div>
                             <div className="d-flex align-items-center justify-content-center">
-                                <h3> Pas encore inscrit ?</h3>
-
+                                <h3> Pas encore inscrit ? </h3>
                             </div>
                             <div className="d-flex align-items-center justify-content-center register-btn">
                                 <Link className="btn" to="/register"><b> <u>S'inscrire</u> </b> </Link>
