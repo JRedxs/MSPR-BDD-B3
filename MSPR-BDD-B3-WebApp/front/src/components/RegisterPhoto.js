@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import logo from '../assets/images/logo.png'
+import Logo from '../assets/images/logo.png'
 import axios from "axios";
 
 
@@ -77,7 +77,7 @@ const RegisterPhoto = () => {
         !isCameraActive && !imageSrc && (
           <div className="d-flex justify-content-center align-items-center" style={{margin:"5em"}}>
             <div className="card  d-flex justify-content-center align-items-center">
-            <img src={logo} className="card-img-top" alt="logo"/>
+            <img src={Logo} className="card-img-top" alt="logo"/>
               <div className="card-body ">
                 <b><p className="card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
               </div>
