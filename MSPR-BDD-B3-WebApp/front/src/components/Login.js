@@ -24,12 +24,12 @@ const LoginPage = () => {
                     <div className="d-flex justify-content-center margin-login-card">
                         <form className="mx-auto" style={{width: "100%"}}>
                             <div className="form-group">
-                            <label className="form-label" htmlFor="exampleInputEmail1">Email : </label>
+                            <label className="form-label" htmlFor="exampleInputEmail1"><b>Email :</b> </label>
                             <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
                             </div>
                             <br/>
                             <div className="form-group">
-                            <label className="form-label" htmlFor="exampleInputPassword1">Password : </label>
+                            <label className="form-label" htmlFor="exampleInputPassword1"><b>Password : </b> </label>
                             <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
                             </div>
                             <br/>
@@ -42,7 +42,7 @@ const LoginPage = () => {
                                 </div>
                             </div>
                             <div className="d-flex align-items-center justify-content-center register-btn">
-                                <Link className="btn" to="/register"><u>S'inscrire</u> </Link>
+                                <Link className="btn" to="/register"><b> <u>S'inscrire</u> </b> </Link>
                             </div>
                         </form>
                     </div>
