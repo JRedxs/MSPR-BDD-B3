@@ -1,4 +1,11 @@
-.card-color{
-    background-color: rgb(13, 109, 253);
-    margin-top: 5em;
+
+.card-register {
+    height: 100%;
+    width: "33%";
+    border-radius: "50px";
+    border: "1px solid black";
+}
+
+.form-button{
+    margin: 1em;
 }
