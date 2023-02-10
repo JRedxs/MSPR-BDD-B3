@@ -7,9 +7,6 @@ import { Link } from "react-router-dom";
 const LoginPage = () => {
 
     //front commencé pour maintenant effectuer les tests de connexion / regex du mdp et email / button login
-    
-       
-    
 
     return(
         <>
@@ -37,23 +34,20 @@ const LoginPage = () => {
                             <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
                             </div>
                             <br/>
-                            <div className="d-flex align-items-center justify-content-center">
-                                    <button className="btn btn-dark" type="submit">Login</button>
-                                    
-                                    
+                            <div className="d-flex align-items-center justify-content-center log-btn">
+                                    <button className="btn btn-dark" type="submit">Login</button> 
                             </div>
-                            <div className="d-flex align-items-center justify-content-center">
-                                <h3> Pas encore inscrit ?</h3>
-                                
+                            <div className="d-flex align-items-center justify-content-center register-btn">
+                                <div className="d-flex align-items-center justify-content-center register-btn">
+                                    <p> <b>Pas encore inscrit ?</b> </p> 
+                                </div>
                             </div>
-                            <div className="d-flex align-items-center justify-content-center" >
-                                <Link className="btn btn-dark " to="/register">S'inscrire </Link>
+                            <div className="d-flex align-items-center justify-content-center register-btn">
+                                    <Link className="btn" to="/register"><u>S'inscrire</u> </Link>
                             </div>
-                            
                         </form>
                     </div>
-            </div>
-
+                </div>
             </div>
         </>
     )

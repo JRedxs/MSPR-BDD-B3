@@ -12,7 +12,6 @@
     color: black;
 }
 
-
 .card-login {
     height: 70%;
     width: "33%";
@@ -21,5 +20,9 @@
     background-color :#a4bb64;
 
     margin: 5em;
+}
+
+.log-btn{
+    margin: 1em;
 }
 

@@ -12,9 +12,7 @@ const Header = () => {
                     <li><Link to="/Register" className="nav-link">Sign-In</Link></li>
                 </ul>
             </nav>
-            
         </>
-
     )
 }
 

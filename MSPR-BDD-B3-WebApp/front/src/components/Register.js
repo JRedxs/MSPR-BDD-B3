@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../styles/Register.css';
+import logo from '../assets/images/logo.png'
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -89,6 +90,12 @@ const Register = () => {
 
     return (
     <>  
+        <div className="card text-center mx-auto" >
+            <div className="card-body" >
+                <img src={logo} alt="logo"/>
+                    <logo/>
+                </div>
+        </div>
         <div className="d-flex align-items-center justify-content-center mx-auto" >
             <div className="card card-register  card-color  d-flex align-items-center justify-content-center" style={{width: "33%" ,  borderRadius: "75px", border: "1px solid black"}}>
                     <form onSubmit={handleSubmit}>
