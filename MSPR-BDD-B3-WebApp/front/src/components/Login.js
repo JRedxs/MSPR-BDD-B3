@@ -1,53 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import '../styles/Login.css';
 import logo from '../assets/images/logo.png'
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 
 const LoginPage = () => {
 
-    //front commencé pour maintenant effectuer les tests de connexion / regex du mdp et email / button login
+    const baseUrl = "http://127.0.0.1:8000"
 
-    return(
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      const response = await axios.get(`${baseUrl}/users?email=${email}&password=${password}`);
+      const user = response.data.User;
+      if (user.length > 0) {
+        console.log("Utilisateur inscrit dans la base de données",response);
+
+      } else {
+        console.log("Utilisateur inexistant dans la base de données",response);
+      }
+    };
+
+    return (
         <>
             <div className="justify-content-center">
                 <div className="card text-center mx-auto" >
                     <div className="card-body" >
-                         <img src={logo} alt="logo"/>
-                        <logo/>
+                        <img src={logo} alt="logo" />
+                        <logo />
                     </div>
                 </div>
             </div>
 
-            <br/>
-            <div className="card card-login mx-auto" style={{width: "33%", borderRadius: "50px", border: "1px solid black"}}>
+            <br />
+            <div className="card card-login mx-auto" style={{ width: "33%", borderRadius: "50px", border: "1px solid black" }}>
                 <div className="card-body mx-auto">
                     <div className="d-flex justify-content-center margin-login-card">
-                        <form className="mx-auto" style={{width: "100%"}}>
+                        <form className="mx-auto" onSubmit={handleSubmit} style={{ width: "100%" }}>
                             <div className="form-group">
-                            <label className="form-label" htmlFor="exampleInputEmail1">Email : </label>
-                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+                                <label className="form-label" htmlFor="exampleInputEmail1"> <b>Email : </b> </label>
+                                <input type="email" className="form-control" id="email" name="email" onChange={(e) => setEmail(e.target.value)} value={email} aria-describedby="emailHelp" placeholder="Enter email" />
                             </div>
-                            <br/>
+                            <br />
                             <div className="form-group">
-                            <label className="form-label" htmlFor="exampleInputPassword1">Password : </label>
-                            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
+                                <label className="form-label" htmlFor="exampleInputPassword1"><b> Password : </b> </label>
+                                <input type="password" className="form-control" id="password" name="password" onChange={(e) => setPassword(e.target.value)} value={password} placeholder="Password" />
                             </div>
-                            <br/>
-                            <div className="d-flex align-items-center justify-content-center log-btn">
-                                    <button className="btn btn-dark" type="submit">Login</button> 
+                            <br />
+                            <div className="d-flex align-items-center justify-content-center">
+                                <button className="btn btn-dark" type="submit" to="/DevGa">Login</button>
+                            </div>
+                            <div className="d-flex align-items-center justify-content-center">
+                                <h3> Pas encore inscrit ? </h3>
                             </div>
                             <div className="d-flex align-items-center justify-content-center register-btn">
-                                <div className="d-flex align-items-center justify-content-center register-btn">
-                                    <p> <b>Pas encore inscrit ?</b> </p> 
-                                </div>
+                                <Link className="btn" to="/register"><b> <u>S'inscrire</u> </b> </Link>
                             </div>
-                            <div className="d-flex align-items-center justify-content-center register-btn">
-                                    <Link className="btn" to="/register"><u>S'inscrire</u> </Link>
-                            </div>
+
                         </form>
                     </div>
                 </div>
+
             </div>
         </>
     )

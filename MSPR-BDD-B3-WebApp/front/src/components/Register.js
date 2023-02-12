@@ -9,6 +9,8 @@ const Register = () => {
     const [error, setError] = useState("");
     const baseUrl = "http://127.0.0.1:8000"
 
+    const NAVIGATE = useNavigate()
+
     const [formData, setFormData] = useState({
         name: "",
         firstname: "",
@@ -135,7 +137,7 @@ const Register = () => {
                     <div className="d-flex align-items-center justify-content-center">
                         <button
                             className="btn form-button btn-dark "
-                            //    onClick={() => NAVIGATE("/")} // Le onclick prend le dessus sur le onSubmit
+                            onClick={() => NAVIGATE("/login")} // Le onclick prend le dessus sur le onSubmit
                             type="submit">S'inscrire
                         </button>
                         <Link className="btn btn-dark " to="/login">Retour</Link>
