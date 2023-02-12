@@ -23,3 +23,7 @@ class DBImage(NewImage):
         advice_title: str
         advice: str
         
+class Advice(BaseModel):
+    advice_title: str
+    advice: str
+    id_plante: int

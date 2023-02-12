@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from models import Person,NewImage,DBImage
+from models import Person,NewImage,DBImage,Advice
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -103,3 +103,14 @@ def send_image(id):
 
     cursor.close()
     return image
+
+#Add advice
+@app.post("/advice")
+async def add_advice(photo: Advice):
+    cursor = connection.cursor()
+    sql = "INSERT INTO Photo (advice_title, advice, id_plante) VALUES (%s, %s, %s)"
+    val = (photo.advice_title, photo.advice, photo.id_plante)
+    cursor.execute(sql, val)
+    connection.commit()
+    
+    return {"id_photo": cursor.lastrowid, "advice_title": photo.advice_title, "advice": photo.advice, "id_plante": photo.id_plante}
