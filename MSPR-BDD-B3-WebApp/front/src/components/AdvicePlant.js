@@ -6,7 +6,7 @@ const AddAdvice = () => {
   const [idPlante, setIdPlante] = useState('');
 
   const handleSubmit = async () => {
-    const response = await fetch('/photos', {
+    const response = await fetch('/advice', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
