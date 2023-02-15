@@ -14,10 +14,10 @@ RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Copy the rest of the project files to the container
-COPY . .
+COPY ./back/src/. .
 
 # Expose port 8000 in the container
-EXPOSE 8000
+EXPOSE 8005
 
 # Specify the command to run the app when the container is started
-
+CMD sleep 20s;uvicorn main:app --host 0.0.0.0 --port 8005

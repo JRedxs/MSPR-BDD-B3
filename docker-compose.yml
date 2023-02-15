@@ -1,24 +1,31 @@
 version: '3'
 
 services:
-  mysql-db:
+  mysql-db-compose:
     build:
       context: ./MSPR-BDD-B3-MySQL/.
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - '3306:3306'
+      - '33060:33060'
 
-  python-api:
+  python-api-compose:
     depends_on:
-      - mysql-db
+      - mysql-db-compose
     build:
       context: ./MSPR-BDD-B3-Backend/.
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - '8005:8005'
 
-  react-web:
+  react-web-compose:
     depends_on:
-      - python-api
+      - python-api-compose
     build:
-      context: ./MSPR-BDD-B3-WebApp/.
+      context: ./MSPR-BDD-B3-WebApp/front/.
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - '3000:3000'
