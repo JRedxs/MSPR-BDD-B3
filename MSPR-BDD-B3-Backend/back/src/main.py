@@ -4,7 +4,7 @@ from database import *
 from fastapi.middleware.cors import CORSMiddleware
 
 # Connexion à la base de données
-connection = MSQL_LOCAL
+connection = MSQL
 
 # Initialisez l'application 
 app = FastAPI()
