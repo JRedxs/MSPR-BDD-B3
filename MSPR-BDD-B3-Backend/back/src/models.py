@@ -24,6 +24,7 @@ class DBImage(NewImage):
         advice: str
         
 class Advice(BaseModel):
+    id_photo:int
     advice_title: str
     advice: str
     id_plante: int

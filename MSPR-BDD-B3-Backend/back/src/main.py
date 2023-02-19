@@ -106,11 +106,11 @@ def send_image(id):
 
 #Add advice
 @app.post("/advice")
-async def add_advice(photo: Advice):
+async def add_advice(advice: Advice):
     cursor = connection.cursor()
-    sql = "INSERT INTO Photo (advice_title, advice, id_plante) VALUES (%s, %s, %s)"
-    val = (photo.advice_title, photo.advice, photo.id_plante)
+    sql = "INSERT INTO Photo (id_photo,advice_title, advice, id_plante) VALUES (%s,%s, %s, %s)"
+    val = (advice.id_photo,advice.advice_title, advice.advice, advice.id_plante)
     cursor.execute(sql, val)
     connection.commit()
     
-    return {"id_photo": cursor.lastrowid, "advice_title": photo.advice_title, "advice": photo.advice, "id_plante": photo.id_plante}
+    return {"id_photo": cursor.lastrowid, "advice_title": advice.advice_title, "advice": advice.advice, "id_plante": advice.id_plante}
