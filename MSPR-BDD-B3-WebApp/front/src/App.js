@@ -8,8 +8,9 @@ import Header                from './components/common/Header';
 import Footer                from './components/common/Footer';  
 import RegisterPhoto         from './components/RegisterPhoto'
 import Garde                 from './components/Garde';
+import RegisterPlante        from './components/RegisterPlante';
 import {Routes, Route}       from 'react-router-dom';
-import UserProfil from './components/UserProfil';
+//import UserProfil from './components/UserProfil';
 import AddAdvice from './components/AdvicePlant';
 
 const App = () => {
@@ -21,14 +22,15 @@ const App = () => {
             <Route path="/login" element={<LoginPage/>} />
             <Route path="/Map" element={<Map/>} />
             <Route path="/Register" element={<Register/>}/>
-            <Route path="/DevGa" element={<RegisterPhoto/>}/>
             <Route path="/UserProfil" element={<UserProfil/>}/>
             <Route path="/Garde" element={<Garde/>}/>
+            <Route path="/DevGa" element={<RegisterPlante/>}/>
+            
             <Route path="*" element={<NotFound/>}/>
             <Route path="/AddAdvice" element={<AddAdvice/>}/>
         </Routes>
         <Footer/>
       </div>
-  );
+  );//<Route path="/UserProfil" element={<UserProfil/>}/>
 }
 export default App;
