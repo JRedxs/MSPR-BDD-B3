@@ -2,16 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';  
-import {Container ,Dropdown,  DropdownButton} from 'react-bootstrap';  
-
+import {Container ,Dropdown,  DropdownButton} from 'react-bootstrap'; 
+import '../../styles/Header.css'
 const Header = () => {
     return (
         <>
-            <nav className="navbar navbar-expand-lg  bg-primary  d-flex align-items-center justify-content-center">
+            <nav className="navbar navbar-expand-lg  bg-success  d-flex align-items-center justify-content-center">
 
             <div className="drop-down-menu">  
                 <Container className='p-4'>  
-                 <DropdownButton size='lg' variant="success" id="dropdown-basic-button" title="Dropdown button">  
+                 <DropdownButton size='md' variant="success" id="dropdown-basic-button" title="Menu">  
                  <Dropdown.Item as={Link} to="/login">Login</Dropdown.Item>  
                  <Dropdown.Item as={Link} to="/UserProfil">Profil utilisateur</Dropdown.Item>  
                  <Dropdown.Item as={Link} to="/Map">Garder une plante</Dropdown.Item>  
