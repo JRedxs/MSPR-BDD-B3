@@ -112,5 +112,35 @@ async def add_advice(advice: Advice):
     val = (advice.id_photo,advice.advice_title, advice.advice, advice.id_plante)
     cursor.execute(sql, val)
     connection.commit()
-    
+
     return {"id_photo": cursor.lastrowid, "advice_title": advice.advice_title, "advice": advice.advice, "id_plante": advice.id_plante}
+
+@app.post("/advices")
+def create_advice(advice: dict):
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO Photo (advice_title, advice, id_plante) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (advice["advice_title"], advice["advice"], advice["id_plante"]))
+            connection.commit()
+            new_id = cursor.lastrowid
+            return {"id_photo": new_id, **advice}
+    except:
+        raise HTTPException(status_code=500, detail="Database connection error !")
+
+
+@app.get("/advices")
+def get_advices():
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM Photo"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            photo = []
+            for row in result:
+                photo.append({"id_photo": row[0], "advice_title": row[1], "advice": row[2], "id_plante": row[3]})
+            if photo:
+                return {"Photo": photo}
+            else:
+                raise HTTPException(status_code=400, detail="Erreur : ")
+    except:
+        raise HTTPException(status_code=500, detail="Database connection error !")
