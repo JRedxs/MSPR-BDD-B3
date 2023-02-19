@@ -112,5 +112,4 @@ async def add_advice(advice: Advice):
     val = (advice.id_photo,advice.advice_title, advice.advice, advice.id_plante)
     cursor.execute(sql, val)
     connection.commit()
-    
     return {"id_photo": cursor.lastrowid, "advice_title": advice.advice_title, "advice": advice.advice, "id_plante": advice.id_plante}
