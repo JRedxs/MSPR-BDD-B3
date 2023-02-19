@@ -1,7 +1,5 @@
 from pydantic import BaseModel
 
-
-
 class Person(BaseModel):
         name: str
         firstname: str
@@ -10,13 +8,11 @@ class Person(BaseModel):
         phone: str
         id_role: int
 
-
 class Image(BaseModel):
         data: str
 
 class NewImage(Image):
         id_plante: int
-
 
 class DBImage(NewImage):
         id_photo: int
