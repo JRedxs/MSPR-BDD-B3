@@ -75,10 +75,8 @@ const UserProfil = () => {
                     
                     <MDBCardText className="text-muted">
         {
-        
         users.map(user => (
-          <p key={user.id_person}> {user.name}</p>
-        
+          <p key={user.id_person}> {user.name}</p>     
         ))}
       </MDBCardText>
                   </MDBCol>

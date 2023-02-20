@@ -9,18 +9,20 @@ const Header = () => {
         <>
             <nav className="navbar navbar-expand-lg  bg-success  d-flex align-items-center justify-content-center">
             <div style={{margin: "0"}}>
+                <Link to="/">
                     <img src={logo} alt="logo" style={{width: "25%", height: "25%" }}/>
+                </Link>
+                    
             </div>
             <div className="drop-down-menu">  
                 <Container className='p-4'>  
-                 <DropdownButton size='md' variant="success" id="dropdown-basic-button" title="Menu">  
-                 <Dropdown.Item as={Link} to="/login">Login</Dropdown.Item>  
-                 <Dropdown.Item as={Link} to="/UserProfil">Profil utilisateur</Dropdown.Item>  
-                 <Dropdown.Item as={Link} to="/Map">Garder une plante</Dropdown.Item>  
-                 <Dropdown.Item as={Link} to="/Register">Enregistrer une plante</Dropdown.Item>
-                 <Dropdown.Item as={Link} to="/DevGa">WIP</Dropdown.Item> 
-                 <Dropdown.Item as={Link} to="/AddAdvice">Ajouter un conseil</Dropdown.Item>  
-                 
+                <DropdownButton size='md' variant="success" id="dropdown-basic-button" title="Menu">  
+                <Dropdown.Item as={Link} to="/login">Login</Dropdown.Item>  
+                <Dropdown.Item as={Link} to="/UserProfil">Profil utilisateur</Dropdown.Item>  
+                <Dropdown.Item as={Link} to="/Map">Garder une plante</Dropdown.Item>  
+                <Dropdown.Item as={Link} to="/Register">Enregistrer une plante</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/DevGa">WIP</Dropdown.Item> 
+                <Dropdown.Item as={Link} to="/AddAdvice">Ajouter un conseil</Dropdown.Item>  
                 </DropdownButton>  
                 </Container>  
              </div>  
