@@ -10,6 +10,7 @@ import RegisterPhoto         from './components/RegisterPhoto'
 import {Routes, Route}       from 'react-router-dom';
 import UserProfil from './components/UserProfil';
 import AddAdvice from './components/AdvicePlant';
+import ListOfAdvices from './components/ListOfAdvices';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="/UserProfil" element={<UserProfil/>}/>
             <Route path="*" element={<NotFound/>}/>
             <Route path="/AddAdvice" element={<AddAdvice/>}/>
+            <Route path="/ListOfAdvices" element={<ListOfAdvices/>}/>
         </Routes>
         <Footer/>
       </div>

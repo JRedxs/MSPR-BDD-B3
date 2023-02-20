@@ -17,7 +17,8 @@ const Header = () => {
                  <Dropdown.Item as={Link} to="/Map">Garder une plante</Dropdown.Item>  
                  <Dropdown.Item as={Link} to="/Register">Enregistrer une plante</Dropdown.Item>
                  <Dropdown.Item as={Link} to="/DevGa">WIP</Dropdown.Item> 
-                 <Dropdown.Item as={Link} to="/AddAdvice">Ajouter un conseil</Dropdown.Item>   
+                 <Dropdown.Item as={Link} to="/AddAdvice">Ajouter un conseil</Dropdown.Item>
+                 <Dropdown.Item as={Link} to="/ListOfAdvices">Conseils</Dropdown.Item>      
                  
                 </DropdownButton>  
                 </Container>  
