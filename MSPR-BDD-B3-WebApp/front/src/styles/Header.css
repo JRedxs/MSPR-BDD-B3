@@ -1,0 +1,9 @@
+.dropdown-menu.show{
+    background-color: beige;
+}
+
+.btn-success{
+    --bs-btn-bg: #6b3e0f;
+    --bs-btn-hover-bg: #6b3e0f;
+}
+
