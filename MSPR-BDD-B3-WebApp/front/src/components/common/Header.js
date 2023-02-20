@@ -8,7 +8,9 @@ const Header = () => {
     return (
         <>
             <nav className="navbar navbar-expand-lg  bg-success  d-flex align-items-center justify-content-center">
-
+            <div style={{margin: "0"}}>
+                    <img src={logo} alt="logo" style={{width: "25%", height: "25%" }}/>
+            </div>
             <div className="drop-down-menu">  
                 <Container className='p-4'>  
                  <DropdownButton size='md' variant="success" id="dropdown-basic-button" title="Menu">  
@@ -17,15 +19,15 @@ const Header = () => {
                  <Dropdown.Item as={Link} to="/Map">Garder une plante</Dropdown.Item>  
                  <Dropdown.Item as={Link} to="/Register">Enregistrer une plante</Dropdown.Item>
                  <Dropdown.Item as={Link} to="/DevGa">WIP</Dropdown.Item> 
-                 <Dropdown.Item as={Link} to="/AddAdvice">Ajouter un conseil</Dropdown.Item>   
+                 <Dropdown.Item as={Link} to="/AddAdvice">Ajouter un conseil</Dropdown.Item>  
                  
                 </DropdownButton>  
                 </Container>  
              </div>  
 
-                <div style={{margin: "0"}}>
+                {/* <div style={{margin: "0"}}>
                     <img src={logo} alt="logo" style={{width: "25%", height: "25%" }}/>
-                </div>
+                </div> */}
                 {/* <div className="d-flex align-items-center" >
                     
                     <Link to="/Map" className='btn btn-success m-1' >Garder une plante </Link>
