@@ -1,49 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
 
-const AddAdvice = () => {
-  const [adviceTitle, setAdviceTitle] = useState('');
-  const [advice, setAdvice] = useState('');
-  const [idPlante, setIdPlante] = useState('');
+const AdvicePlant = () => {
+  const [advice, setAdvice] = useState({ advice_title: "", advice: "", id_plante: "" });
 
-  const handleSubmit = async () => {
-    const response = await fetch('/advice', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        advice_title: adviceTitle,
-        advice: advice,
-        id_plante: idPlante
-      })
-    });
-    const data = await response.json();
-    console.log(data);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setAdvice({ ...advice, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:8000/advices", advice);
+      console.log(response.data);
+      setAdvice({ advice_title: "", advice: "", id_plante: "" });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Advice Title"
-        value={adviceTitle}
-        onChange={e => setAdviceTitle(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Advice"
-        value={advice}
-        onChange={e => setAdvice(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Id Plante"
-        value={idPlante}
-        onChange={e => setIdPlante(e.target.value)}
-      />
-      <button onClick={handleSubmit}>Valider</button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <label>
+        Titre :
+        <input type="text" name="advice_title" value={advice.advice_title} onChange={handleInputChange} />
+      </label>
+      <label>
+        Conseil :
+        <textarea name="advice" value={advice.advice} onChange={handleInputChange} />
+      </label>
+      <label>
+        ID Plante :
+        <input type="text" name="id_plante" value={advice.id_plante} onChange={handleInputChange} />
+      </label>
+      <button type="submit">Ajouter</button>
+    </form>
   );
 };
 
-export default AddAdvice;
+export default AdvicePlant;
