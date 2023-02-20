@@ -134,3 +134,23 @@ def get_advices():
                 raise HTTPException(status_code=400, detail="Erreur : ")
     except:
         raise HTTPException(status_code=500, detail="Database connection error !")
+    
+
+@app.get("/plant")
+def get_plants():
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM Plante"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            plants = []
+
+            for row in result:
+                plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9]})
+            if plants:
+                return {"Plants": plants}
+            else:
+                raise HTTPException(status_code=400, detail="Incorrect email or password")
+    except:
+        raise HTTPException(status_code=500, detail="Database connection error !")
+

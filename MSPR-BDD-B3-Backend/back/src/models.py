@@ -24,3 +24,16 @@ class Advice(BaseModel):
     advice_title: str
     advice: str
     id_plante: int
+
+class Plant(BaseModel):
+   id_plante:int
+   name:str
+   number:int
+   road_first:str
+   road_second:str
+   town:str
+   postal_code:int
+   latitude:int
+   longitude:int
+   id_person:int
+   
