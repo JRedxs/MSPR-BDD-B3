@@ -8,7 +8,7 @@ const Footer = () => {
             
 
     <footer
-            className="text-center text-lg-start text-white"
+            className="text-center text-lg-start text-white position-relative"
             style={{backgroundColor: "#929fba", clear:"both", marginBottom:"0", bottom:"0",position:'absolute', width:'100%'}}
     >
 

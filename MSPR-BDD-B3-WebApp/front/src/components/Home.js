@@ -8,15 +8,7 @@ import logo from '../assets/images/logo.png'
 const Home = () =>{
     return (
         <>
-            <div className="justify-content-center">
-                <div className="card text-center mx-auto" >
-                    <div className="card-body" >
-                        <img src={logo} alt="logo"/>
-                        <logo/>
-                    </div>
-                </div>
-            </div>
-            <div className="d-flex align-items-center justify-content-center" >
+            <div className="d-flex align-items-center justify-content-center position-relative" >
                 <div className="card  card-space" style={{width: "25%", heigh:"25%", margin:"5em" }}>
                     <img src={logo} className="card-img-top" alt="logo"/>
                         <div className="card-body">
