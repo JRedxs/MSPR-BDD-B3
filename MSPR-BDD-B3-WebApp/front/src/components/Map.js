@@ -1,6 +1,7 @@
 import React from "react";
 import { MapContainer, TileLayer, Marker,Popup} from 'react-leaflet';
 import '../styles/Map.css';
+import axios from "axios";
 // ,Marker, Popup 
 
 function Map (props){
@@ -14,7 +15,7 @@ function Map (props){
     //     const user = response.data.User;
     //     if (user.length > 0) {
     //       console.log("Plante récupérée",response);
-  
+
     //     } else {
     //       console.log("Plante non récupérée",response);
     //     }
