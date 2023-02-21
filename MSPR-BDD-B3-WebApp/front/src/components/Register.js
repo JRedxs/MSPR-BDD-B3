@@ -7,9 +7,9 @@ import '../styles/Register.css';
 const Register = () => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const [error, setError] = useState("");
-    const baseUrl = "http://127.0.0.1:8000"
+    const baseUrl = "http://127.0.0.1:8000";
 
-    const NAVIGATE = useNavigate()
+    const NAVIGATE = useNavigate();
 
     const [formData, setFormData] = useState({
         name: "",
@@ -51,7 +51,6 @@ const Register = () => {
             setError("");
         }
     };
-
     // const handleEmailChange = event => {
     //     const email = event.target.value;
     //     if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {

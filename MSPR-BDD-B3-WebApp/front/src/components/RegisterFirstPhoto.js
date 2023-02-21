@@ -1,15 +1,16 @@
 import React, { useState, useRef } from 'react';
 import Logo from '../assets/images/logo.png'
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
-const RegisterPhoto = () => {
+const RegisterFirstPhoto = () => {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const videoRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
-  // Attention conteneur
   const baseUrl = "http://127.0.0.1:8000";
   const [idPlante, setIdPlante] = useState(1);
+
+  const navigate = useNavigate();
 
   const handleStartCamera = () => {
     setIsCameraActive(true);
@@ -38,14 +39,12 @@ const RegisterPhoto = () => {
   };
 
   const handleUploadPhoto = () => {
-    async function postPhoto(){
-      await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc})
-      // need to become a real error managment
-        .then(res => console.log(res) )
-        .catch(err => console.error(err));
-    }
-    postPhoto();
+    
+    window.sessionStorage.setItem('photo', JSON.stringify(imageSrc));
+
     setImageSrc(null);
+    
+    navigate("/RegisterPlante");
   };
 
 
@@ -107,4 +106,4 @@ const RegisterPhoto = () => {
     </div>
   );
 };
-export default RegisterPhoto;
+export default RegisterFirstPhoto;
