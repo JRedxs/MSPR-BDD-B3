@@ -4,7 +4,23 @@ import '../styles/Map.css';
 // ,Marker, Popup 
 
 function Map (props){
+
     const positionLille = [50.629250, 3.057256]
+
+    const baseUrl = "http://127.0.0.1:8000"
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const response = await axios.get(`${baseUrl}/plant?=${email}&password=${password}`);
+        const user = response.data.User;
+        if (user.length > 0) {
+          console.log("Plante récupérée",response);
+  
+        } else {
+          console.log("Plante non récupérée",response);
+        }
+      };
+
     return (
 
         <>
@@ -30,9 +46,13 @@ function Map (props){
                             </Marker>
                             
                         ))} */}
-                        <Marker position={[50.6422677679524, 3.061675967234328]}>
+                        <Marker position={[50.6422677679524, 3.061675967234328]}
+                        eventHandlers={{click: (e) => {
+                            console.log('Marker clique', e)
+                        }}}>
                             <Popup>
-                                Localisation par défault <br /> Campus EPSI Lille.
+                                Localisation par défault <br /> <button style={{border: 'none'}}> <a style={{ textDecoration : 'none'}} href="/Garde">Cliquez ici</a>  </button>
+
                             </Popup>
                         </Marker>
                     </MapContainer>
