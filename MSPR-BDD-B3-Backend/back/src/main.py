@@ -70,7 +70,6 @@ async def add_user(person: Person):
     cursor.close()
     return {"message": "Ajout avec succès"}
 
-      
 
 @app.post("/image")
 async def register_image(image: NewImage):
