@@ -163,28 +163,31 @@ def get_info_plants():
             sql = "SELECT * FROM Garde"
             cursor.execute(sql)
             result = cursor.fetchall()
-            person_info = []
+            return result
 
-            for row in result:
-                person_info.append({"beginning": row[0],"finish": row[1],"name": row[2],"firstname": row[3],"email": row[4],"phone": row[5]})
-            if person_info:
-                return {"Person": person_info}
-            else:
-                raise HTTPException(status_code=400, detail="Incorrect")
+            # for row in result:
+            #     person_info.append({"beginning": row[0],"finish": row[1],"name": row[2],"firstname": row[3],"email": row[4],"phone": row[5]})
+            # if person_info:
+            #     return {"Person": person_info}
+            # else:
+            #     raise HTTPException(status_code=400, detail="Incorrect")
     except:
         raise HTTPException(status_code=500, detail="Database connection error !")
+
+
 
 @app.post("/plants_garde")
 def add_garde(garde: Garde):
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO Garde (beginning,finish) VALUES(%s,%s)"
-            cursor.execute(sql, (garde.beginning,garde.finish))
+            sql = "INSERT INTO Garde (id_garde,begining,finish,id_plante) VALUES(%s,%s,%s,%s)"
+            cursor.execute(sql, (garde.id_garde,garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
             connection.commit()
             cursor.close()
             return {"ok"}
-    except:
-        raise HTTPException(status_code=500, detail="Database connection error !")
+    except Exception as e :
+        print(e)
+        raise HTTPException(status_code=500, detail="Error !")
 
 
 @app.post("/plante")

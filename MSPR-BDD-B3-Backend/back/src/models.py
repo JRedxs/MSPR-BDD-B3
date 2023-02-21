@@ -41,7 +41,8 @@ class Plant(BaseModel):
 
 class Garde(BaseModel):
    id_garde: int
-   beginning: datetime
+   id_plante: int
+   begining: datetime
    finish: datetime
 
 class PlantToCreate(BaseModel):

@@ -40,10 +40,9 @@ CREATE TABLE Garde(
    id_garde INT NOT NULL AUTO_INCREMENT,
    begining DATE,
    finish DATE,
-   id_person INT NOT NULL,
+   id_person INT ,
    id_plante INT NOT NULL,
    PRIMARY KEY(id_garde),
-   FOREIGN KEY(id_person) REFERENCES Person(id_person),
    FOREIGN KEY(id_plante) REFERENCES Plante(id_plante)
 );
 
