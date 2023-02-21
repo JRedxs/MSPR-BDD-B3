@@ -38,8 +38,8 @@ CREATE TABLE Plante(
 
 CREATE TABLE Garde(
    id_garde INT NOT NULL AUTO_INCREMENT,
-   begining DATE,
-   finish DATE,
+   begining DATETIME,
+   finish DATETIME,
    id_person INT ,
    id_plante INT NOT NULL,
    PRIMARY KEY(id_garde),
