@@ -14,6 +14,9 @@ import RegisterFirstPhoto    from './components/RegisterFirstPhoto';
 import {Routes, Route}       from 'react-router-dom';
 import UserProfil from './components/UserProfil';
 import AddAdvice from './components/AdvicePlant';
+import Plante from './components/Plante';
+import SearchPlant from './components/SearchPlant';
+
 
 const App = () => {
   return (
@@ -33,7 +36,9 @@ const App = () => {
             <Route path="/Photo/:id" element={<RegisterPhoto/>}/>
             <Route path="/UserProfil" element={<UserProfil/>}/>
             <Route path="*" element={<NotFound/>}/>
-            <Route path="/AddAdvice" element={<AddAdvice/>}/>
+            <Route path="/AddAdvice/:id" element={<AddAdvice/>}/>
+            <Route path="/Plante/:id" element={<Plante/>}/>
+            <Route path="/SearchPlant" element={<SearchPlant/>}/>
         </Routes>
         <Footer/>
       </div>
