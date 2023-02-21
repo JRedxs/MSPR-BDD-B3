@@ -10,8 +10,14 @@ connection = MSQL
 app = FastAPI()
 
 origins = [
+    "http://localhost",
     "http://localhost:3000",
-    "http://localhost:8080",
+    "http://localhost:3001",
+    "http://localhost:8000",
+    "http://127.0.0.1",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    "http://127.0.0.1:8000",
 ]
 
 app.add_middleware(
@@ -158,19 +164,18 @@ def get_plants():
 def get_info_plants():
     try:
         with connection.cursor() as cursor:
-            #sql = "SELECT beginning,finish,name,firstname,email,phone from Garde INNER JOIN Person"
-            sql = "SELECT * FROM Garde"
+            sql = "SELECT begining,finish,name,firstname,email,phone from Garde INNER JOIN Person"
             cursor.execute(sql)
             result = cursor.fetchall()
-            return result
-
-            # for row in result:
-            #     person_info.append({"beginning": row[0],"finish": row[1],"name": row[2],"firstname": row[3],"email": row[4],"phone": row[5]})
-            # if person_info:
-            #     return {"Person": person_info}
-            # else:
-            #     raise HTTPException(status_code=400, detail="Incorrect")
-    except:
+            person_info = []
+            for row in result:
+                person_info.append({"begining": row[0],"finish": row[1],"name": row[2],"firstname": row[3],"email": row[4],"phone": row[5]})
+            if person_info:
+                return {"Person": person_info}
+            else:
+                raise HTTPException(status_code=400, detail="Incorrect")
+    except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail="Database connection error !")
 
 
