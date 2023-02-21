@@ -34,8 +34,8 @@ class Plant(BaseModel):
    road_second:str
    town:str
    postal_code:int
-   latitude:int
-   longitude:int
+   latitude:float
+   longitude:float
    id_person:int
    
 
@@ -52,5 +52,5 @@ class PlantToCreate(BaseModel):
         road_second : str
         town : str
         postal_code : int
-        latitude : int
-        longitude : int 
+        latitude : float
+        longitude : float 
