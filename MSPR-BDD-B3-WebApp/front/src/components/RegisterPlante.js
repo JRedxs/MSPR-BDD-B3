@@ -3,16 +3,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function RegisterPlante(){
-// Mini backlog des fonctionnalités à réalisées:
-// - utilisation du sessions storage DONE
-// - Vérification de l'existence de l'addresse (bonus)
-// - Determination des latitudes et longitudes -> Enzo et Rémi s'en occuppe
-// - Ouverture de la prise de photo DONE
-// - Sauvegarde de la photo en background avec retour ici DONE
-// - Appel Api pour upload la plante
-// - preparer un moyen de vider le local storage
 
-    const [name,setName] = useState( JSON.parse(window.sessionStorage.getItem('name')) || "Nom de la plante");
+    //à mettre en props quand on relira les pages entre elles
+    const  [person,setPerson] = useState( JSON.parse(window.sessionStorage.getItem('person')) || 1);
+    
+    const  [name,setName] = useState( JSON.parse(window.sessionStorage.getItem('name')) || "Nom de la plante");
     const  [number, setNumber] = useState( JSON.parse(window.sessionStorage.getItem('number')) || "Numero");
     const  [road, setRoad] = useState( JSON.parse(window.sessionStorage.getItem('road')) || "Rue");
     const  [complement, setComplement] = useState( JSON.parse(window.sessionStorage.getItem('complement')) || "Complement");
@@ -57,32 +52,31 @@ function RegisterPlante(){
     const openPhoto = () => {
         navigate("/FirstPhoto");
     }
-/*
-    const uploadPlante = () => {
-        async function postPhoto(){
-            await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc})
-            // need to become a real error managment
-              .then(res => console.log(res) )
-              .catch(err => console.error(err));
-          }
-          async function postPlante(){
-            await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc})
-            // need to become a real error managment
-              .then(postPhoto() )
-              .catch(err => console.error(err));
-          }
+
+    const uploadPlante = async () => {
+        // This function will be ugly and will work
+
+        let querry = "https://api-adresse.data.gouv.fr/search/?q=";
+        querry += number.toString() + "+";
+        querry += road.trim().replace(' ','+') + '+';
+        querry += town.trim().replace(' ','+') + '+';
+        querry += code.toString();
+        await axios.get(querry)
+            .then( async (apiAdresseResponse) => {
+                const coordinates = apiAdresseResponse.data.features[0].geometry.coordinates;
+                await axios.post(`${baseUrl}/plante`, {id_person: person, name: name, number: number, road_first: road, road_second: complement, town: town, postal_code: code, latitude: coordinates[1], longitude: coordinates[0]})
+                    .then( async (planteResponse) => {
+                        await axios.post(`${baseUrl}/image`, {id_plante: planteResponse.data.id_plante, data: photo})
+                        .then( () => {
+                            //navigate here
+                        })
+                    })
+            });
+
     }
-*/
+
     // Cette fonction va peut-être être activée ailleurs
-    const cleanSession = () => {
-        window.sessionStorage.removeItem("name");
-        window.sessionStorage.removeItem("number");
-        window.sessionStorage.removeItem("road");
-        window.sessionStorage.removeItem("complement");
-        window.sessionStorage.removeItem("town");
-        window.sessionStorage.removeItem("code");
-        window.sessionStorage.removeItem("photo");
-    }
+    
 
     return (
         <div> 
@@ -116,7 +110,7 @@ function RegisterPlante(){
                     <input type="button" value="Photo" onClick={openPhoto}/>
                 </div>
                 <div>
-                    <input type="button" value="Upload"/>
+                    <input type="button" value="Upload" onClick={uploadPlante}/>
                 </div>
             </form>
             { photo && (<img src={photo} alt="" />)}
