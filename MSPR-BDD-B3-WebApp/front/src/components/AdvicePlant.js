@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import {  useParams} from "react-router-dom";
 import axios from "axios";
 
 const AdvicePlant = () => {
   const [advice, setAdvice] = useState({ advice_title: "", advice: "", id_plante: "" });
+
+  let { id } = useParams();
+    //console.log(id)
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -13,9 +17,9 @@ const AdvicePlant = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8000/advices", advice);
+      const response = await axios.post(`http://127.0.0.1:8000/advices/${id}`, advice);
       console.log(response.data);
-      setAdvice({ advice_title: "", advice: "", id_plante: "" });
+      setAdvice({ advice_title: "", advice: ""});
     } catch (error) {
       console.error(error);
     }
@@ -37,13 +41,8 @@ const AdvicePlant = () => {
                                 <input name="advice" value={advice.advice} onChange={handleInputChange} placeholder="Conseil" />
                             </div>
                             <br />
-                            <div className="form-group">
-                                <label className="form-label" htmlFor="exampleInputConseil"><b> Plante : </b> </label>
-                                <input type="text" name="id_plante" value={advice.id_plante} onChange={handleInputChange} placeholder="Id de la plante" />
-                            </div>
-
                             
-
+                            <button type="submit">Ajouter</button>
                         </form>
                     </div>
                 </div>

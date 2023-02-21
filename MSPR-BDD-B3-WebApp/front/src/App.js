@@ -10,7 +10,9 @@ import RegisterPhoto         from './components/RegisterPhoto'
 import {Routes, Route}       from 'react-router-dom';
 import UserProfil from './components/UserProfil';
 import AddAdvice from './components/AdvicePlant';
-import ListOfAdvices from './components/ListOfAdvices';
+import Plante from './components/Plante';
+import SearchPlant from './components/SearchPlant';
+
 
 const App = () => {
   return (
@@ -24,8 +26,9 @@ const App = () => {
             <Route path="/DevGa" element={<RegisterPhoto/>}/>
             <Route path="/UserProfil" element={<UserProfil/>}/>
             <Route path="*" element={<NotFound/>}/>
-            <Route path="/AddAdvice" element={<AddAdvice/>}/>
-            <Route path="/ListOfAdvices" element={<ListOfAdvices/>}/>
+            <Route path="/AddAdvice/:id" element={<AddAdvice/>}/>
+            <Route path="/Plante/:id" element={<Plante/>}/>
+            <Route path="/SearchPlant" element={<SearchPlant/>}/>
         </Routes>
         <Footer/>
       </div>

@@ -127,13 +127,6 @@ const UserProfil = () => {
             </MDBCard>
 
             
-
-
-             
-                 
-                
-             
-            
           </MDBCol>
         </MDBRow>
       </MDBContainer>

@@ -14,12 +14,12 @@ const Header = () => {
                  <DropdownButton size='md' variant="success" id="dropdown-basic-button" title="Menu">  
                  <Dropdown.Item as={Link} to="/login">Login</Dropdown.Item>  
                  <Dropdown.Item as={Link} to="/UserProfil">Profil utilisateur</Dropdown.Item>  
+                 <Dropdown.Item as={Link} to="/Register">Se créer un compte</Dropdown.Item>
                  <Dropdown.Item as={Link} to="/Map">Garder une plante</Dropdown.Item>  
-                 <Dropdown.Item as={Link} to="/Register">Enregistrer une plante</Dropdown.Item>
-                 <Dropdown.Item as={Link} to="/DevGa">WIP</Dropdown.Item> 
-                 <Dropdown.Item as={Link} to="/AddAdvice">Ajouter un conseil</Dropdown.Item>
-                 <Dropdown.Item as={Link} to="/ListOfAdvices">Conseils</Dropdown.Item>      
-                 
+                 <Dropdown.Item as={Link} to="/DevGa">Photo</Dropdown.Item> 
+                 <Dropdown.Item as={Link} to="/SearchPlant">Rechercher une plante</Dropdown.Item>
+                 <Dropdown.Item as={Link} to="/Plante">Plantes</Dropdown.Item>     
+                 <Dropdown.Item as={Link} to="/AddAdvice">Ajouter un conseil</Dropdown.Item> 
                 </DropdownButton>  
                 </Container>  
              </div>  
