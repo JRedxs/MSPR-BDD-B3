@@ -14,4 +14,4 @@ return(
     </>
 )
 }
-export default PlanteGarde;
+export default Plante;

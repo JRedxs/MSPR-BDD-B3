@@ -4,7 +4,6 @@ import '../styles/Home.css'
 import logo from '../assets/images/logo.png'
 
 
-
 const Home = () =>{
     return (
         <>
@@ -29,10 +28,10 @@ const Home = () =>{
                         </div>
                         <p> 
                             <b>
-                            L’entreprise “A’rosa-je ” aide les particuliers à prendre soin de leurs plantes. <br></br><br></br>
-                            Fondée en 1984 elle a tout d’abord été composée d’une petite équipe de botaniste dans une seule ville et est maintenant composée de plus de 1500 botanistes répartis sur toute la France qui rendent service aux propriétaires de plantes de deux façons :<br></br><br></br>
-                            –  En allant garder leurs plantes lorsque les propriétaires sont absents <br></br><br></br>
-                            –  En prodiguant des conseils d’entretien afin que les propriétaires s’occupent de mieux en mieux de leurs plantes.
+                                L’entreprise “A’rosa-je ” aide les particuliers à prendre soin de leurs plantes. <br></br><br></br>
+                                Fondée en 1984 elle a tout d’abord été composée d’une petite équipe de botaniste dans une seule ville et est maintenant composée de plus de 1500 botanistes répartis sur toute la France qui rendent service aux propriétaires de plantes de deux façons :<br></br><br></br>
+                                –  En allant garder leurs plantes lorsque les propriétaires sont absents <br></br><br></br>
+                                –  En prodiguant des conseils d’entretien afin que les propriétaires s’occupent de mieux en mieux de leurs plantes.
                             </b>
                         </p>
                     </div>

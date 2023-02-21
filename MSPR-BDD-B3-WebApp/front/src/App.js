@@ -8,6 +8,7 @@ import Header                from './components/common/Header';
 import Footer                from './components/common/Footer';  
 import RegisterPhoto         from './components/RegisterPhoto'
 import Garde                 from './components/Garde';
+import ResetPassword         from './components/ResetPassword';
 import {Routes, Route}       from 'react-router-dom';
 import UserProfil from './components/UserProfil';
 import AddAdvice from './components/AdvicePlant';
@@ -19,6 +20,7 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<Home/>}/>
             <Route path="/login" element={<LoginPage/>} />
+            <Route path='/changePass' element={<ResetPassword/>}/>
             <Route path="/Map" element={<Map/>} />
             <Route path="/Register" element={<Register/>}/>
             <Route path="/DevGa" element={<RegisterPhoto/>}/>
