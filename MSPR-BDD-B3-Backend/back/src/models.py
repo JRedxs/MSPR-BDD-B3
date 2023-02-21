@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class Person(BaseModel):
         name: str
@@ -37,3 +38,8 @@ class Plant(BaseModel):
    longitude:int
    id_person:int
    
+
+class Garde(BaseModel):
+   id_garde: int
+   beginning: datetime
+   finish: datetime
