@@ -185,3 +185,14 @@ def add_garde(garde: Garde):
             return {"ok"}
     except:
         raise HTTPException(status_code=500, detail="Database connection error !")
+
+
+@app.post("/plante")
+async def register_plante(plante : PlantToCreate):
+    cursor = connection.cursor()
+    sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+    val = (plante.id_person, plante.name, plante.number, plante.road_first, plante.road_second, plante.town, plante.latitude, plante.longitude)
+    cursor.execute(sql, val)
+    connection.commit()
+    cursor.close()
+    return {"message": "Plante enregistrée"}

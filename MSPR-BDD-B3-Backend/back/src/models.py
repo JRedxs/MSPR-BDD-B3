@@ -43,3 +43,14 @@ class Garde(BaseModel):
    id_garde: int
    beginning: datetime
    finish: datetime
+
+class PlantToCreate(BaseModel):
+        id_person : int
+        name : str
+        number: int
+        road_first : str
+        road_second : str
+        town : str
+        postal_code : int
+        latitude : int
+        longitude : int 
