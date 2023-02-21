@@ -11,7 +11,7 @@ import Garde                 from './components/Garde';
 import RegisterPlante        from './components/RegisterPlante';
 import RegisterFirstPhoto    from './components/RegisterFirstPhoto';
 import {Routes, Route}       from 'react-router-dom';
-//import UserProfil from './components/UserProfil';
+import UserProfil from './components/UserProfil';
 import AddAdvice from './components/AdvicePlant';
 
 const App = () => {
@@ -29,12 +29,12 @@ const App = () => {
             <Route path="/RegisterPlante" element={<RegisterPlante/>}/>
             <Route path="/FirstPhoto" element={<RegisterFirstPhoto/>}/>
             <Route path="/Photo/:id" element={<RegisterPhoto/>}/>
-            
+            <Route path="/UserProfil" element={<UserProfil/>}/>
             <Route path="*" element={<NotFound/>}/>
             <Route path="/AddAdvice" element={<AddAdvice/>}/>
         </Routes>
         <Footer/>
       </div>
-  );//<Route path="/UserProfil" element={<UserProfil/>}/>
+  );//
 }
 export default App;

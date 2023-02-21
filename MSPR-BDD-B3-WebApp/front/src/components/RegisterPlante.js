@@ -79,41 +79,43 @@ function RegisterPlante(){
     
 
     return (
-        <div> 
-            <h1>Enregistrer une Plante</h1>
-            <form>
-                <div>
-                    <label>Nom de la plante :</label>
-                    <input type="text" value={name} onChange={changeName }/>
-                </div>
-                <div>
-                    <label>Numero :</label>
-                    <input type="text" value={number} onChange={changeNumber }/>
-                </div>
-                <div>
-                    <label>Rue :</label>
-                    <input type="text" value={road} onChange={changeRoad }/>
-                </div>
-                <div>
-                    <label>Complément d'Adresse :</label>
-                    <input type="text" value={complement} onChange={changeComplement }/>
-                </div>
-                <div>
-                    <label>Ville :</label>
-                    <input type="text" value={town} onChange={changeTown }/>
-                </div>
-                <div>
-                    <label>Code Postal :</label>
-                    <input type="text" value={code} onChange={changeCode }/>
-                </div>
-                <div>
-                    <input type="button" value="Photo" onClick={openPhoto}/>
-                </div>
-                <div>
-                    <input type="button" value="Upload" onClick={uploadPlante}/>
-                </div>
-            </form>
-            { photo && (<img src={photo} alt="" />)}
+        <div className="d-flex align-items-center justify-content-center mx-auto">
+            <div className="card card-register card-color d-flex align-items-center justify-content-center" style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
+                <h1>Enregistrer une Plante</h1>
+                <form>
+                    <div>
+                        <label className="form_label">Nom de la plante :</label>
+                        <input className="form-control m-2 w-auto" type="text" value={name} onChange={changeName }/>
+                    </div>
+                    <div>
+                        <label className="form_label">Numero :</label>
+                        <input className="form-control m-2 w-auto" type="text" value={number} onChange={changeNumber }/>
+                    </div>
+                    <div>
+                        <label className="form_label">Rue :</label>
+                        <input className="form-control m-2 w-auto" type="text" value={road} onChange={changeRoad }/>
+                    </div>
+                    <div>
+                        <label className="form_label">Complément d'Adresse :</label>
+                        <input className="form-control m-2 w-auto" type="text" value={complement} onChange={changeComplement }/>
+                    </div>
+                    <div> 
+                        <label className="form_label">Ville :</label>
+                        <input className="form-control m-2 w-auto" type="text" value={town} onChange={changeTown }/>
+                    </div>
+                    <div>
+                        <label className="form_label">Code Postal :</label>
+                        <input className="form-control m-2 w-auto" type="text" value={code} onChange={changeCode }/>
+                    </div>
+                    <div>
+                        <input className="btn form-button btn-dark " type="button" value="Photo" onClick={openPhoto}/>
+                    </div>
+                    <div>
+                    { photo && (<input className="btn form-button btn-dark " type="button" value="Upload" onClick={uploadPlante}/>)}
+                    </div>
+                </form>
+
+            </div>
         </div>
     );
 };
