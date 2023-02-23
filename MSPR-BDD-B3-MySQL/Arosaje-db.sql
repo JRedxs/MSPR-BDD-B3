@@ -13,8 +13,8 @@ CREATE TABLE Person(
    pwd VARCHAR(256),
    email VARCHAR(50),
    phone VARCHAR(20),
-   latitude INT,
-   longitude INT,
+   latitude DOUBLE,
+   longitude DOUBLE,
    id_role INT NOT NULL,
    PRIMARY KEY(id_person),
    UNIQUE(email),
@@ -29,8 +29,8 @@ CREATE TABLE Plante(
    road_second VARCHAR(200),
    town VARCHAR(100),
    postal_code INT,
-   latitude INT,
-   longitude INT,
+   latitude DOUBLE,
+   longitude DOUBLE,
    id_person INT NOT NULL,
    PRIMARY KEY(id_plante),
    FOREIGN KEY(id_person) REFERENCES Person(id_person)
@@ -38,12 +38,11 @@ CREATE TABLE Plante(
 
 CREATE TABLE Garde(
    id_garde INT NOT NULL AUTO_INCREMENT,
-   begining DATE,
-   finish DATE,
-   id_person INT NOT NULL,
+   begining DATETIME,
+   finish DATETIME,
+   id_person INT ,
    id_plante INT NOT NULL,
    PRIMARY KEY(id_garde),
-   FOREIGN KEY(id_person) REFERENCES Person(id_person),
    FOREIGN KEY(id_plante) REFERENCES Plante(id_plante)
 );
 

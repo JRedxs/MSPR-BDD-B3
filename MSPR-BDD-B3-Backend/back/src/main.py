@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from models import Person,NewImage,DBImage,Advice
+from models import *
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -10,8 +10,14 @@ connection = MSQL
 app = FastAPI()
 
 origins = [
+    "http://localhost",
     "http://localhost:3000",
-    "http://localhost:8080",
+    "http://localhost:3001",
+    "http://localhost:8000",
+    "http://127.0.0.1",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    "http://127.0.0.1:8000",
 ]
 
 app.add_middleware(
@@ -70,7 +76,6 @@ async def add_user(person: Person):
     cursor.close()
     return {"message": "Ajout avec succès"}
 
-      
 
 @app.post("/image")
 async def register_image(image: NewImage):
@@ -134,3 +139,72 @@ def get_advices():
                 raise HTTPException(status_code=400, detail="Erreur : ")
     except:
         raise HTTPException(status_code=500, detail="Database connection error !")
+    
+
+@app.get("/plant")
+def get_plants():
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM Plante"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            plants = []
+
+            for row in result:
+                plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9]})
+            if plants:
+                return {"Plants": plants}
+            else:
+                raise HTTPException(status_code=400, detail="Incorrect email or password")
+    except:
+        raise HTTPException(status_code=500, detail="Database connection error !")
+
+
+@app.get("/plants")
+def get_info_plants():
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT begining,finish,name,firstname,email,phone from Garde INNER JOIN Person"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            person_info = []
+            for row in result:
+                person_info.append({"begining": row[0],"finish": row[1],"name": row[2],"firstname": row[3],"email": row[4],"phone": row[5]})
+            if person_info:
+                return {"Person": person_info}
+            else:
+                raise HTTPException(status_code=400, detail="Incorrect")
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Database connection error !")
+
+
+
+@app.post("/plants_garde")
+def add_garde(garde: Garde):
+    try:
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO Garde (id_garde,begining,finish,id_plante) VALUES(%s,%s,%s,%s)"
+            cursor.execute(sql, (garde.id_garde,garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
+            connection.commit()
+            cursor.close()
+            return {"ok"}
+    except Exception as e :
+        print(e)
+        raise HTTPException(status_code=500, detail="Error !")
+
+
+@app.post("/plante")
+async def register_plante(plante : PlantToCreate):
+    cursor = connection.cursor()
+    sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+    val = (plante.id_person, plante.name, plante.number, plante.road_first, plante.road_second, plante.town, plante.postal_code, plante.latitude, plante.longitude)
+    cursor.execute(sql, val)
+
+    sql = "select id_plante from Plante order by 1 Desc limit 1;"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+
+    connection.commit()
+    cursor.close()
+    return {"message": "Plante enregistrée", "id_plante": result[0]}

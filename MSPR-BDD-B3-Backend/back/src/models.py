@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class Person(BaseModel):
         name: str
@@ -24,3 +25,33 @@ class Advice(BaseModel):
     advice_title: str
     advice: str
     id_plante: int
+
+class Plant(BaseModel):
+   id_plante:int
+   name:str
+   number:int
+   road_first:str
+   road_second:str
+   town:str
+   postal_code:int
+   latitude:float
+   longitude:float
+   id_person:int
+   
+
+class Garde(BaseModel):
+   id_garde: int
+   id_plante: int
+   begining: datetime
+   finish: datetime
+
+class PlantToCreate(BaseModel):
+        id_person : int
+        name : str
+        number: int
+        road_first : str
+        road_second : str
+        town : str
+        postal_code : int
+        latitude : float
+        longitude : float 
