@@ -7,24 +7,23 @@ import '../styles/Plantes.css';
 
 function Plante(props) {
     const [plante, setPlante] = useState(null);
-    let { id } = useParams();
-    console.log(id)
-    const url = `http://127.0.0.1:8000/plant/${id}`;
+    let { id_plante } = useParams();
+    console.log("id plante " ,id_plante)
+    const url = `http://127.0.0.1:8000/plant/${id_plante}`;
     
 
     const navigate = useNavigate();
-
-    const openAdvice = (id) => () => {
-        navigate(`/AddAdvice/${id}`);
+    const openAdvice = (id_plante) => () => {
+        navigate(`/AddAdvice/${id_plante}`);
     }
 
     useEffect(() => {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                setPlante(data.Plantes[0]);
+                setPlante(data.Plante[0]);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log(error));   
     }, [url]);
 
     if (!plante) {
