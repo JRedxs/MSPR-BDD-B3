@@ -7,13 +7,14 @@ import { useNavigate } from "react-router-dom";
 function SearchPlant() {
     const [plants, setPlants] = useState([]);
     const navigate = useNavigate();
+    const url = `http://127.0.0.1:8000/plant/`;
 
-    const openPlante = (id) => () => {
-        navigate(`/Plante/${id}`);
+    const openPlante = (id_plante) => () => {
+        navigate(`/Plante/${id_plante}`);
     }
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/plant")
+        axios.get(url)
             .then(response => {
                 setPlants(response.data.Plants);
             })
