@@ -17,7 +17,7 @@ const AdvicePlant = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/advices/${id}`, advice);
+      const response = await axios.post(process.env.REACT_APP_API_URL + `/advices/${id}`, advice);
       console.log(response.data);
       setAdvice({ advice_title: "", advice: ""});
     } catch (error) {

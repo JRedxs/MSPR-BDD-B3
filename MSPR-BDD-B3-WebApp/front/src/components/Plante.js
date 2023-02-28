@@ -9,7 +9,7 @@ function Plante(props) {
     const [plante, setPlante] = useState(null);
     let { id_plante } = useParams();
     console.log("id plante " ,id_plante)
-    const url = `http://127.0.0.1:8000/plant/${id_plante}`;
+    const url = process.env.REACT_APP_API_URL +  `/plant/${id_plante}`;
     
 
     const navigate = useNavigate();
