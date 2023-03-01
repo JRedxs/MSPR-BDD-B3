@@ -1,11 +1,17 @@
-import React from "react";
+import React , {useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 
 
-
 const Garde = () => {
+    
+    const [infos, setInfos] = useState({});
 
-
+    useEffect(() => {
+    // récupérer les infos depuis le localStorage
+    const gardeInfo = JSON.parse(localStorage.getItem('user'));
+    setInfos(gardeInfo);
+    // console.log(infos[4]["begining"])
+    }, []);
 
     return (
         <>
@@ -16,7 +22,7 @@ const Garde = () => {
             <h1 style={{ textAlign: 'center' }}>
                 Informations de la plante :
             </h1>
-                <div className="card card-login mx-auto" style={{ width: "27%", borderRadius: "50px", border: "1px solid black" }}>
+                <div className="card card-login mx-auto" style={{ width: "27%", borderRadius: "50px", border: "1px solid black"}}>
                     <div className="card-body mx-auto">
                         <div className="d-flex justify-content-center margin-login-card">
                             <form className="mx-auto" style={{ width: "100%" }}>
@@ -24,21 +30,22 @@ const Garde = () => {
 
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label" htmlFor="date_garde"> <b>Date de la garde : </b> </label>
-                                    <input type="date" className="form-control" id="date" name="date"/>
+                                    <label className="form-label" htmlFor="begining"> <b>Date de la garde : </b> </label>
+                                    <p>Début : 23 Février 2023 16h00 
+                                       Fin : 24 Février 2023 20h00
+                                    </p>
                                 </div>
-                                <br />
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="nom_prenom"><b> Nom & Prénom </b> </label>
-                                    <p>Nom & Prénom à écrire</p>
+                                    <p>Pierre Dubois</p>
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="email"><b> Email : </b> </label>
-                                    <p>Email à écrire</p>
+                                    <p>pierre.dubois@gmail.com</p>
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label" htmlFor="phone_number"><b> Téléphone : </b> </label>
-                                    <p>Téléphone à écrire</p>
+                                    <label className="form-label" htmlFor="phone"><b> Téléphone : </b> </label>
+                                    <p>0600000000</p>
                                 </div>
                             </form>
                         </div>
@@ -47,5 +54,4 @@ const Garde = () => {
         </>
     )
 }
-
 export default Garde
