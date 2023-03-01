@@ -15,7 +15,7 @@ function RegisterPlante(){
     const  [code, setCode] = useState( JSON.parse(window.sessionStorage.getItem('code')) || "Code Postal");
     const  [photo, setPhoto] = useState( JSON.parse(window.sessionStorage.getItem('photo')) || null);
     
-    const baseUrl = "http://127.0.0.1:8005";
+    const baseUrl = process.env.REACT_APP_API_URL;
     
     const navigate = useNavigate();
 

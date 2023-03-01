@@ -8,19 +8,7 @@ function Map(props) {
 
   const [plants, setPlants] = useState([]); // initialise l'état "plants" à un tableau vide
   const positionLille = [50.629250, 3.057256]; // position par défaut pour centrer la carte
-  const baseUrl = "http://127.0.0.1:8000"; // URL de base pour les appels API
-  const NAVIGATE = useNavigate();
-
-
-  const handleSubmit = async (event) => {
-      const response = await axios.get(`${baseUrl}/plants`);
-      const user = response.data.Person;
-      localStorage.setItem('user', JSON.stringify(user));
-      console.log(user)
-      
-
-  }
-  
+  const baseUrl = process.env.REACT_APP_API_URL; // URL de base pour les appels API
 
   useEffect(() => { // Hook d'effet pour effectuer des appels API au chargement du composant
     const fetchData = async () => { // fonction asynchrone pour effectuer l'appel API

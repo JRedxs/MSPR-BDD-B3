@@ -11,7 +11,7 @@ const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-    const baseUrl = "http://127.0.0.1:8000";
+    const baseUrl = process.env.REACT_APP_API_URL;
     const payload = { currentPassword, newPassword}
     const NAVIGATE = useNavigate()
 
