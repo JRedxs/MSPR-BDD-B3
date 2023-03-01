@@ -43,8 +43,8 @@ function Map(props) {
                     {plant.name} <br/>
                     <button style={{borderRadius: '10px', backgroundColor: 'green', color: 'white', borderColor: 'none'}} 
                       onClick={() => {
-                        handleSubmit();
-                        NAVIGATE("/Garde");
+                        // handleSubmit();
+                        // NAVIGATE("/Garde");
                       }}>Cliquez ici!</button>
               </Popup>
               </Marker>
