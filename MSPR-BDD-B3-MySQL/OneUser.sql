@@ -1,0 +1,2 @@
+INSERT INTO Role Values(1,'botaniste'),(2,'user'),(3,'Hybride');
+Insert into Person(name, firstname, pwd, email, id_role) values ('Arnaud','Jean-Pierre','the mighty azerty', 'jean-p.arnaud@arosa-je.fr', 2);

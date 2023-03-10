@@ -16,7 +16,7 @@ const UserProfil = () => {
     const [users, setUsers] = useState([]);
   
     const requestAxios = () => {
-      axios.get('http://127.0.0.1:8000/users')
+      axios.get(process.env.REACT_APP_API_URL + '/users')
         .then(response => {
           setUsers(response.data.Person)
           console.log(response.data.Person)

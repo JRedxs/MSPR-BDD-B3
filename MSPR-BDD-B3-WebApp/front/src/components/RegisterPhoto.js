@@ -7,8 +7,8 @@ const RegisterPhoto = () => {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const videoRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
-  // Attention conteneur
-  const baseUrl = "http://127.0.0.1:8000";
+
+  const baseUrl = process.env.REACT_APP_API_URL;
   const [idPlante, setIdPlante] = useState(1);
 
   const handleStartCamera = () => {

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function SearchPlant() {
     const [plants, setPlants] = useState([]);
     const navigate = useNavigate();
-    const url = `http://127.0.0.1:8000/plant/`;
+    const url = process.env.REACT_APP_API_URL + `/plant/`;
 
     const openPlante = (id_plante) => () => {
         navigate(`/Plante/${id_plante}`);

@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import axios from "axios";
-import '../styles/Map.css';
+import { useNavigate } from "react-router-dom";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'; // import de react-leaflet pour afficher la carte
+import axios from "axios"; // import de axios pour faire des appels API
+import '../styles/Map.css'; // import de la feuille de style CSS
 
 function Map(props) {
 
-  const [plants, setPlants] = useState([]);
-  const positionLille = [50.629250, 3.057256];
-  const baseUrl = "http://127.0.0.1:8000";
+  const [plants, setPlants] = useState([]); // initialise l'état "plants" à un tableau vide
+  const positionLille = [50.629250, 3.057256]; // position par défaut pour centrer la carte
+  const baseUrl = process.env.REACT_APP_API_URL; // URL de base pour les appels API
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(() => { // Hook d'effet pour effectuer des appels API au chargement du composant
+    const fetchData = async () => { // fonction asynchrone pour effectuer l'appel API
       try {
-        const response = await axios.get(`${baseUrl}/plant`);
-        const plantsData = response.data.Plants;
-        setPlants(plantsData);
-        console.log(plantsData)
+        const response_plant = await axios.get(`${baseUrl}/plant`); // fait un appel GET à l'URL /plant
+        const plantsData = response_plant.data.Plants; // extrait les données "Plants" de la réponse
+        setPlants(plantsData); // met à jour l'état "plants" avec les données extraites
+        console.log(plantsData) // affiche les données dans la console
       } catch (error) {
-        console.error(error);
+        console.error(error); // affiche l'erreur dans la console en cas de problème
       }
     };
-    fetchData();
-  }, []);
+    fetchData(); // appelle la fonction fetchData()
+  }, []); // les crochets vides indiquent que le hook d'effet ne doit être appelé qu'une fois au chargement du composant
 
   return (
     <>
@@ -30,16 +31,22 @@ function Map(props) {
       </h1>
       <div className="map-wrap">
         <div className="card card-map">
-          <MapContainer center={positionLille} zoom={6} scrollWheelZoom={false}>
+          <MapContainer center={positionLille} zoom={6} scrollWheelZoom={false}> 
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" // définit l'URL pour les tuiles de la carte
             />
-            {plants.map(plant => (
+
+            {plants.map(plant => ( // boucle à travers les plantes pour afficher des marqueurs sur la carte
               <Marker key={plant.id_plante} position={[plant.latitude, plant.longitude]}>
                 <Popup>
-                  {plant.name}
-                </Popup>
+                    {plant.name} <br/>
+                    <button style={{borderRadius: '10px', backgroundColor: 'green', color: 'white', borderColor: 'none'}} 
+                      onClick={() => {
+                        // handleSubmit();
+                        // NAVIGATE("/Garde");
+                      }}>Cliquez ici!</button>
+              </Popup>
               </Marker>
             ))}
           </MapContainer>
