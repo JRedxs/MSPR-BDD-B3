@@ -18,6 +18,14 @@ function Plante(props) {
         navigate(`/AddAdvice/${id_plante}`);
     }
 
+    const openPhoto = (id_plante) => () => {
+        navigate(`/Photo/${id_plante}`);
+    }
+
+    const openGarde = (id_plante) => () => {
+        navigate(`/Garde/${id_plante}`);
+    }
+
     useEffect(() => {
         fetch(url)
             .then((response) => response.json())
@@ -49,6 +57,8 @@ function Plante(props) {
                         </Card.Body>
                         <Card.Body>
                             <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openAdvice(plante.id_plante)}>Ajouter un conseil d'entretien</Card.Link>
+                            <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openPhoto(plante.id_plante)}>Enregistrer une photo</Card.Link>
+                            <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openGarde(plante.id_plante)}>Enregistrer une demande de garde</Card.Link>
                         </Card.Body>
                     </ListGroup>
                 </Card>

@@ -12,6 +12,9 @@ function SearchPlant() {
     const openPlante = (id_plante) => () => {
         navigate(`/Plante/${id_plante}`);
     }
+    const openPlanteRegister = () => () => {
+        navigate(`/RegisterPlante`);
+    }
 
     useEffect(() => {
         axios.get(url)
@@ -25,6 +28,7 @@ function SearchPlant() {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openPlanteRegister()}>Enregistrer une plante</Card.Link>
             {plants.map(plant => (
                 <div key={plant.id_plante}>
 
@@ -45,7 +49,10 @@ function SearchPlant() {
                                 <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openPlante(plant.id_plante)}>Selectionner cette plante</Card.Link>
                             </Card.Body>
 
+                            
+
                         </ListGroup>
+                        
                     </Card>
 
                 </div>
