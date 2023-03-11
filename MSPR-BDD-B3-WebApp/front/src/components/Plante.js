@@ -7,7 +7,8 @@ import '../styles/Plantes.css';
 
 function Plante(props) {
     const [plante, setPlante] = useState(null);
-    let { id_plante } = useParams();
+    let {id_plante} = useParams();
+
     console.log("id plante " ,id_plante)
     const url = process.env.REACT_APP_API_URL +  `/plant/${id_plante}`;
     
@@ -23,7 +24,7 @@ function Plante(props) {
             .then((data) => {
                 setPlante(data.Plante[0]);
             })
-            .catch((error) => console.log(error));   
+            .catch((error) => console.log(error)); 
     }, [url]);
 
     if (!plante) {
@@ -32,7 +33,7 @@ function Plante(props) {
 
     return (
         <>
-            <div class="d-flex flex-row ">
+            <div className="d-flex flex-row ">
                 <Card style={{ width: '18rem' }}>
                     <Card.Img variant="top" src="https://img.ltwebstatic.com/images3_pi/2021/08/15/1629033033ff815394c0d95f7b674a1348b7660bb9.webp" />
                     <Card.Body>
@@ -40,8 +41,8 @@ function Plante(props) {
                     </Card.Body>
                     <ListGroup className="list-group-flush">
                         <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Entretien</h6></ListGroup.Item>
-                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Titre du conseil</h6></ListGroup.Item>
-                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Conseils </h6></ListGroup.Item>
+                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Titre du conseil : {plante.advice_title} </h6></ListGroup.Item>
+                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Conseils : {plante.advice} </h6></ListGroup.Item>
                         <Card.Body>
 
 
