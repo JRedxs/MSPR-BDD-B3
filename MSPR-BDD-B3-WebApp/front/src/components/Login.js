@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../styles/Login.css';
 import logo from '../assets/images/logo.png'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
@@ -12,6 +12,7 @@ const LoginPage = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
     
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -19,6 +20,7 @@ const LoginPage = () => {
       const user = response.data.User;
       if (user.length > 0) {
         console.log("Utilisateur inscrit dans la base de données",response);
+        navigate(`/SearchPlant`);
 
       } else {
         console.log("Utilisateur inexistant dans la base de données",response);
