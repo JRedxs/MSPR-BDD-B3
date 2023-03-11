@@ -1,5 +1,4 @@
 # MSPR-BDD-B3
-
 # Projet de Mise en situation professionnel reconstituée:
     - Equipe de 4 personnes :  - Rémi RYCKEBUSCH
                                - Gaêtan TIBERGHIEN
@@ -7,15 +6,11 @@
                                - Enzo VANDEVELDE
                                
 # Contexte
-
 La société A’rosa-je a besoin d’une application web pour rendre son service disponible en ligne.
 Son service possède deux composants : la mise en relation de clients afin qu’ils gardent les plantes des uns et des autres durant leurs absences ainsi que la prédication de conseils d'experts botanistes sur l'entretien de plantes.
-
 # Installation
-
 ## Pré-requis
 Un ou trois serveurs équipés du docker daemon.
-
 ## Installation Rapide : architecture uni-serveur
 *Ce guide est prévu pour tout type d'informaticien*
 
@@ -31,7 +26,6 @@ Activez la stack docker
 ```
 docker-compose up -d
 ```
-
 ## Installation Personnalisée : archtecture tri-serveurs
 *Ce guide est prévu pour un informaticien Opérateurs*
 
@@ -52,3 +46,28 @@ Enregistrez les trois images dans votre gestionnaire d'image
 
 Deployez les conteneurs sur vos serveurs, un par serveur
 
+# Fonctionnalitées
+## Authentification des utilisateurs
+Login des clients et des botanistes
+## Enregistrement de nouveau client
+Formulaire d'inscription
+## Enregistrement de plantesgraphie
+Formulaire et première photographie
+## Parcourt des plantes
+Cartes informatives et dernières photographies
+## Consultation d'une plantes
+Galerie des photographies et carte informative
+## Enregistrement de photographie
+Prise de nouvelle photographie pour une plante donnée
+## Enregistrement de conseil
+Ajout d'un conseil informatif à une photographie
+## Enregistrement de garde
+Formulaire
+## Parcourt des gardes possible
+Carte du monde avec marqueurs
+## Acceptation d'une garde
+Carte informative
+## Consultation du profil utilisateur
+Carte informative
+## Changement du mot de passe
+Formulaire
