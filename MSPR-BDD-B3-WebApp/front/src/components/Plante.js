@@ -9,8 +9,8 @@ function Plante(props) {
     const [plante, setPlante] = useState(null);
     let {id_plante} = useParams();
 
-    console.log("id plante " ,id_plante)
-    const url = process.env.REACT_APP_API_URL +  `/plant/${id_plante}`;
+
+    const url = process.env.REACT_APP_API_URL +  `/plantandgallery/${id_plante}`;
     
 
     const navigate = useNavigate();
@@ -30,10 +30,42 @@ function Plante(props) {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                setPlante(data.Plante[0]);
+                console.log(data.Plante);
+                setPlante(data.Plante);
             })
             .catch((error) => console.log(error)); 
     }, [url]);
+
+    const jsxPhoto = () => {
+        let firstLoop = true;
+
+        const jsx = [];
+        for (const photo in plante){
+            if (firstLoop){
+                firstLoop = false;
+                continue;
+            }
+            if (photo.advice == null || photo.advice_title == null)
+            {
+                console.log(plante[photo]);
+                jsx.push(
+                    <img key={plante[photo].id_photo} src={plante[photo].image_data} />
+                );
+            }
+            else {
+                jsx.push(
+                    <div key={plante[photo].id_photo}>
+                        <h2>{plante[photo].advice_title}</h2>
+                        <p>{plante[photo].advice}</p>
+                    </div>
+                );
+            }
+            
+        }
+        console.log(jsx);
+        return jsx;
+    };
+
 
     if (!plante) {
         return <div>Aucune donnée...</div>;
@@ -42,27 +74,9 @@ function Plante(props) {
     return (
         <>
             <div className="d-flex flex-row ">
-                <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src="https://img.ltwebstatic.com/images3_pi/2021/08/15/1629033033ff815394c0d95f7b674a1348b7660bb9.webp" />
-                    <Card.Body>
-                        <Card.Title style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h2>{plante.name}</h2></Card.Title>
-                    </Card.Body>
-                    <ListGroup className="list-group-flush">
-                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Entretien</h6></ListGroup.Item>
-                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Titre du conseil : {plante.advice_title} </h6></ListGroup.Item>
-                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Conseils : {plante.advice} </h6></ListGroup.Item>
-                        <Card.Body>
-
-
-                        </Card.Body>
-                        <Card.Body>
-                            <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openAdvice(plante.id_plante)}>Ajouter un conseil d'entretien</Card.Link>
-                            <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openPhoto(plante.id_plante)}>Enregistrer une photo</Card.Link>
-                            <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openGarde(plante.id_plante)}>Enregistrer une demande de garde</Card.Link>
-                        </Card.Body>
-                    </ListGroup>
-                </Card>
+                <h1>{plante[0].name}</h1>
             </div>
+            {jsxPhoto()}
         </>
     );
 }

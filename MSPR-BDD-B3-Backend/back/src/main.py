@@ -288,7 +288,7 @@ def get_all_gardes():
 def get_plant_photos_by_id(id_plante: int):
     try :
         with connection.cursor() as cursor:
-            sql = "SELECT name, id_person, image_data, advice_title, advice FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
+            sql = "SELECT name, id_person, image_data, advice_title, advice, id_photo FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
             cursor.execute(sql, (id_plante,))
             result = cursor.fetchall()
             plants = []
@@ -297,7 +297,7 @@ def get_plant_photos_by_id(id_plante: int):
                 if firstLoop:
                     plants.append({"name": row[0], "id_person": row[1]})
                     firstLoop = False
-                plants.append({"image_data": row[2], "advice_title": row[3], "advice": row[4]})
+                plants.append({"id_photo":row[5],"image_data": row[2], "advice_title": row[3], "advice": row[4]})
             return {"Plante": plants}
     except:
             return {"Plante inexistante"}
