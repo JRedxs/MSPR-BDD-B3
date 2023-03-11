@@ -51,15 +51,6 @@ const Register = () => {
             setError("");
         }
     };
-    // const handleEmailChange = event => {
-    //     const email = event.target.value;
-    //     if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-    //         setError("L'adresse email est incorrecte.");
-    //     } else {
-    //         setFormData({ ...formData, email });
-    //         setError("");
-    //     }
-    // };
 
     return (
         <div className="d-flex align-items-center justify-content-center mx-auto">

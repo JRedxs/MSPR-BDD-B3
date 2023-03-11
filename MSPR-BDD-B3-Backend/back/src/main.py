@@ -159,17 +159,40 @@ def get_plants():
     except:
         raise HTTPException(status_code=500, detail="Database connection error !")
 
-
 @app.get("/plants")
 def get_info_plants():
     try:
         with connection.cursor() as cursor:
-            sql = "SELECT begining,finish,name,firstname,email,phone from Garde INNER JOIN Person"
+            sql = """
+            SELECT Garde.begining, Garde.finish,Person.name,Person.firstname, Person.email, 
+            Person.phone, Person.id_person, Photo.image_data, Garde.id_plante, Garde.id_garde,Plante.latitude,Plante.longitude,
+            Plante.town,Plante.name
+            FROM Garde
+            INNER JOIN Plante ON Garde.id_plante = Plante.id_plante
+            INNER JOIN Person ON Plante.id_person = Person.id_person
+            LEFT JOIN Photo ON Plante.id_plante = Photo.id_plante
+            WHERE Garde.id_person is NULL;
+            """
             cursor.execute(sql)
             result = cursor.fetchall()
             person_info = []
             for row in result:
-                person_info.append({"begining": row[0],"finish": row[1],"name": row[2],"firstname": row[3],"email": row[4],"phone": row[5]})
+                person_info.append({
+                    "begining": row[0],
+                    "finish": row[1],
+                    "name": row[2],
+                    "firstname": row[3],
+                    "email": row[4],
+                    "phone": row[5],
+                    "id_person": row[6],
+                    "image_data": row[7],
+                    "id_plante": row[8],
+                    "id_garde": row[9],
+                    "latitude": row[10],
+                    "longitude": row[11],
+                    "town": row[12],
+                    "name_plante": row[13]
+                })
             if person_info:
                 return {"Person": person_info}
             else:
@@ -222,3 +245,40 @@ def get_plant_by_id(id_plante: int):
                 return {"Plante": plants}
     except:
             return {"Plante inexistante"}
+    
+@app.put("/garde/{id_garde}")
+def put_garde_by_id(id_garde: int, id_person: int):
+    with connection.cursor() as cursor:
+        # Recherche du garde existant dans la base de données
+        sql_select = "SELECT * FROM Garde WHERE id_garde = %s"
+        cursor.execute(sql_select, (id_garde,))
+        garde = cursor.fetchone()
+
+        # Vérification que le garde existe dans la base de données
+        if garde is None:
+            return "Garde non trouvé", 404
+
+        # Mise à jour du garde avec le nouvel ID de personne
+        sql_update = "UPDATE Garde SET id_person = %s WHERE id_garde = %s"
+        cursor.execute(sql_update, (id_person, id_garde))
+        connection.commit()
+
+        return "Garde mis à jour", 200
+
+
+
+
+
+@app.get("/all_gardes")
+def get_all_gardes():
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM Garde"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            garde = []
+            for row in result:
+                garde.append({"id_garde": row[0],"begining": row[1],"finish": row[2],"id_person": row[3],"id_plante": row[4]})
+            return {"Garde": garde}
+    except mysql.connector.Error as error:
+        return {"Error message": str(error)}
