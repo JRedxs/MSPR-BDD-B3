@@ -213,12 +213,12 @@ async def register_plante(plante : PlantToCreate):
 def get_plant_by_id(id_plante: int):
     try :
         with connection.cursor() as cursor:
-            sql = "SELECT * FROM Plante WHERE id_plante=%s"
+            sql = "SELECT * FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
             cursor.execute(sql, (id_plante,))
             result = cursor.fetchall()
             plants = []
             for row in result:
-                plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9]})
+                plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9], "advice_title":row[11], "advice":row[12]})
                 return {"Plante": plants}
     except:
             return {"Plante inexistante"}
