@@ -1,25 +1,25 @@
 import React, { useState } from "react";
-import {  useParams} from "react-router-dom";
+import {useNavigate,useParams} from "react-router-dom";
 import axios from "axios";
 
 const AdvicePlant = () => {
   const [advice, setAdvice] = useState({ advice_title: "", advice: "", id_plante: "" });
 
-  let { id } = useParams();
-    //console.log(id)
+  let { id_plante } = useParams();
+  
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setAdvice({ ...advice, [name]: value });
+    setAdvice({ ...advice, [name]: value, id_plante:id_plante });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-      const response = await axios.post(process.env.REACT_APP_API_URL + `/advices/${id}`, advice);
+      const response = await axios.post(process.env.REACT_APP_API_URL + `/advices`, advice );
       console.log(response.data);
-      setAdvice({ advice_title: "", advice: ""});
+      navigate(`/Plante/${id_plante}`);
     } catch (error) {
       console.error(error);
     }
