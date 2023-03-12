@@ -40,11 +40,9 @@ const RegisterGarde = () => {
   return (
 
     <>
-            <div className="d-flex align-items-center">
-                <Link className="btn" type="submit" style={{ color: 'white', backgroundColor: 'green', marginTop: '10px', marginLeft: '10px' }} to="/">Retour</Link>
-            </div>
-            <div className="d-flex align-items-center justify-content-center mx-auto">
-            <div className="card card-register card-color d-flex align-items-center justify-content-center" style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
+           
+            <div className="d-flex align-items-center justify-content-center mx-auto m-5">
+            <div className="card card-register card-color d-flex align-items-center justify-content-center " style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
                 <form>
                 <div>
                     <label htmlFor="begining">Début de la garde :</label>
@@ -68,13 +66,13 @@ const RegisterGarde = () => {
                     value={garde.finish}
                     />
                 </div>
-                <div className="d-flex align-items-center justify-content-center">
-                    <Link className="btn btn-dark " onClick={handleOnClick} to="/Map">Valider</Link>
+                <div className="d-flex align-items-center justify-content-center m-3">
+                    <Link className="btn btn-success " onClick={handleOnClick} to="/Map">Valider</Link>
+                    <Link className="btn btn-success " type="submit" to="/">Retour</Link>
                 </div>
                 </form>
             </div>
-            </div>
-
+          </div>
     </>
   );
 };
