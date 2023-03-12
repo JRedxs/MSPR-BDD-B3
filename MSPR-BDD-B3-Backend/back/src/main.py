@@ -145,13 +145,24 @@ def get_advices():
 def get_plants():
     try:
         with connection.cursor() as cursor:
-            sql = "SELECT * FROM Plante"
+            sql = """
+                SELECT Plante.id_plante, name, Photo.image_data
+                FROM Plante
+                LEFT JOIN (
+                SELECT id_plante, MIN(id_photo) AS min_photo_id
+                FROM Photo
+                GROUP BY id_plante
+                ) AS first_photo ON Plante.id_plante = first_photo.id_plante
+                LEFT JOIN Photo ON first_photo.min_photo_id = Photo.id_photo;
+                """
             cursor.execute(sql)
             result = cursor.fetchall()
+
             plants = []
 
             for row in result:
-                plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9]})
+                plants.append({"id_plante": row[0], "name": row[1], "image_data": row[2]})
+            
             if plants:
                 return {"Plants": plants}
             else:
