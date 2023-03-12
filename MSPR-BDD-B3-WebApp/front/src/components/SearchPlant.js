@@ -17,6 +17,9 @@ function SearchPlant() {
     }
 
     useEffect(() => {
+
+        window.sessionStorage.removeItem("plante");
+
         axios.get(url)
             .then(response => {
                 setPlants(response.data.Plants);

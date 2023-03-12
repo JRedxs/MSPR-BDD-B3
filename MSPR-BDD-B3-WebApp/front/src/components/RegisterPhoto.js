@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Logo from '../assets/images/logo.png'
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const RegisterPhoto = () => {
@@ -9,7 +10,9 @@ const RegisterPhoto = () => {
   const [imageSrc, setImageSrc] = useState(null);
 
   const baseUrl = process.env.REACT_APP_API_URL;
-  const [idPlante, setIdPlante] = useState(1);
+  const [idPlante, setIdPlante] = useState( Number(sessionStorage.getItem('plante') ) );
+
+  const navigate = useNavigate();
 
   const handleStartCamera = () => {
     setIsCameraActive(true);
@@ -41,11 +44,13 @@ const RegisterPhoto = () => {
     async function postPhoto(){
       await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc})
       // need to become a real error managment
-        .then(res => console.log(res) )
+        .then(() => {
+          setImageSrc(null);
+          navigate(`/Plante/${idPlante}`)
+        } )
         .catch(err => console.error(err));
     }
-    postPhoto();
-    setImageSrc(null);
+    postPhoto();;
   };
 
 

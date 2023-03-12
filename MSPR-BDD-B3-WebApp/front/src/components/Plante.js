@@ -9,31 +9,67 @@ function Plante(props) {
     const [plante, setPlante] = useState(null);
     let {id_plante} = useParams();
 
-    console.log("id plante " ,id_plante)
-    const url = process.env.REACT_APP_API_URL +  `/plant/${id_plante}`;
+
+    const url = process.env.REACT_APP_API_URL +  `/plantandgallery/${id_plante}`;
     
 
     const navigate = useNavigate();
-    const openAdvice = (id_plante) => () => {
-        navigate(`/AddAdvice/${id_plante}`);
+
+    const openAdvice = (id_photo) => {
+        window.sessionStorage.setItem('photo', JSON.stringify(Number(id_photo)));
+        navigate(`/AddAdvice`);
     }
 
-    const openPhoto = (id_plante) => () => {
-        navigate(`/Photo/${id_plante}`);
+    const openPhoto = () => {
+        navigate(`/Photo`);
     }
 
-    const openGarde = (id_plante) => () => {
-        navigate(`/Garde/${id_plante}`);
+    const openGarde = () => {
+        navigate(`/Garde`);
     }
 
     useEffect(() => {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                setPlante(data.Plante[0]);
+                setPlante(data.Plante);
+                window.sessionStorage.setItem('plante', JSON.stringify(Number(id_plante)));
+                window.sessionStorage.removeItem('photo');
             })
             .catch((error) => console.log(error)); 
     }, [url]);
+
+    const jsxPhoto = () => {
+        let firstLoop = true;
+
+        const jsx = [];
+        for (const photo in plante){
+            if (firstLoop){
+                firstLoop = false;
+                continue;
+            }
+            if (plante[photo].advice == null || plante[photo].advice_title == null)
+            {
+                console.log("photo seule", plante[photo].id_photo);
+                jsx.push(
+                    <img key={plante[photo].id_photo} src={plante[photo].image_data} onClick={() => {openAdvice(plante[photo].id_photo)}}/>
+                );
+            }
+            else {
+                console.log("photo avec conseil", plante[photo].id_photo);
+                jsx.push(
+                    <div key={plante[photo].id_photo}>
+                        <img key={plante[photo].id_photo} src={plante[photo].image_data}/>
+                        <h2>{plante[photo].advice_title}</h2>
+                        <p>{plante[photo].advice}</p>
+                    </div>
+                );
+            }
+            
+        }
+        return jsx;
+    };
+
 
     if (!plante) {
         return <div>Aucune donnée...</div>;
@@ -42,26 +78,12 @@ function Plante(props) {
     return (
         <>
             <div className="d-flex flex-row ">
-                <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src="https://img.ltwebstatic.com/images3_pi/2021/08/15/1629033033ff815394c0d95f7b674a1348b7660bb9.webp" />
-                    <Card.Body>
-                        <Card.Title style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h2>{plante.name}</h2></Card.Title>
-                    </Card.Body>
-                    <ListGroup className="list-group-flush">
-                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Entretien</h6></ListGroup.Item>
-                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Titre du conseil : {plante.advice_title} </h6></ListGroup.Item>
-                        <ListGroup.Item style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}><h6>Conseils : {plante.advice} </h6></ListGroup.Item>
-                        <Card.Body>
-
-
-                        </Card.Body>
-                        <Card.Body>
-                            <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openAdvice(plante.id_plante)}>Ajouter un conseil d'entretien</Card.Link>
-                            <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openPhoto(plante.id_plante)}>Enregistrer une photo</Card.Link>
-                            <Card.Link style={{ marginBottom: "0px", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={openGarde(plante.id_plante)}>Enregistrer une demande de garde</Card.Link>
-                        </Card.Body>
-                    </ListGroup>
-                </Card>
+                <h1>{plante[0].name}</h1>
+            </div>
+            { plante && jsxPhoto() }
+            <div>
+                <button onClick={openPhoto}>Enregistrer une photo</button>
+                <button onClick={openGarde}>Enregistrer une demande de garde</button>
             </div>
         </>
     );
