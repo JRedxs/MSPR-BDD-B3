@@ -114,7 +114,6 @@ function RegisterPlante(){
                     { photo && (<input className="btn btn-success form-button  " type="button" value="Upload" onClick={uploadPlante}/>)}
                     </div>
                 </form>
-
             </div>
         </div>
     );

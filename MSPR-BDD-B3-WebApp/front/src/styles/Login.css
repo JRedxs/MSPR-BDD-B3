@@ -25,5 +25,6 @@
 
 .login{
     background-color: rgb(206, 204, 204);
-
+    height: 100%;
+    width: 100%;
 }
