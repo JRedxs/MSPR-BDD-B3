@@ -59,6 +59,7 @@ const Register = () => {
                     <div>
                         <label className="form_label m-2" htmlFor="name"><b>Prénom :</b></label>
                         <input
+                            placeholder="Prénom"
                             className="form-control m-2 w-auto"
                             type="text"
                             id="name"
@@ -70,6 +71,7 @@ const Register = () => {
                     <div>
                         <label className="form_label m-2" htmlFor="firstname"><b>Nom :</b></label>
                         <input
+                            placeholder="Nom"
                             className="form-control m-2 w-auto"
                             type="text"
                             id="firstname"
@@ -81,6 +83,7 @@ const Register = () => {
                     <div>
                         <label className="form_label m-2" htmlFor="phone"><b>Téléphone :</b></label>
                         <input
+                            placeholder="Numéro de téléphone"
                             className="form-control m-2 w-auto"
                             type="tel"
                             id="phone"
@@ -92,6 +95,7 @@ const Register = () => {
                     <div>
                         <label className="form_label m-2" htmlFor="email"><b> Email :</b></label>
                         <input
+                            placeholder="Adresse Email"
                             className="form-control m-2 w-auto"
                             type="email"
                             id="email"
@@ -103,6 +107,7 @@ const Register = () => {
                     <div>
                         <label  className="form_label m-2" htmlFor="password"><b>Password : </b></label>
                         <input
+                            placeholder="Password"
                             className="form-control m-2 w-auto"
                             type="password"
                             id="password"
@@ -114,6 +119,7 @@ const Register = () => {
                     <div>
                         <label className="form_label m-2" htmlFor="confirmPassword"> <b>Confirm password :</b></label>
                         <input
+                            placeholder="Confirmer votre password"
                             className="form-control m-2 w-auto"
                             type="password"
                             id="confirmPassword"
