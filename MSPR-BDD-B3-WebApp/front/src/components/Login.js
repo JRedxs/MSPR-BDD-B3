@@ -8,12 +8,9 @@ import axios from "axios";
 const LoginPage = () => {
 
     const baseUrl = process.env.REACT_APP_API_URL
-
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    
     const handleSubmit = async (event) => {
       event.preventDefault();
       const response = await axios.get(`${baseUrl}/users?email=${email}&password=${password}`);
@@ -28,18 +25,9 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="">
-            <div className="justify-content-center">
-                <div className="card text-center mx-auto" >
-                    <div className="card-body" >
-                        <img src={logo} alt="logo" />
-                        <logo />
-                    </div>
-                </div>
-            </div>
-
-            <br />
-            <div className="card card-login mx-auto" style={{ width: "33%", borderRadius: "50px", border: "1px solid black" }}>
+    <>
+        <div className="login">
+            <div className="card card-login mx-auto" style={{ width: "40%", borderRadius: "50px", border: "1px solid black" }}>
                 <div className="card-body mx-auto">
                     <div className="d-flex justify-content-center margin-login-card">
                         <form className="mx-auto" onSubmit={handleSubmit} style={{ width: "100%" }}>
@@ -62,13 +50,12 @@ const LoginPage = () => {
                             <div className="d-flex align-items-center justify-content-center register-btn">
                                 <Link className="btn " to="/register"><b> <u>S'inscrire</u> </b> </Link>
                             </div>
-
                         </form>
                     </div>
                 </div>
-
             </div>
-        </div   >
+        </div>
+    </>
     )
 }
 export default LoginPage;
