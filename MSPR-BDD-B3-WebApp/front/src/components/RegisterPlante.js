@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import '../styles/RegisterPlantes.css';
 
 function RegisterPlante(){
 
     //à mettre en props quand on relira les pages entre elles
-    const  [person,setPerson] = useState( JSON.parse(window.sessionStorage.getItem('person')) || 1);
-    
-    const  [name,setName] = useState( JSON.parse(window.sessionStorage.getItem('name')) || '');
-    const  [number, setNumber] = useState( JSON.parse(window.sessionStorage.getItem('number')) || '');
-    const  [road, setRoad] = useState( JSON.parse(window.sessionStorage.getItem('road')) || '');
-    const  [complement, setComplement] = useState( JSON.parse(window.sessionStorage.getItem('complement')) || '');
-    const  [town, setTown] = useState( JSON.parse(window.sessionStorage.getItem('town')) || '');
-    const  [code, setCode] = useState( JSON.parse(window.sessionStorage.getItem('code')) || '');
-    const  [photo, setPhoto] = useState( JSON.parse(window.sessionStorage.getItem('photo')) || null);
+    const  [person,setPerson]           = useState( JSON.parse(window.sessionStorage.getItem('person')) || 1);
+    const  [name,setName]               = useState( JSON.parse(window.sessionStorage.getItem('name')) || '');
+    const  [number, setNumber]          = useState( JSON.parse(window.sessionStorage.getItem('number')) || '');
+    const  [road, setRoad]              = useState( JSON.parse(window.sessionStorage.getItem('road')) || '');
+    const  [complement, setComplement]  = useState( JSON.parse(window.sessionStorage.getItem('complement')) || '');
+    const  [town, setTown]              = useState( JSON.parse(window.sessionStorage.getItem('town')) || '');
+    const  [code, setCode]              = useState( JSON.parse(window.sessionStorage.getItem('code')) || '');
+    const  [photo, setPhoto]            = useState( JSON.parse(window.sessionStorage.getItem('photo')) || null);
     
     const baseUrl = process.env.REACT_APP_API_URL;
     
@@ -79,32 +79,32 @@ function RegisterPlante(){
     
 
     return (
-        <div className="d-flex align-items-center justify-content-center mx-auto">
+        <div className=" register-plant d-flex align-items-center justify-content-center mx-auto">
             <div className="card card-register card-color d-flex align-items-center justify-content-center" style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
-                <h1>Enregistrer une Plante</h1>
+                <h1><u>Enregistrer une Plante</u></h1>
                 <form>
                     <div>
-                        <label className="form_label">Nom de la plante :</label>
+                        <label className="form_label mt-1"><b>Nom de la plante :</b></label>
                         <input className="form-control m-2 w-auto" type="text" placeholder='Nom de votre plante' value={name} onChange={changeName }/>
                     </div>
                     <div>
-                        <label className="form_label">Numero :</label>
+                        <label className="form_label"><b>Numero :</b></label>
                         <input className="form-control m-2 w-auto" type="text" placeholder='Numero' value={number} onChange={changeNumber }/>
                     </div>
                     <div>
-                        <label className="form_label">Rue :</label>
+                        <label className="form_label"><b>Rue :</b></label>
                         <input className="form-control m-2 w-auto" type="text" placeholder='Rue'  value={road} onChange={changeRoad }/>
                     </div>
                     <div>
-                        <label className="form_label">Complément d'Adresse :</label>
+                        <label className="form_label"><b>Complément d'Adresse :</b></label>
                         <input className="form-control m-2 w-auto" type="text" placeholder='Complement' value={complement} onChange={changeComplement }/>
                     </div>
                     <div> 
-                        <label className="form_label">Ville :</label>
+                        <label className="form_label"><b>Ville :</b></label>
                         <input className="form-control m-2 w-auto" type="text" placeholder='Ville' value={town} onChange={changeTown }/>
                     </div>
                     <div>
-                        <label className="form_label">Code Postal :</label>
+                        <label className="form_label"><b>Code Postal :</b></label>
                         <input className="form-control m-2 w-auto" type="text" placeholder='Code Postal' value={code} onChange={changeCode }/>
                     </div>
                     <div className='d-flex align-items-center justify-content-center mx-auto'>

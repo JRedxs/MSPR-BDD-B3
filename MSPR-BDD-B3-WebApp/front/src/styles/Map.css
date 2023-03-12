@@ -1,17 +1,23 @@
-.wrapper{
+.wrapper {
     padding-top: 5em;
     padding-right: 15em;
     padding-left: 15em;
 }
 
-.map-wrap{
+.map-wrap {
+    
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.leaflet-container{
+.leaflet-container {
     width: 70em;
     height: 50em;
-  }
+}
+
+.global-wrapper {
+    background-color: rgb(206, 204, 204);
+}
+

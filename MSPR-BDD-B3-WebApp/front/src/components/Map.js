@@ -32,10 +32,15 @@ function Map() {
 
   return (
     <>
-      <h1 style={{ textAlign: 'center' }}>
-        Trouvez une plante près de chez vous :
-      </h1>
-      <div className="map-wrap">
+      <div className="global-wrapper">
+      <div className="title-wrapper m-4">
+        <h1 style={{ textAlign: 'center' }}>
+          <u>
+            Trouvez une plante près de chez vous :
+          </u>
+        </h1>
+      </div>
+      <div className="map-wrap m-5">
         <div className="card card-map">
           <MapContainer center={positionLille} zoom={6} scrollWheelZoom={false}> 
             <TileLayer
@@ -63,6 +68,7 @@ function Map() {
           </MapContainer>
         </div>
       </div>
+    </div>  
     </>
   )
 }
