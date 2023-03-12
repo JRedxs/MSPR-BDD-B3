@@ -9,6 +9,7 @@ connection = MSQL
 # Initialisez l'application 
 app = FastAPI()
 
+#not ideal
 origins = [
     "http://localhost",
     "http://localhost:3000",
@@ -159,6 +160,7 @@ def get_plants():
     except:
         raise HTTPException(status_code=500, detail="Database connection error !")
 
+#maybe broken
 @app.get("/plants")
 def get_info_plants():
     try:
@@ -267,9 +269,6 @@ def put_garde_by_id(id_garde: int, id_person: int):
         return "Garde mis à jour", 200
 
 
-
-
-
 @app.get("/all_gardes")
 def get_all_gardes():
     try:
@@ -284,3 +283,21 @@ def get_all_gardes():
     except mysql.connector.Error as error:
         return {"Error message": str(error)}
     
+
+@app.get("/plantandgallery/{id_plante}")
+def get_plant_photos_by_id(id_plante: int):
+    try :
+        with connection.cursor() as cursor:
+            sql = "SELECT name, id_person, image_data, advice_title, advice FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
+            cursor.execute(sql, (id_plante,))
+            result = cursor.fetchall()
+            plants = []
+            firstLoop = True
+            for row in result:
+                if firstLoop:
+                    plants.append({"name": row[0], "id_person": row[1]})
+                    firstLoop = False
+                plants.append({"image_data": row[2], "advice_title": row[3], "advice": row[4]})
+            return {"Plante": plants}
+    except:
+            return {"Plante inexistante"}
