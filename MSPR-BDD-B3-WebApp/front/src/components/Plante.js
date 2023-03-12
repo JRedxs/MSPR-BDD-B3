@@ -14,12 +14,14 @@ function Plante(props) {
     
 
     const navigate = useNavigate();
+
     const openAdvice = (id_plante) => () => {
         navigate(`/AddAdvice/${id_plante}`);
     }
 
-    const openPhoto = (id_plante) => () => {
-        navigate(`/Photo/${id_plante}`);
+    const openPhoto = () => () => {
+        window.sessionStorage.setItem('plante', JSON.stringify(Number(id_plante)));
+        navigate(`/Photo`);
     }
 
     const openGarde = (id_plante) => () => {
@@ -49,12 +51,13 @@ function Plante(props) {
             {
                 console.log(plante[photo]);
                 jsx.push(
-                    <img key={plante[photo].id_photo} src={plante[photo].image_data} />
+                    <img key={plante[photo].id_photo} src={plante[photo].image_data}/>
                 );
             }
             else {
                 jsx.push(
                     <div key={plante[photo].id_photo}>
+                        <img key={plante[photo].id_photo} src={plante[photo].image_data}/>
                         <h2>{plante[photo].advice_title}</h2>
                         <p>{plante[photo].advice}</p>
                     </div>
@@ -77,6 +80,11 @@ function Plante(props) {
                 <h1>{plante[0].name}</h1>
             </div>
             {jsxPhoto()}
+            <div>
+                <button onClick={openAdvice(plante.id_plante)}>Ajouter un conseil d'entretien</button>
+                <button onClick={openPhoto()}>Enregistrer une photo</button>
+                <button onClick={openGarde(plante.id_plante)}>Enregistrer une demande de garde</button>
+            </div>
         </>
     );
 }
