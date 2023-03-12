@@ -42,15 +42,15 @@ const RegisterPhoto = () => {
 
   const handleUploadPhoto = () => {
     async function postPhoto(){
-      console.log({id_plante: idPlante, data: imageSrc});
       await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc})
       // need to become a real error managment
-        .then(res => console.log(res) )
+        .then(() => {
+          setImageSrc(null);
+          navigate(`/Plante/${idPlante}`)
+        } )
         .catch(err => console.error(err));
     }
-    postPhoto();
-    setImageSrc(null);
-    navigate(`/Plante/${idPlante}`);
+    postPhoto();;
   };
 
 

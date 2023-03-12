@@ -15,25 +15,26 @@ function Plante(props) {
 
     const navigate = useNavigate();
 
-    const openAdvice = (id_plante) => () => {
-        navigate(`/AddAdvice/${id_plante}`);
+    const openAdvice = (id_photo) => {
+        window.sessionStorage.setItem('photo', JSON.stringify(Number(id_photo)));
+        navigate(`/AddAdvice`);
     }
 
-    const openPhoto = () => () => {
-        window.sessionStorage.setItem('plante', JSON.stringify(Number(id_plante)));
+    const openPhoto = () => {
         navigate(`/Photo`);
     }
 
-    const openGarde = (id_plante) => () => {
-        navigate(`/Garde/${id_plante}`);
+    const openGarde = () => {
+        navigate(`/Garde`);
     }
 
     useEffect(() => {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data.Plante);
                 setPlante(data.Plante);
+                window.sessionStorage.setItem('plante', JSON.stringify(Number(id_plante)));
+                window.sessionStorage.removeItem('photo');
             })
             .catch((error) => console.log(error)); 
     }, [url]);
@@ -47,14 +48,15 @@ function Plante(props) {
                 firstLoop = false;
                 continue;
             }
-            if (photo.advice == null || photo.advice_title == null)
+            if (plante[photo].advice == null || plante[photo].advice_title == null)
             {
-                console.log(plante[photo]);
+                console.log("photo seule", plante[photo].id_photo);
                 jsx.push(
-                    <img key={plante[photo].id_photo} src={plante[photo].image_data}/>
+                    <img key={plante[photo].id_photo} src={plante[photo].image_data} onClick={() => {openAdvice(plante[photo].id_photo)}}/>
                 );
             }
             else {
+                console.log("photo avec conseil", plante[photo].id_photo);
                 jsx.push(
                     <div key={plante[photo].id_photo}>
                         <img key={plante[photo].id_photo} src={plante[photo].image_data}/>
@@ -65,7 +67,6 @@ function Plante(props) {
             }
             
         }
-        console.log(jsx);
         return jsx;
     };
 
@@ -79,11 +80,10 @@ function Plante(props) {
             <div className="d-flex flex-row ">
                 <h1>{plante[0].name}</h1>
             </div>
-            {jsxPhoto()}
+            { plante && jsxPhoto() }
             <div>
-                <button onClick={openAdvice(plante.id_plante)}>Ajouter un conseil d'entretien</button>
-                <button onClick={openPhoto()}>Enregistrer une photo</button>
-                <button onClick={openGarde(plante.id_plante)}>Enregistrer une demande de garde</button>
+                <button onClick={openPhoto}>Enregistrer une photo</button>
+                <button onClick={openGarde}>Enregistrer une demande de garde</button>
             </div>
         </>
     );

@@ -110,16 +110,15 @@ def send_image(id):
     cursor.close()
     return image
 
-#Add advice
-@app.post("/advices")
+
+@app.put("/advices")
 def create_advice(advice: dict):
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO Photo (advice_title, advice, id_plante) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (advice["advice_title"], advice["advice"], advice["id_plante"]))
+            sql = "Update Photo set advice_title=%s, advice=%s where id_photo=%s"
+            cursor.execute(sql, (advice["advice_title"], advice["advice"], advice["id_photo"]))
             connection.commit()
-            new_id = cursor.lastrowid
-            return {"id_photo": new_id, **advice}
+            return {"message": "Conseil enregistrée"}
     except:
         raise HTTPException(status_code=500, detail="Database connection error !")
 
