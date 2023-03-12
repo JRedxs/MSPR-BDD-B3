@@ -1,17 +1,46 @@
 import React , {useState,useEffect} from "react";
 import { Link } from "react-router-dom";
-
+import moment from 'moment';
+import 'moment/locale/fr';
+import axios from "axios";
 
 const Garde = () => {
     
-    const [infos, setInfos] = useState({});
+
+    const baseUrl = process.env.REACT_APP_API_URL; // URL de base pour les appels API
+    const [infosplante, setInfos] = useState({});
+    const [infosusers, setUsers] = useState({});
+    const [garde, setGarde] = useState({});
+
+
 
     useEffect(() => {
     // récupérer les infos depuis le localStorage
-    const gardeInfo = JSON.parse(localStorage.getItem('user'));
-    setInfos(gardeInfo);
-    // console.log(infos[4]["begining"])
+    const fetchData = async() => {
+        try {
+            const gardeInfo = JSON.parse(localStorage.getItem('plant'));
+            const usersInfo = JSON.parse(localStorage.getItem('user'))
+            setInfos(gardeInfo);
+            setUsers(usersInfo);
+        } catch(error) {
+            console.error(error)
+        }
+    };
+    fetchData();
     }, []);
+
+    const handleOnClick = async () => {
+        const usersInfo = JSON.parse(localStorage.getItem("user"));
+        try {
+          const response_garde = await axios.put(
+            `${baseUrl}/garde/${usersInfo.id_garde}?id_person=1`
+          );
+          const gardeData = response_garde.data;
+          console.log("Garde ajouté :", gardeData);
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
     return (
         <>
@@ -30,27 +59,36 @@ const Garde = () => {
 
                                 </div>
                                 <div className="form-group">
+                                    <label className="form-label" htmlFor="begining"> <b>Photo de la plante : </b> </label>
+                                    <img src={infosusers.image_data} alt="" style={{ width: "100%"}}/>
+                                </div>
+                                <div className="form-group">
                                     <label className="form-label" htmlFor="begining"> <b>Date de la garde : </b> </label>
-                                    <p>Début : 23 Février 2023 16h00 
-                                       Fin : 24 Février 2023 20h00
+                                    <p>Début : {moment(infosusers.begining).locale('fr').format('DD MMMM YYYY HH [h] mm ')}
+                                        <br/>
+                                       Fin : {moment(infosusers.finish).locale('fr').format('DD MMMM YYYY HH [h] mm ')}
                                     </p>
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="nom_prenom"><b> Nom & Prénom </b> </label>
-                                    <p>Pierre Dubois</p>
+                                    <p>{infosusers.name} {infosusers.firstname}</p>
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="email"><b> Email : </b> </label>
-                                    <p>pierre.dubois@gmail.com</p>
+                                    <p>{infosusers.email}</p>
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="phone"><b> Téléphone : </b> </label>
-                                    <p>0600000000</p>
+                                    <p>{infosusers.phone}</p>
+                                </div>
+                                <div className="d-flex align-items-center">
+                                    <Link className="btn" type="submit" style={{ color: 'white', backgroundColor: 'green', marginTop: '10px', marginLeft: '10px' }} onClick={handleOnClick} to="/Map">Valider</Link>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
         </>
     )
 }

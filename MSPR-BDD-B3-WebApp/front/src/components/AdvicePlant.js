@@ -3,23 +3,29 @@ import {useNavigate,useParams} from "react-router-dom";
 import axios from "axios";
 
 const AdvicePlant = () => {
-  const [advice, setAdvice] = useState({ advice_title: "", advice: "", id_plante: "" });
 
-  let { id_plante } = useParams();
+  
+  const id_plante = Number(sessionStorage.getItem('plante'));
+
+  const id_photo = Number(sessionStorage.getItem('photo'));
+
+  const [advice, setAdvice] = useState({ advice_title: "", advice: "", id_photo: id_photo });
   
   const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setAdvice({ ...advice, [name]: value, id_plante:id_plante });
+    setAdvice({ ...advice, [name]: value, id_photo: id_photo });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(process.env.REACT_APP_API_URL + `/advices`, advice );
+      const response = await axios.put(process.env.REACT_APP_API_URL + `/advices`, advice )
+        .then(()=>{
+          navigate(`/Plante/${id_plante}`);
+        });
       console.log(response.data);
-      navigate(`/Plante/${id_plante}`);
     } catch (error) {
       console.error(error);
     }

@@ -6,23 +6,25 @@
     font-weight:bold;
 }
 
-
-
 .form-label{
     color: black;
 }
 
 .card-login {
+
     height: 70%;
     width: "33%";
     border-radius: "50px";
     border: "1px solid black";
-    background-color :#a4bb64;
-
+    background-color :#a4bb64 !important;
     margin: 5em;
 }
-
 .log-btn{
     margin: 1em;
 }
 
+.login{
+    background-color: rgb(206, 204, 204);
+    height: 100%;
+    width: 100%;
+}

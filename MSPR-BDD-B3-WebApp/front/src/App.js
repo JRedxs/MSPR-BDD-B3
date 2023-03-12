@@ -11,6 +11,7 @@ import Garde                 from './components/Garde';
 import ResetPassword         from './components/ResetPassword';
 import RegisterPlante        from './components/RegisterPlante';
 import RegisterFirstPhoto    from './components/RegisterFirstPhoto';
+import RegisterGarde         from './components/RegisterGarde'; 
 import {Routes, Route}       from 'react-router-dom';
 import UserProfil from './components/UserProfil';
 import AddAdvice from './components/AdvicePlant';
@@ -29,19 +30,20 @@ const App = () => {
             <Route path="/Map" element={<Map/>} />
             <Route path="/Register" element={<Register/>}/>
             <Route path="/UserProfil" element={<UserProfil/>}/>
-            <Route path="/Garde" element={<Garde/>}/>
+            <Route path="/Garde/:id" element={<Garde/>}/>
             <Route path="/DevGa" element={<RegisterPlante/>}/>
             <Route path="/RegisterPlante" element={<RegisterPlante/>}/>
             <Route path="/FirstPhoto" element={<RegisterFirstPhoto/>}/>
-            <Route path="/Photo/:id" element={<RegisterPhoto/>}/>
+            <Route path="/Photo" element={<RegisterPhoto/>}/>
             <Route path="/UserProfil" element={<UserProfil/>}/>
-            <Route path="*" element={<NotFound/>}/>
-            <Route path="/AddAdvice/:id_plante" element={<AddAdvice/>}/>
+            <Route path="/AddAdvice" element={<AddAdvice/>}/>
             <Route path="/Plante/:id_plante" element={<Plante/>}/>
             <Route path="/SearchPlant" element={<SearchPlant/>}/>
+            <Route path="/RegisterGarde" element={<RegisterGarde/>}/>
+            <Route path="*" element={<NotFound/>}/>
         </Routes>
         <Footer/>
       </div>
-  );//
+  );
 }
 export default App;

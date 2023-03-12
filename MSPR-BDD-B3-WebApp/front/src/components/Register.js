@@ -51,23 +51,15 @@ const Register = () => {
             setError("");
         }
     };
-    // const handleEmailChange = event => {
-    //     const email = event.target.value;
-    //     if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-    //         setError("L'adresse email est incorrecte.");
-    //     } else {
-    //         setFormData({ ...formData, email });
-    //         setError("");
-    //     }
-    // };
 
     return (
-        <div className="d-flex align-items-center justify-content-center mx-auto">
+        <div className=" register d-flex align-items-center justify-content-center mx-auto">
             <div className="card card-register card-color d-flex align-items-center justify-content-center" style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label className="form_label" htmlFor="name">Prénom :</label>
+                        <label className="form_label m-2" htmlFor="name"><b>Prénom :</b></label>
                         <input
+                            placeholder="Prénom"
                             className="form-control m-2 w-auto"
                             type="text"
                             id="name"
@@ -77,8 +69,9 @@ const Register = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="firstname">Nom :</label>
+                        <label className="form_label m-2" htmlFor="firstname"><b>Nom :</b></label>
                         <input
+                            placeholder="Nom"
                             className="form-control m-2 w-auto"
                             type="text"
                             id="firstname"
@@ -88,8 +81,9 @@ const Register = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="phone">Téléphone :</label>
+                        <label className="form_label m-2" htmlFor="phone"><b>Téléphone :</b></label>
                         <input
+                            placeholder="Numéro de téléphone"
                             className="form-control m-2 w-auto"
                             type="tel"
                             id="phone"
@@ -99,8 +93,9 @@ const Register = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="email">Email :</label>
+                        <label className="form_label m-2" htmlFor="email"><b> Email :</b></label>
                         <input
+                            placeholder="Adresse Email"
                             className="form-control m-2 w-auto"
                             type="email"
                             id="email"
@@ -110,8 +105,9 @@ const Register = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="password">Password :</label>
+                        <label  className="form_label m-2" htmlFor="password"><b>Password : </b></label>
                         <input
+                            placeholder="Password"
                             className="form-control m-2 w-auto"
                             type="password"
                             id="password"
@@ -121,25 +117,25 @@ const Register = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="confirmPassword">Confirm password :</label>
+                        <label className="form_label m-2" htmlFor="confirmPassword"> <b>Confirm password :</b></label>
                         <input
+                            placeholder="Confirmer votre password"
                             className="form-control m-2 w-auto"
                             type="password"
                             id="confirmPassword"
                             name="confirmPassword"
                             required
                             onChange={handleChange}
-                            // value={event => setFormData({ ...formData, confirmPassword: event.target.value })}
                             value={formData.confirmPassword}
                         />
                     </div>
                     <div className="d-flex align-items-center justify-content-center">
                         <button
-                            className="btn form-button btn-dark "
+                            className="btn btn-success form-button"
                             onClick={() => NAVIGATE("/login")} // Le onclick prend le dessus sur le onSubmit
                             type="submit">S'inscrire
                         </button>
-                        <Link className="btn btn-dark " to="/login">Retour</Link>
+                        <Link className="btn btn-success" to="/login">Retour</Link>
                     </div>
                     {error && <p>{error}</p>}
                 </form>

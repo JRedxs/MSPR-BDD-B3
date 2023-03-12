@@ -1,0 +1,6 @@
+.plants-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: 320px;
+}

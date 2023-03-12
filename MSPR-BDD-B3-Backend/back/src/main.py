@@ -9,6 +9,7 @@ connection = MSQL
 # Initialisez l'application 
 app = FastAPI()
 
+#not ideal
 origins = [
     "http://localhost",
     "http://localhost:3000",
@@ -109,16 +110,15 @@ def send_image(id):
     cursor.close()
     return image
 
-#Add advice
-@app.post("/advices")
+
+@app.put("/advices")
 def create_advice(advice: dict):
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO Photo (advice_title, advice, id_plante) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (advice["advice_title"], advice["advice"], advice["id_plante"]))
+            sql = "Update Photo set advice_title=%s, advice=%s where id_photo=%s"
+            cursor.execute(sql, (advice["advice_title"], advice["advice"], advice["id_photo"]))
             connection.commit()
-            new_id = cursor.lastrowid
-            return {"id_photo": new_id, **advice}
+            return {"message": "Conseil enregistrée"}
     except:
         raise HTTPException(status_code=500, detail="Database connection error !")
 
@@ -145,13 +145,24 @@ def get_advices():
 def get_plants():
     try:
         with connection.cursor() as cursor:
-            sql = "SELECT * FROM Plante"
+            sql = """
+                SELECT Plante.id_plante, name, Photo.image_data
+                FROM Plante
+                LEFT JOIN (
+                SELECT id_plante, MIN(id_photo) AS min_photo_id
+                FROM Photo
+                GROUP BY id_plante
+                ) AS first_photo ON Plante.id_plante = first_photo.id_plante
+                LEFT JOIN Photo ON first_photo.min_photo_id = Photo.id_photo;
+                """
             cursor.execute(sql)
             result = cursor.fetchall()
+
             plants = []
 
             for row in result:
-                plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9]})
+                plants.append({"id_plante": row[0], "name": row[1], "image_data": row[2]})
+            
             if plants:
                 return {"Plants": plants}
             else:
@@ -159,17 +170,41 @@ def get_plants():
     except:
         raise HTTPException(status_code=500, detail="Database connection error !")
 
-
+#maybe broken
 @app.get("/plants")
 def get_info_plants():
     try:
         with connection.cursor() as cursor:
-            sql = "SELECT begining,finish,name,firstname,email,phone from Garde INNER JOIN Person"
+            sql = """
+            SELECT Garde.begining, Garde.finish,Person.name,Person.firstname, Person.email, 
+            Person.phone, Person.id_person, Photo.image_data, Garde.id_plante, Garde.id_garde,Plante.latitude,Plante.longitude,
+            Plante.town,Plante.name
+            FROM Garde
+            INNER JOIN Plante ON Garde.id_plante = Plante.id_plante
+            INNER JOIN Person ON Plante.id_person = Person.id_person
+            LEFT JOIN Photo ON Plante.id_plante = Photo.id_plante
+            WHERE Garde.id_person is NULL;
+            """
             cursor.execute(sql)
             result = cursor.fetchall()
             person_info = []
             for row in result:
-                person_info.append({"begining": row[0],"finish": row[1],"name": row[2],"firstname": row[3],"email": row[4],"phone": row[5]})
+                person_info.append({
+                    "begining": row[0],
+                    "finish": row[1],
+                    "name": row[2],
+                    "firstname": row[3],
+                    "email": row[4],
+                    "phone": row[5],
+                    "id_person": row[6],
+                    "image_data": row[7],
+                    "id_plante": row[8],
+                    "id_garde": row[9],
+                    "latitude": row[10],
+                    "longitude": row[11],
+                    "town": row[12],
+                    "name_plante": row[13]
+                })
             if person_info:
                 return {"Person": person_info}
             else:
@@ -184,14 +219,15 @@ def get_info_plants():
 def add_garde(garde: Garde):
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO Garde (id_garde,begining,finish,id_plante) VALUES(%s,%s,%s,%s)"
-            cursor.execute(sql, (garde.id_garde,garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
+            sql = "INSERT INTO Garde (begining,finish,id_plante) VALUES(%s,%s,%s)"
+            cursor.execute(sql, (garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
             connection.commit()
             cursor.close()
-            return {"ok"}
+            return "Garde enregistrée"
     except Exception as e :
         print(e)
         raise HTTPException(status_code=500, detail="Error !")
+        
 
 
 @app.post("/plante")
@@ -220,5 +256,58 @@ def get_plant_by_id(id_plante: int):
             for row in result:
                 plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9], "advice_title":row[11], "advice":row[12]})
                 return {"Plante": plants}
+    except:
+            return {"Plante inexistante"}
+    
+@app.put("/garde/{id_garde}")
+def put_garde_by_id(id_garde: int, id_person: int):
+    with connection.cursor() as cursor:
+        # Recherche du garde existant dans la base de données
+        sql_select = "SELECT * FROM Garde WHERE id_garde = %s"
+        cursor.execute(sql_select, (id_garde,))
+        garde = cursor.fetchone()
+
+        # Vérification que le garde existe dans la base de données
+        if garde is None:
+            return "Garde non trouvé", 404
+
+        # Mise à jour du garde avec le nouvel ID de personne
+        sql_update = "UPDATE Garde SET id_person = %s WHERE id_garde = %s"
+        cursor.execute(sql_update, (id_person, id_garde))
+        connection.commit()
+
+        return "Garde mis à jour", 200
+
+
+@app.get("/all_gardes")
+def get_all_gardes():
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM Garde"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            garde = []
+            for row in result:
+                garde.append({"id_garde": row[0],"begining": row[1],"finish": row[2],"id_person": row[3],"id_plante": row[4]})
+            return {"Garde": garde}
+    except mysql.connector.Error as error:
+        return {"Error message": str(error)}
+    
+
+@app.get("/plantandgallery/{id_plante}")
+def get_plant_photos_by_id(id_plante: int):
+    try :
+        with connection.cursor() as cursor:
+            sql = "SELECT name, id_person, image_data, advice_title, advice, id_photo FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
+            cursor.execute(sql, (id_plante,))
+            result = cursor.fetchall()
+            plants = []
+            firstLoop = True
+            for row in result:
+                if firstLoop:
+                    plants.append({"name": row[0], "id_person": row[1]})
+                    firstLoop = False
+                plants.append({"id_photo":row[5],"image_data": row[2], "advice_title": row[3], "advice": row[4]})
+            return {"Plante": plants}
     except:
             return {"Plante inexistante"}
