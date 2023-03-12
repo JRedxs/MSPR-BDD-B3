@@ -81,7 +81,9 @@ function RegisterPlante(){
     return (
         <div className=" register-plant d-flex align-items-center justify-content-center mx-auto">
             <div className="card card-register card-color d-flex align-items-center justify-content-center" style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
-                <h1><u>Enregistrer une Plante</u></h1>
+                <div className='d-flex align-items-center justify-content-center mt-4'>
+                    <h1><u>Enregistrer une Plante</u></h1>
+                </div>
                 <form>
                     <div>
                         <label className="form_label mt-1"><b>Nom de la plante :</b></label>
@@ -108,10 +110,11 @@ function RegisterPlante(){
                         <input className="form-control m-2 w-auto" type="text" placeholder='Code Postal' value={code} onChange={changeCode }/>
                     </div>
                     <div className='d-flex align-items-center justify-content-center mx-auto'>
-                        <input className="btn btn-success form-button  " type="button" value="Photo" onClick={openPhoto}/>
+                        <input className="btn btn-success form-button " type="button" value=" Prendre une Photo" onClick={openPhoto}/>
                     </div>
-                    <div>
-                    { photo && (<input className="btn btn-success form-button  " type="button" value="Upload" onClick={uploadPlante}/>)}
+                    <div className='d-flex align-items-center justify-content-center mb-4'>
+                        {/* remove "!" pour faire disparaître le boutton */}
+                        { !photo && (<input className="btn btn-success form-button  " type="button" value="Enregistrer votre plante" onClick={uploadPlante}/>)}
                     </div>
                 </form>
             </div>
