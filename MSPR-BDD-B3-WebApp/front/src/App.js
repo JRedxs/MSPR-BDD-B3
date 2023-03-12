@@ -11,6 +11,7 @@ import Garde                 from './components/Garde';
 import ResetPassword         from './components/ResetPassword';
 import RegisterPlante        from './components/RegisterPlante';
 import RegisterFirstPhoto    from './components/RegisterFirstPhoto';
+import RegisterGarde         from './components/RegisterGarde'; 
 import {Routes, Route}       from 'react-router-dom';
 import UserProfil from './components/UserProfil';
 import AddAdvice from './components/AdvicePlant';
@@ -39,9 +40,10 @@ const App = () => {
             <Route path="/AddAdvice/:id_plante" element={<AddAdvice/>}/>
             <Route path="/Plante/:id_plante" element={<Plante/>}/>
             <Route path="/SearchPlant" element={<SearchPlant/>}/>
+            <Route path="/RegisterGarde" element={<RegisterGarde/>}/>
         </Routes>
         <Footer/>
       </div>
-  );//
+  );
 }
 export default App;

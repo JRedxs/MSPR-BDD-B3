@@ -207,14 +207,15 @@ def get_info_plants():
 def add_garde(garde: Garde):
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO Garde (id_garde,begining,finish,id_plante) VALUES(%s,%s,%s,%s)"
-            cursor.execute(sql, (garde.id_garde,garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
+            sql = "INSERT INTO Garde (begining,finish,id_plante) VALUES(%s,%s,%s)"
+            cursor.execute(sql, (garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
             connection.commit()
             cursor.close()
-            return {"ok"}
+            return "Garde enregistrée"
     except Exception as e :
         print(e)
         raise HTTPException(status_code=500, detail="Error !")
+        
 
 
 @app.post("/plante")
@@ -282,3 +283,4 @@ def get_all_gardes():
             return {"Garde": garde}
     except mysql.connector.Error as error:
         return {"Error message": str(error)}
+    
