@@ -120,7 +120,6 @@ const Register = () => {
                             name="confirmPassword"
                             required
                             onChange={handleChange}
-                            // value={event => setFormData({ ...formData, confirmPassword: event.target.value })}
                             value={formData.confirmPassword}
                         />
                     </div>

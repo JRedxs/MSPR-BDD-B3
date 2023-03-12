@@ -28,7 +28,7 @@ const LoginPage = () => {
     };
 
     return (
-        <>
+        <div className="">
             <div className="justify-content-center">
                 <div className="card text-center mx-auto" >
                     <div className="card-body" >
@@ -54,13 +54,13 @@ const LoginPage = () => {
                             </div>
                             <br />
                             <div className="d-flex align-items-center justify-content-center">
-                                <button className="btn btn-dark" type="submit" to="/DevGa">Login</button>
+                                <button className="btn btn-success" type="submit" to="/DevGa">Login</button>
                             </div>
                             <div className="d-flex align-items-center justify-content-center">
                                 <h3> Pas encore inscrit ? </h3>
                             </div>
                             <div className="d-flex align-items-center justify-content-center register-btn">
-                                <Link className="btn" to="/register"><b> <u>S'inscrire</u> </b> </Link>
+                                <Link className="btn " to="/register"><b> <u>S'inscrire</u> </b> </Link>
                             </div>
 
                         </form>
@@ -68,7 +68,7 @@ const LoginPage = () => {
                 </div>
 
             </div>
-        </>
+        </div   >
     )
 }
 export default LoginPage;

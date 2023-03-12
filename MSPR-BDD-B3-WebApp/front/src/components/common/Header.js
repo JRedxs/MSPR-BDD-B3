@@ -26,7 +26,6 @@ const Header = () => {
                  <Dropdown.Item as={Link} to="/Plante">Plantes</Dropdown.Item>     
                  <Dropdown.Item as={Link} to="/AddAdvice">Ajouter un conseil</Dropdown.Item> 
                  <Dropdown.Item as={Link} to="/RegisterGarde">Enregistrer une garde</Dropdown.Item> 
-
                 </DropdownButton>  
                 </Container>  
             </div>  
