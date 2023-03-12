@@ -15,8 +15,10 @@ const Home = () => {
                             <h5 className="card-title">Bienvenue chez A'Rosa je</h5>
                         </div>
                         <div className="d-flex align-items-center justify-content-center">
-                            
-                            <p className="card-text"><b>Pas encore de compte ? <br></br>Rejoignez nous en cliquant ici !</b></p>
+                            <p className="card-text"><b>Pas encore de compte ?</b></p>
+                        </div>
+                        <div className="d-flex align-items-center justify-content-center">
+                            <p className="card-text"><b>Rejoignez nous en cliquant ici !</b></p>
                         </div>
                         <div className="d-flex align-items-center justify-content-center m-3">
                             <Link className="btn btn-success" to="/Register"> S'inscrire</Link>
