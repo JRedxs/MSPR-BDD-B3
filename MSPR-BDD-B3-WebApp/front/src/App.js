@@ -36,11 +36,11 @@ const App = () => {
             <Route path="/FirstPhoto" element={<RegisterFirstPhoto/>}/>
             <Route path="/Photo" element={<RegisterPhoto/>}/>
             <Route path="/UserProfil" element={<UserProfil/>}/>
-            <Route path="*" element={<NotFound/>}/>
             <Route path="/AddAdvice" element={<AddAdvice/>}/>
             <Route path="/Plante/:id_plante" element={<Plante/>}/>
             <Route path="/SearchPlant" element={<SearchPlant/>}/>
             <Route path="/RegisterGarde" element={<RegisterGarde/>}/>
+            <Route path="*" element={<NotFound/>}/>
         </Routes>
         <Footer/>
       </div>
