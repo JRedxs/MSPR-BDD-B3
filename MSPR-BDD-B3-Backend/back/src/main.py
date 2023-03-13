@@ -219,6 +219,7 @@ def get_info_plants():
 def add_garde(garde: Garde):
     try:
         with connection.cursor() as cursor:
+            print(garde)
             sql = "INSERT INTO Garde (begining,finish,id_plante) VALUES(%s,%s,%s)"
             cursor.execute(sql, (garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
             connection.commit()

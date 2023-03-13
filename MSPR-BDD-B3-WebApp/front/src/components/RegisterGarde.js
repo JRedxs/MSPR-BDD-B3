@@ -8,8 +8,7 @@ const RegisterGarde = () => {
   const navigate = useNavigate();
 
   const [garde, setGarde] = useState({
-    // id_garde: 15, //id_garde AI , mais on doit l'ajouter en dur , correctif à apporter
-    id_plante: 8, //id_plante, attente d'avoir la data de la person pour chercher l'id plante 
+    id_plante: Number(window.sessionStorage.getItem('plante')),
     begining: "",
     finish: ""                
   });
@@ -29,8 +28,7 @@ const RegisterGarde = () => {
         .post(`${baseUrl}/plants_garde`, garde)
         .then(res => console.log(res))
         .catch(err => console.error(err));
-      console.log(add_garde.data);
-      navigate("/");
+      navigate(`/Plante/${garde.id_plante}`);
     } catch(error) {
       console.error(error);
     }
@@ -40,7 +38,6 @@ const RegisterGarde = () => {
   return (
 
     <>
-           
             <div className="d-flex align-items-center justify-content-center mx-auto m-5">
             <div className="card card-register card-color d-flex align-items-center justify-content-center " style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
                 <form>
