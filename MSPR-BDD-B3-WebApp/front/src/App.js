@@ -31,6 +31,7 @@ const App = () => {
             <Route path="/Register" element={<Register/>}/>
             <Route path="/UserProfil" element={<UserProfil/>}/>
             <Route path="/Garde/:id" element={<Garde/>}/>
+            <Route path="/Garde" element={<Garde/>}/>
             <Route path="/DevGa" element={<RegisterPlante/>}/>
             <Route path="/RegisterPlante" element={<RegisterPlante/>}/>
             <Route path="/FirstPhoto" element={<RegisterFirstPhoto/>}/>
