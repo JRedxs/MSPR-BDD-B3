@@ -54,9 +54,6 @@ const Header = () => {
                             <a class="nav-link" href="/SearchPlant" style={{color: 'white'}}>Rechercher une plante</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/Plante" style={{color: 'white'}}>Plantes</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="/AddAdvice" style={{color: 'white'}}>Ajouter un conseil</a>
                         </li>
                         <li class="nav-item">
