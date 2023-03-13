@@ -48,9 +48,6 @@ const Header = () => {
                             <a class="nav-link" href="/Map" style={{color: 'white'}}> Garder une plante <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/DevGa" style={{color: 'white'}}>Ajouter une photo</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="/SearchPlant" style={{color: 'white'}}>Rechercher une plante</a>
                         </li>
                         <li class="nav-item">
