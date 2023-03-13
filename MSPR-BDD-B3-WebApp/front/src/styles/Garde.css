@@ -1,0 +1,12 @@
+.body {
+    background-image: url('image.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 120vh;
+    padding-top: 100px;
+  }
+
+  
+.blue-card {
+    background-color: #fdefef !important;
+    }

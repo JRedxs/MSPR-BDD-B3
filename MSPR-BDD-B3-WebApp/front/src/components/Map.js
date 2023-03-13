@@ -15,14 +15,10 @@ function Map() {
   useEffect(() => { // Hook d'effet pour effectuer des appels API au chargement du composant
     const fetchData = async () => { // fonction asynchrone pour effectuer l'appel API
       try {
-       // const response_plant = await axios.get(`${baseUrl}/plant`); // fait un appel GET à l'URL /plant
         const response_user = await axios.get(`${baseUrl}/plants`)
-       // const plantsData = response_plant.data.Plants; // extrait les données "Plants" de la réponse
         const usersData = response_user.data.Person
         setUsers(usersData)
         console.log(usersData)
-      //  setPlants(plantsData); // met à jour l'état "plants" avec les données extraites
-        //console.log(plantsData) // affiche les données dans la console
       } catch (error) {
         console.error(error); // affiche l'erreur dans la console en cas de problème
       }
@@ -33,14 +29,14 @@ function Map() {
   return (
     <>
       <div className="global-wrapper">
-      <div className="title-wrapper m-4">
+      <div className="title-wrapper">
         <h1 style={{ textAlign: 'center' }}>
           <u>
             Trouvez une plante près de chez vous :
           </u>
         </h1>
       </div>
-      <div className="map-wrap m-5">
+      <div className="map-wrap">
         <div className="card card-map">
           <MapContainer center={positionLille} zoom={6} scrollWheelZoom={false}> 
             <TileLayer

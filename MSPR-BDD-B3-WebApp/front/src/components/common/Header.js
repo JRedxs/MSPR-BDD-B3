@@ -71,7 +71,7 @@ const Header = () => {
                         type="button"
                         onClick={handleToggle}
                     > 
-                                            <i className="bi bi-person"></i>
+                        <i className="bi bi-person"></i>
                     </button>
                     {isOpen && (
                         <div className="position-absolute end-0 mt-2 me-2 shadow-lg bg-white rounded" style={{ zIndex: 1}}>
