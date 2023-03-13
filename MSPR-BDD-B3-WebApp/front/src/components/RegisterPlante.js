@@ -68,7 +68,7 @@ function RegisterPlante(){
                     .then( async (planteResponse) => {
                         await axios.post(`${baseUrl}/image`, {id_plante: planteResponse.data.id_plante, data: photo})
                         .then( () => {
-                            //navigate here
+                            navigate(`/SearchPlant`)
                         })
                     })
             });
@@ -114,7 +114,7 @@ function RegisterPlante(){
                     </div>
                     <div className='d-flex align-items-center justify-content-center mb-4'>
                         {/* remove "!" pour faire disparaître le boutton */}
-                        { !photo && (<input className="btn btn-success form-button  " type="button" value="Enregistrer votre plante" onClick={uploadPlante}/>)}
+                        { photo && (<input className="btn btn-success form-button  " type="button" value="Enregistrer votre plante" onClick={uploadPlante}/>)}
                     </div>
                 </form>
             </div>

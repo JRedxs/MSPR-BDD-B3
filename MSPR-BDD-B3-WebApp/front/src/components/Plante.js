@@ -25,7 +25,7 @@ function Plante(props) {
     }
 
     const openGarde = () => {
-        navigate(`/Garde`);
+        navigate(`/RegisterGarde`);
     }
 
     useEffect(() => {

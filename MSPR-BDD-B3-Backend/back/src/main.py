@@ -31,8 +31,9 @@ app.add_middleware(
 
 @app.get("/users")
 def get_user(email: str, password: str):
-    try:
-        with connection.cursor() as cursor:
+    
+    with connection.cursor() as cursor:
+        try:
             sql = "SELECT * FROM Person WHERE email=%s and pwd=%s"
             cursor.execute(sql, (email, password))
             result = cursor.fetchall()
@@ -43,14 +44,16 @@ def get_user(email: str, password: str):
                 return {"User": users}
             else:
                 raise HTTPException(status_code=400, detail="Incorrect email or password")
-    except:
-        raise HTTPException(status_code=500, detail="Database connection error !")
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Database connection error !")
 
 
 @app.get("/users/{user_id}")
 def get_user_by_id(user_id: int):
-    try :
-        with connection.cursor() as cursor:
+    
+    with connection.cursor() as cursor:
+        try :
             sql = "SELECT * FROM Person WHERE id_person=%s"
             cursor.execute(sql, (user_id,))
             result = cursor.fetchall()
@@ -58,7 +61,8 @@ def get_user_by_id(user_id: int):
             for row in result:
                 users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8]})
                 return {"Person": users}
-    except:
+        except:
+            cursor.close()
             return {"Personne inexistante"}
         
 
@@ -113,38 +117,43 @@ def send_image(id):
 
 @app.put("/advices")
 def create_advice(advice: dict):
-    try:
-        with connection.cursor() as cursor:
+    
+    with connection.cursor() as cursor:
+        try:
             sql = "Update Photo set advice_title=%s, advice=%s where id_photo=%s"
             cursor.execute(sql, (advice["advice_title"], advice["advice"], advice["id_photo"]))
             connection.commit()
+            cursor.close()
             return {"message": "Conseil enregistrée"}
-    except:
-        raise HTTPException(status_code=500, detail="Database connection error !")
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Database connection error !")
 
 
 @app.get("/advices")
 def get_advices():
-    try:
-        with connection.cursor() as cursor:
+    with connection.cursor() as cursor:
+        try:
             sql = "SELECT * FROM Photo"
             cursor.execute(sql)
             result = cursor.fetchall()
             photo = []
             for row in result:
                 photo.append({"id_photo": row[0], "advice_title": row[1], "advice": row[2], "id_plante": row[3]})
+            cursor.close()
             if photo:
                 return {"Photo": photo}
             else:
                 raise HTTPException(status_code=400, detail="Erreur : ")
-    except:
-        raise HTTPException(status_code=500, detail="Database connection error !")
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Database connection error !")
     
 
 @app.get("/plant")
 def get_plants():
-    try:
-        with connection.cursor() as cursor:
+    with connection.cursor() as cursor:
+        try:
             sql = """
                 SELECT Plante.id_plante, name, Photo.image_data
                 FROM Plante
@@ -163,18 +172,20 @@ def get_plants():
             for row in result:
                 plants.append({"id_plante": row[0], "name": row[1], "image_data": row[2]})
             
+            cursor.close()
             if plants:
                 return {"Plants": plants}
             else:
                 raise HTTPException(status_code=400, detail="Incorrect email or password")
-    except:
-        raise HTTPException(status_code=500, detail="Database connection error !")
+        except:
+            raise HTTPException(status_code=500, detail="Database connection error !")
 
 #maybe broken
 @app.get("/plants")
 def get_info_plants():
-    try:
-        with connection.cursor() as cursor:
+    
+    with connection.cursor() as cursor:
+        try:
             sql = """
             SELECT Garde.begining, Garde.finish,Person.name,Person.firstname, Person.email, 
             Person.phone, Person.id_person, Photo.image_data, Garde.id_plante, Garde.id_garde,Plante.latitude,Plante.longitude,
@@ -205,28 +216,34 @@ def get_info_plants():
                     "town": row[12],
                     "name_plante": row[13]
                 })
+            cursor.close()
             if person_info:
                 return {"Person": person_info}
             else:
                 raise HTTPException(status_code=400, detail="Incorrect")
-    except Exception as e:
-        print(e)
-        raise HTTPException(status_code=500, detail="Database connection error !")
+        except Exception as e:
+            print(e)
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Database connection error !")
 
 
 
 @app.post("/plants_garde")
 def add_garde(garde: Garde):
-    try:
-        with connection.cursor() as cursor:
+    
+    with connection.cursor() as cursor:
+        try:
+            print(garde)
             sql = "INSERT INTO Garde (begining,finish,id_plante) VALUES(%s,%s,%s)"
             cursor.execute(sql, (garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
+            print(garde)
             connection.commit()
+            print(garde)
             cursor.close()
             return "Garde enregistrée"
-    except Exception as e :
-        print(e)
-        raise HTTPException(status_code=500, detail="Error !")
+        except Exception :
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Error !")
         
 
 
@@ -247,16 +264,19 @@ async def register_plante(plante : PlantToCreate):
 
 @app.get("/plant/{id_plante}")
 def get_plant_by_id(id_plante: int):
-    try :
-        with connection.cursor() as cursor:
+    
+    with connection.cursor() as cursor:
+        try :
             sql = "SELECT * FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
             cursor.execute(sql, (id_plante,))
             result = cursor.fetchall()
             plants = []
             for row in result:
                 plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9], "advice_title":row[11], "advice":row[12]})
-                return {"Plante": plants}
-    except:
+            cursor.close()
+            return {"Plante": plants}
+        except:
+            cursor.close()
             return {"Plante inexistante"}
     
 @app.put("/garde/{id_garde}")
@@ -275,14 +295,16 @@ def put_garde_by_id(id_garde: int, id_person: int):
         sql_update = "UPDATE Garde SET id_person = %s WHERE id_garde = %s"
         cursor.execute(sql_update, (id_person, id_garde))
         connection.commit()
+        cursor.close()
 
         return "Garde mis à jour", 200
 
 
 @app.get("/all_gardes")
 def get_all_gardes():
-    try:
-        with connection.cursor() as cursor:
+    
+    with connection.cursor() as cursor:
+        try:
             sql = "SELECT * FROM Garde"
             cursor.execute(sql)
             result = cursor.fetchall()
@@ -290,14 +312,16 @@ def get_all_gardes():
             for row in result:
                 garde.append({"id_garde": row[0],"begining": row[1],"finish": row[2],"id_person": row[3],"id_plante": row[4]})
             return {"Garde": garde}
-    except mysql.connector.Error as error:
-        return {"Error message": str(error)}
+        except mysql.connector.Error as error:
+            cursor.close()
+            return {"Error message": str(error)}
     
 
 @app.get("/plantandgallery/{id_plante}")
 def get_plant_photos_by_id(id_plante: int):
-    try :
-        with connection.cursor() as cursor:
+    
+    with connection.cursor() as cursor:
+        try :
             sql = "SELECT name, id_person, image_data, advice_title, advice, id_photo FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
             cursor.execute(sql, (id_plante,))
             result = cursor.fetchall()
@@ -308,6 +332,8 @@ def get_plant_photos_by_id(id_plante: int):
                     plants.append({"name": row[0], "id_person": row[1]})
                     firstLoop = False
                 plants.append({"id_photo":row[5],"image_data": row[2], "advice_title": row[3], "advice": row[4]})
+            cursor.close()
             return {"Plante": plants}
-    except:
+        except:
+            cursor.close()
             return {"Plante inexistante"}
