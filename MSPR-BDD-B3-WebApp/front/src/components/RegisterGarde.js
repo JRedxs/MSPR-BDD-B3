@@ -8,8 +8,8 @@ const RegisterGarde = () => {
   const navigate = useNavigate();
 
   const [garde, setGarde] = useState({
-    id_garde: 15, //id_garde AI , mais on doit l'ajouter en dur , correctif à apporter
-    id_plante: 5, //id_plante, attente d'avoir la data de la person pour chercher l'id plante 
+    // id_garde: 15, //id_garde AI , mais on doit l'ajouter en dur , correctif à apporter
+    id_plante: 8, //id_plante, attente d'avoir la data de la person pour chercher l'id plante 
     begining: "",
     finish: ""                
   });
@@ -30,7 +30,7 @@ const RegisterGarde = () => {
         .then(res => console.log(res))
         .catch(err => console.error(err));
       console.log(add_garde.data);
-      navigate("/Map");
+      navigate("/");
     } catch(error) {
       console.error(error);
     }
@@ -67,7 +67,7 @@ const RegisterGarde = () => {
                     />
                 </div>
                 <div className="d-flex align-items-center justify-content-center m-3">
-                    <Link className="btn btn-success " onClick={handleOnClick} to="/Map">Valider</Link>
+                    <Link className="btn btn-success " onClick={handleOnClick} to="/">Valider</Link>
                     <Link className="btn btn-success " type="submit" to="/">Retour</Link>
                 </div>
                 </form>

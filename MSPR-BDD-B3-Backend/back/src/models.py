@@ -40,7 +40,6 @@ class Plant(BaseModel):
    
 
 class Garde(BaseModel):
-   id_garde: int
    id_plante: int
    begining: datetime
    finish: datetime
