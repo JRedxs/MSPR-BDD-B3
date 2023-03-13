@@ -15,11 +15,11 @@ const Garde = () => {
 
 
     useEffect(() => {
-    // récupérer les infos depuis le localStorage
+    // récupérer les infos depuis le sessionStorage
     const fetchData = async() => {
         try {
-            const gardeInfo = JSON.parse(localStorage.getItem('plant'));
-            const usersInfo = JSON.parse(localStorage.getItem('user'))
+            const gardeInfo = JSON.parse(sessionStorage.getItem('plant'));
+            const usersInfo = JSON.parse(sessionStorage.getItem('user'))
             setInfos(gardeInfo);
             setUsers(usersInfo);
         } catch(error) {
@@ -30,7 +30,7 @@ const Garde = () => {
     }, []);
 
     const handleOnClick = async () => {
-        const usersInfo = JSON.parse(localStorage.getItem("user"));
+        const usersInfo = JSON.parse(sessionStorage.getItem("user"));
         try {
           const response_garde = await axios.put(
             `${baseUrl}/garde/${usersInfo.id_garde}?id_person=1`

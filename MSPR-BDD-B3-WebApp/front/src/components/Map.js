@@ -54,9 +54,7 @@ function Map() {
                   {user.name_plante} <br/>
                   <button style={{borderRadius: '10px', backgroundColor: 'green', color: 'white', borderColor: 'none'}} 
                     onClick={() => {
-                     // localStorage.setItem('plant', JSON.stringify(plant)); // ajouter les informations de la plante dans le localStorage
-                     //   const user = users.find(user => user.id_person === plant.id_person); // trouver l'utilisateur correspondant à la plante
-                      localStorage.setItem('user', JSON.stringify(user)); // ajouter les informations de l'utilisateur dans le localStorage
+                     sessionStorage.setItem('user', JSON.stringify(user)); // ajouter les informations de l'utilisateur dans le sessionStorage
                       NAVIGATE("/Garde");
                     }}>
                     Cliquez ici!
