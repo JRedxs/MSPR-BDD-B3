@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from fastapi import FastAPI, HTTPException
 from models import *
 from database import *
@@ -29,6 +31,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def takeLatinTupleGetUtf8List(theTuple):
+    newList = []
+    for n in range(len(theTuple)) :
+        if isinstance(theTuple[n], str):
+            newList.append(theTuple[n].encode('latin-1').decode('utf-8'))
+        else:
+            newList.append(theTuple[n])
+    return newList
+
 @app.get("/users")
 def get_user(email: str, password: str):
     
@@ -36,9 +47,10 @@ def get_user(email: str, password: str):
         try:
             sql = "SELECT * FROM Person WHERE email=%s and pwd=%s"
             cursor.execute(sql, (email, password))
-            result = cursor.fetchall()
+            results = cursor.fetchall()
             users = []
-            for row in result:
+            for result in results:
+                row = takeLatinTupleGetUtf8List(result)
                 users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8]})
             if users:
                 return {"User": users}
@@ -58,12 +70,14 @@ def get_user_by_id(user_id: int):
             cursor.execute(sql, (user_id,))
             result = cursor.fetchall()
             users = []
-            for row in result:
-                users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8]})
-                return {"Person": users}
+            row = takeLatinTupleGetUtf8List(result[0])
+            
+            users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8]})
+
+            return {"Person": users}
         except:
             cursor.close()
-            return {"Personne inexistante"}
+            raise HTTPException(status_code=404, detail="Personne inexistante")
         
 
 
@@ -106,6 +120,8 @@ def send_image(id):
     if rowImage is None:
         raise HTTPException(status_code=404, detail="Photo inexistante")
     
+    rowImage = takeLatinTupleGetUtf8List(rowImage)
+    
     image = DBImage(id_photo = rowImage[0], id_plante = rowImage[1], data = rowImage[2],advice="", advice_title="")#, advice_title = rowImage[3], advice = rowImage[4]
     if not rowImage[3] is None and not rowImage[4] is None:
         image.advice = rowImage[3]
@@ -136,9 +152,10 @@ def get_advices():
         try:
             sql = "SELECT * FROM Photo"
             cursor.execute(sql)
-            result = cursor.fetchall()
+            results = cursor.fetchall()
             photo = []
-            for row in result:
+            for result in results:
+                row = takeLatinTupleGetUtf8List(result)
                 photo.append({"id_photo": row[0], "advice_title": row[1], "advice": row[2], "id_plante": row[3]})
             cursor.close()
             if photo:
@@ -165,11 +182,12 @@ def get_plants():
                 LEFT JOIN Photo ON first_photo.min_photo_id = Photo.id_photo;
                 """
             cursor.execute(sql)
-            result = cursor.fetchall()
+            results = cursor.fetchall()
 
             plants = []
 
-            for row in result:
+            for result in results:
+                row = takeLatinTupleGetUtf8List(result)
                 plants.append({"id_plante": row[0], "name": row[1], "image_data": row[2]})
             
             cursor.close()
@@ -197,9 +215,10 @@ def get_info_plants():
             WHERE Garde.id_person is NULL;
             """
             cursor.execute(sql)
-            result = cursor.fetchall()
+            results = cursor.fetchall()
             person_info = []
-            for row in result:
+            for result in results:
+                row = takeLatinTupleGetUtf8List(result)
                 person_info.append({
                     "begining": row[0],
                     "finish": row[1],
@@ -269,9 +288,10 @@ def get_plant_by_id(id_plante: int):
         try :
             sql = "SELECT * FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
             cursor.execute(sql, (id_plante,))
-            result = cursor.fetchall()
+            results = cursor.fetchall()
             plants = []
-            for row in result:
+            for result in results:
+                row = takeLatinTupleGetUtf8List(result)
                 plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9], "advice_title":row[11], "advice":row[12]})
             cursor.close()
             return {"Plante": plants}
@@ -307,9 +327,10 @@ def get_all_gardes():
         try:
             sql = "SELECT * FROM Garde"
             cursor.execute(sql)
-            result = cursor.fetchall()
+            results = cursor.fetchall()
             garde = []
-            for row in result:
+            for result in results:
+                row = takeLatinTupleGetUtf8List(result)
                 garde.append({"id_garde": row[0],"begining": row[1],"finish": row[2],"id_person": row[3],"id_plante": row[4]})
             return {"Garde": garde}
         except mysql.connector.Error as error:
@@ -324,10 +345,11 @@ def get_plant_photos_by_id(id_plante: int):
         try :
             sql = "SELECT name, id_person, image_data, advice_title, advice, id_photo FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
             cursor.execute(sql, (id_plante,))
-            result = cursor.fetchall()
+            results = cursor.fetchall()
             plants = []
             firstLoop = True
-            for row in result:
+            for result in results:
+                row = takeLatinTupleGetUtf8List(result)
                 if firstLoop:
                     plants.append({"name": row[0], "id_person": row[1]})
                     firstLoop = False

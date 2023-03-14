@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from passlib.context import CryptContext
 import os
 from datetime import datetime, timedelta

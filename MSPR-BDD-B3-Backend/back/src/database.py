@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pymysql
 
 
@@ -5,10 +7,10 @@ import pymysql
 
 
 def mysql_local():
-    return pymysql.connect(host='localhost', user='admin', password='admin', db='Arosaje_db', port=3306)
+    return pymysql.connect(host='localhost', user='admin', password='admin', db='Arosaje_db', port=3306, charset='utf8')
 
 def mysql_container():
-    return pymysql.connect(host='mysql-db-compose', user='admin', password='admin', db='Arosaje_db', port=3306)
+    return pymysql.connect(host='mysql-db-compose', user='admin', password='admin', db='Arosaje_db', port=3306, charset='utf8')
 
 def mysql():
     mysql = ''
