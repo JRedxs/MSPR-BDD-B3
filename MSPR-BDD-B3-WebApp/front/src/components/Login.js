@@ -17,7 +17,7 @@ const LoginPage = () => {
         const response = await axios.get(`${baseUrl}/users?email=${email}&password=${password}`);
         const user = response.data.User;
         if (user.length > 0) {
-            console.log("Utilisateur inscrit dans la base de données", response);
+            window.sessionStorage.setItem('person', JSON.stringify(Number(user[0].id_person)));
             navigate(`/SearchPlant`);
 
         } else {

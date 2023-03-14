@@ -10,6 +10,7 @@ const Garde = () => {
 
     const baseUrl = process.env.REACT_APP_API_URL; // URL de base pour les appels API
     const [infosusers, setUsers] = useState({});
+    const [person] = useState(Number(sessionStorage.getItem('person')));
 
     useEffect(() => {
         // récupérer les infos depuis le sessionStorage
@@ -28,7 +29,7 @@ const Garde = () => {
         const usersInfo = JSON.parse(sessionStorage.getItem("user"));
         try {
             const response_garde = await axios.put(
-                `${baseUrl}/garde/${usersInfo.id_garde}?id_person=1`
+                `${baseUrl}/garde/${usersInfo.id_garde}?id_person=${person}`
             );
             const gardeData = response_garde.data;
             console.log("Garde ajouté :", gardeData);

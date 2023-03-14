@@ -14,9 +14,10 @@ import {
 
 const UserProfil = () => {
     const [users, setUsers] = useState([]);
+    const [person] = useState(Number(sessionStorage.getItem('person')));
   
     const requestAxios = () => {
-      axios.get(process.env.REACT_APP_API_URL + '/users')
+      axios.get(process.env.REACT_APP_API_URL + `/users/${person}`)
         .then(response => {
           setUsers(response.data.Person)
           console.log(response.data.Person)
@@ -69,7 +70,7 @@ const UserProfil = () => {
               <MDBCardBody>
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Name </MDBCardText>
+                    <MDBCardText>Nom</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
                     
@@ -85,42 +86,34 @@ const UserProfil = () => {
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
+                    <MDBCardText>Prénom</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">{users[0].firstname}</MDBCardText>
+                  </MDBCol>
+                </MDBRow>
+
+                <hr />
+                <MDBRow>
+                  <MDBCol sm="3">
                     <MDBCardText>Email</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">example@example.com</MDBCardText>
+                    <MDBCardText className="text-muted">{users[0].email}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
 
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Phone</MDBCardText>
+                    <MDBCardText>Téléphone</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">(097) 234-5678</MDBCardText>
+                    <MDBCardText className="text-muted">{users[0].phone}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
 
-                <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Mobile</MDBCardText>
-                  </MDBCol>
-                  <MDBCol sm="9">
-                    <MDBCardText className="text-muted">(098) 765-4321</MDBCardText>
-                  </MDBCol>
-                </MDBRow>
 
-                <hr />
-                <MDBRow>
-                  <MDBCol sm="3">
-                    <MDBCardText>Address</MDBCardText>
-                  </MDBCol>
-                  <MDBCol sm="9">
-                    <MDBCardText className="text-muted">Bay Area, San Francisco, CA</MDBCardText>
-                  </MDBCol>
-                </MDBRow>
               </MDBCardBody>
             </MDBCard>
 
