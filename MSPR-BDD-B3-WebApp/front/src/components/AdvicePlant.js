@@ -13,7 +13,7 @@ const AdvicePlant = () => {
   const baseUrl = process.env.REACT_APP_API_URL;
 
   const [advice, setAdvice] = useState({ advice_title: "", advice: "", id_photo: id_photo });
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
 
@@ -31,6 +31,7 @@ const AdvicePlant = () => {
         setUser(userData);
         console.log(userData);
         sessionStorage.setItem("user_plante", JSON.stringify(userData));
+      
       } catch (error) {
         console.error(error)
       }
@@ -67,9 +68,10 @@ const AdvicePlant = () => {
             <div className="card-body mx-auto">
               <div className="d-flex justify-content-center margin-login-card" style={{ height: 1000 }}>
                 <form className="mx-auto" >
-                  {/* <div className="card-body mx-auto" style={{ textAlign: 'center' }}>
-                    <img src={user[1].image_data} alt="" style={{ width: "55%", borderRadius: '15px', margin: 'auto' }} />
-                  </div> */}
+                  <div className="card-body mx-auto" style={{ textAlign: 'center' }}>
+                    {/* condition : si user est null, on affiche rien, sinon on affiche l'image... */}
+                    {user && (<img src={user[1].image_data} alt="" style={{ width: "55%", borderRadius: '15px', margin: 'auto' }} />)}
+                  </div>
                   <div className="card-body mx-auto" style={{ textAlign: 'center' }}>
                     <label className="card-body mx-auto" htmlFor="begining" style={{ color: 'black', fontSize: '20px' }}> <b>Titre du conseil : </b> </label>
                     <input type="text" name="advice_title" value={advice.advice_title} onChange={handleInputChange} placeholder="Titre" />
