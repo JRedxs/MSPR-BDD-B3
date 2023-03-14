@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import axios from 'axios';
 import '../styles/Register.css';
 
+import photo from '../styles/image_register.jpg'
+
 const Register = () => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const [error, setError] = useState("");
@@ -38,7 +40,10 @@ const Register = () => {
         }
         axios
             .post(`${baseUrl}/persons`, formData)
-            .then(res => console.log(res))
+            .then(res => {
+                console.log(res);
+                NAVIGATE('/login')
+            })
             .catch(err => console.error(err));
     };
 
@@ -53,94 +58,123 @@ const Register = () => {
     };
 
     return (
-        <div className=" register d-flex align-items-center justify-content-center mx-auto">
-            <div className="card card-register card-color d-flex align-items-center justify-content-center" style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label className="form_label m-2" htmlFor="name"><b>Prénom :</b></label>
-                        <input
-                            placeholder="Prénom"
-                            className="form-control m-2 w-auto"
-                            type="text"
-                            id="name"
-                            name="name"
-                            onChange={handleChange}
-                            value={formData.name}
-                        />
+        <section className="h-100 bg-white">
+            <div className="container py-5 h-100">
+                <div className="row d-flex justify-content-center align-items-center h-60">
+                    <div className="col">
+                        <div className="card card-registration my-4">
+                            <div className="row g-0">
+                                <div className="col-xl-6 d-none d-xl-block">
+                                    <img src={photo}
+                                        alt="Sample photo" className="img-fluid"
+                                        style={{ borderTopLeftRadius: '.20rem', borderBottomLeftRadius: '.15rem' }} />
+                                </div>
+                                <div className="col-xl-6">
+                                    <div className="card-body p-md-5 text-black">
+                                        <form onSubmit={handleSubmit}>
+                                        <h3 className="mb-5 text-uppercase" style={{ display: 'flex', justifyContent: 'center'}}>Inscription</h3>
+
+                                        <div className="row">
+                                            <div className="col-md-6 mb-4">
+                                                <div className="form-outline">
+                                                    <input
+                                                        placeholder="Prénom"
+                                                        className="form-control form-control-lg"
+                                                        htmlFor="name"
+                                                        type="text"
+                                                        id="name"
+                                                        name="name"
+                                                        onChange={handleChange}
+                                                        value={formData.name}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6 mb-4">
+                                                <div className="form-outline">
+                                                    <input
+                                                        placeholder="Nom"
+                                                        className="form-control form-control-lg"
+                                                        type="text"
+                                                        id="firstname"
+                                                        name="firstname"
+                                                        onChange={handleChange}
+                                                        value={formData.firstname}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br />
+                                        <div className="row">
+                                            <div className="form-outline mb-4">
+                                                <input
+                                                    placeholder="Numéro de téléphone"
+                                                    className="form-control form-control-lg"
+                                                    type="tel"
+                                                    id="phone"
+                                                    name="phone"
+                                                    onChange={handlePhoneChange}
+                                                    value={formData.phone}
+                                                />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div className="row">
+                                            <div className="form-outline mb-4">
+                                                <input
+                                                    placeholder="Adresse Email"
+                                                    className="form-control form-control-lg"
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    onChange={handleChange}
+                                                    value={formData.email}
+                                                />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div className="row">
+                                            <div className="form-outline mb-4">
+                                                <input
+                                                    placeholder="Password"
+                                                    className="form-control form-control-lg"
+                                                    type="password"
+                                                    id="password"
+                                                    name="password"
+                                                    onChange={handleChange}
+                                                    value={formData.password}
+                                                />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div className="row">
+                                            <div className="form-outline mb-4">
+                                                <input
+                                                    placeholder="Confirmer votre password"
+                                                    className="form-control form-control-lg"
+                                                    type="password"
+                                                    id="confirmPassword"
+                                                    name="confirmPassword"
+                                                    required
+                                                    onChange={handleChange}
+                                                    value={formData.confirmPassword}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="d-flex justify-content-center pt-3">
+                                        <Link className="btn btn-warning btn-lg ms-2" type="button" style={{backgroundColor: '#48dbfb'}}  to="/Login">Retour</Link>
+                                            <button type="submit" className="btn btn-warning btn-lg ms-2" style={{backgroundColor: '#48dbfb'}}>Valider</button>
+                                        </div>
+                                        {error && <p>{error}</p>}
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label className="form_label m-2" htmlFor="firstname"><b>Nom :</b></label>
-                        <input
-                            placeholder="Nom"
-                            className="form-control m-2 w-auto"
-                            type="text"
-                            id="firstname"
-                            name="firstname"
-                            onChange={handleChange}
-                            value={formData.firstname}
-                        />
-                    </div>
-                    <div>
-                        <label className="form_label m-2" htmlFor="phone"><b>Téléphone :</b></label>
-                        <input
-                            placeholder="Numéro de téléphone"
-                            className="form-control m-2 w-auto"
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            onChange={handlePhoneChange}
-                            value={formData.phone}
-                        />
-                    </div>
-                    <div>
-                        <label className="form_label m-2" htmlFor="email"><b> Email :</b></label>
-                        <input
-                            placeholder="Adresse Email"
-                            className="form-control m-2 w-auto"
-                            type="email"
-                            id="email"
-                            name="email"
-                            onChange={handleChange}
-                            value={formData.email}
-                        />
-                    </div>
-                    <div>
-                        <label  className="form_label m-2" htmlFor="password"><b>Password : </b></label>
-                        <input
-                            placeholder="Password"
-                            className="form-control m-2 w-auto"
-                            type="password"
-                            id="password"
-                            name="password"
-                            onChange={handleChange}
-                            value={formData.password}
-                        />
-                    </div>
-                    <div>
-                        <label className="form_label m-2" htmlFor="confirmPassword"> <b>Confirm password :</b></label>
-                        <input
-                            placeholder="Confirmer votre password"
-                            className="form-control m-2 w-auto"
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            required
-                            onChange={handleChange}
-                            value={formData.confirmPassword}
-                        />
-                    </div>
-                    <div className="d-flex align-items-center justify-content-center">
-                        <button
-                            className="btn btn-success form-button"
-                            onClick={() => NAVIGATE("/login")} // Le onclick prend le dessus sur le onSubmit
-                            type="submit">S'inscrire
-                        </button>
-                        <Link className="btn btn-success" to="/login">Retour</Link>
-                    </div>
-                    {error && <p>{error}</p>}
-                </form>
+                </div>
             </div>
-        </div>
+        </section>
     )
 }
 export default Register;
