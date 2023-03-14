@@ -7,7 +7,7 @@ class Person(BaseModel):
         password: str
         email: str
         phone: str
-        id_role: int
+        id_role: int = 2
 
 class Image(BaseModel):
         data: str
