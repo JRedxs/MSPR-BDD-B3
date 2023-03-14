@@ -13,10 +13,11 @@ import {
 } from 'mdb-react-ui-kit';
 
 const UserProfil = () => {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([{firstname:"",email:"",phone:""}]);
     const [person] = useState(Number(sessionStorage.getItem('person')));
   
     const requestAxios = () => {
+      console.log("request axios")
       axios.get(process.env.REACT_APP_API_URL + `/users/${person}`)
         .then(response => {
           setUsers(response.data.Person)
