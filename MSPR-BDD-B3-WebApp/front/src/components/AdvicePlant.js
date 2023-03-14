@@ -60,10 +60,9 @@ const AdvicePlant = () => {
 
       <div className="body">
         <div className="container">
-          <h1 style={{ textAlign: 'center' }}>
+          <h1 className="d-flex justify-content-center mb-4" style={{ textAlign: 'center' }}>
             <b> Conseils </b>
           </h1>
-
           <div className="card card-login mx-auto blue-card shadow-lg bg-white rounded" style={{ borderRadius: "15px", border: "2px solid black", width: '50%', height: '35em', marginTop: 0, marginBottom: 0 }}>
             <div className="card-body mx-auto">
               <div className="d-flex justify-content-center margin-login-card" style={{ height: 1000 }}>

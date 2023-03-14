@@ -32,7 +32,7 @@ function Map() {
       <div className="global-wrapper">
         <div className="title-wrapper">
           <h1 style={{ textAlign: 'center' }}>
-            Trouvez une plante près de chez vous :
+            <u>Trouvez une plante près de chez vous :</u>
           </h1>
         </div>
         <br />
@@ -58,7 +58,6 @@ function Map() {
                     </Popup>
                   </Marker>
                 ))}
-
               </MapContainer>
             </div>
           </div>
@@ -66,5 +65,4 @@ function Map() {
     </>
   )
 }
-
 export default Map;
