@@ -28,41 +28,41 @@ function Map() {
 
   return (
     <>
+
       <div className="global-wrapper">
-      <div className="title-wrapper">
-        <h1 style={{ textAlign: 'center' }}>
-          <u>
+        <div className="title-wrapper">
+          <h1 style={{ textAlign: 'center' }}>
             Trouvez une plante près de chez vous :
-          </u>
-        </h1>
-      </div>
-      <div className="map-wrap">
-        <div className="card card-map">
-          <MapContainer center={positionLille} zoom={6} scrollWheelZoom={false}> 
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" // définit l'URL pour les tuiles de la carte
-            />
-
-            {users.map(user => ( // boucle à travers les plantes pour afficher des marqueurs sur la carte
-              <Marker key={user.id_garde} position={[user.latitude, user.longitude]}>
-                <Popup>
-                  {user.name_plante} <br/>
-                  <button style={{borderRadius: '10px', backgroundColor: 'green', color: 'white', borderColor: 'none'}} 
-                    onClick={() => {
-                     sessionStorage.setItem('user', JSON.stringify(user)); // ajouter les informations de l'utilisateur dans le sessionStorage
-                      NAVIGATE("/Garde");
-                    }}>
-                    Cliquez ici!
-                  </button>
-                </Popup>
-              </Marker>
-            ))}
-
-          </MapContainer>
+          </h1>
         </div>
-      </div>
-    </div>  
+        <br />
+          <div className="map-wrap" style={{ marginTop: 0, marginBottom: 0 }}>
+            <div className="card card-map">
+              <MapContainer center={positionLille} zoom={6} scrollWheelZoom={false}>
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" // définit l'URL pour les tuiles de la carte
+                />
+
+                {users.map(user => ( // boucle à travers les plantes pour afficher des marqueurs sur la carte
+                  <Marker key={user.id_garde} position={[user.latitude, user.longitude]}>
+                    <Popup>
+                      {user.name_plante} <br />
+                      <button style={{ borderRadius: '10px', backgroundColor: 'green', color: 'white', borderColor: 'none' }}
+                        onClick={() => {
+                          sessionStorage.setItem('user', JSON.stringify(user)); // ajouter les informations de l'utilisateur dans le sessionStorage
+                          NAVIGATE("/Garde");
+                        }}>
+                        Cliquez ici!
+                      </button>
+                    </Popup>
+                  </Marker>
+                ))}
+
+              </MapContainer>
+            </div>
+          </div>
+        </div>
     </>
   )
 }
