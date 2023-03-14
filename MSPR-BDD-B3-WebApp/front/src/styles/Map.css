@@ -18,6 +18,12 @@
 }
 
 .global-wrapper {
-    background-color: rgb(206, 204, 204);
+    background-color: rgb(255, 255, 255);
+    padding: 50px 0;
 }
+
+.map-wrap{
+    border-radius: 100px;
+}
+
 
