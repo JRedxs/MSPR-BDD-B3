@@ -30,9 +30,6 @@ function SearchPlant() {
     return (
         <>
             <div className=' d-flex align-items-center justify-content-center mt-5'>
-                <button className='btn btn-success mb-5' onClick={openPlanteRegister}>
-                    Enregistrer une plante
-                </button>
             </div>
             <div className='plants-container d-flex align-items-center justify-content-center'>
                 {plants.map((plant) => (
@@ -71,7 +68,14 @@ function SearchPlant() {
                         </Card>
                     </div>
                 ))}
+                
             </div>
+            <div>
+            <button className='btn btn-success mb-5' onClick={openPlanteRegister}>
+                    Enregistrer une plante
+                </button>
+            </div>
+            
 
         </>
     );
