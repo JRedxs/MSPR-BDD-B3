@@ -58,123 +58,110 @@ const Register = () => {
     };
 
     return (
-        <section className="h-100 bg-white">
-            <div className="container py-5 h-100">
-                <div className="row d-flex justify-content-center align-items-center h-60">
-                    <div className="col">
-                        <div className="card card-registration my-4">
-                            <div className="row g-0">
-                                <div className="col-xl-6 d-none d-xl-block">
-                                    <img src={photo}
-                                        alt="Sample photo" className="img-fluid"
-                                        style={{ borderTopLeftRadius: '.20rem', borderBottomLeftRadius: '.15rem' }} />
-                                </div>
-                                <div className="col-xl-6">
-                                    <div className="card-body p-md-5 text-black">
-                                        <form onSubmit={handleSubmit}>
-                                        <h3 className="mb-5 text-uppercase" style={{ display: 'flex', justifyContent: 'center'}}>Inscription</h3>
+        <div className="body">
+            <section className="h-100 form-register">
+                <div className="card card-register card-registration d-flex justify-content-center my-4">
+                    <div className="card-body   text-black">
+                        <form onSubmit={handleSubmit}>
+                            <h3 className="mb-5 text-uppercase" style={{ display: 'flex', justifyContent: 'center' }}>Inscription</h3>
 
-                                        <div className="row">
-                                            <div className="col-md-6 mb-4">
-                                                <div className="form-outline">
-                                                    <input
-                                                        placeholder="Prénom"
-                                                        className="form-control form-control-lg"
-                                                        htmlFor="name"
-                                                        type="text"
-                                                        id="name"
-                                                        name="name"
-                                                        onChange={handleChange}
-                                                        value={formData.name}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6 mb-4">
-                                                <div className="form-outline">
-                                                    <input
-                                                        placeholder="Nom"
-                                                        className="form-control form-control-lg"
-                                                        type="text"
-                                                        id="firstname"
-                                                        name="firstname"
-                                                        onChange={handleChange}
-                                                        value={formData.firstname}
-                                                    />
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <br />
-                                        <div className="row">
-                                            <div className="form-outline mb-4">
-                                                <input
-                                                    placeholder="Numéro de téléphone"
-                                                    className="form-control form-control-lg"
-                                                    type="tel"
-                                                    id="phone"
-                                                    name="phone"
-                                                    onChange={handlePhoneChange}
-                                                    value={formData.phone}
-                                                />
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div className="row">
-                                            <div className="form-outline mb-4">
-                                                <input
-                                                    placeholder="Adresse Email"
-                                                    className="form-control form-control-lg"
-                                                    type="email"
-                                                    id="email"
-                                                    name="email"
-                                                    onChange={handleChange}
-                                                    value={formData.email}
-                                                />
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div className="row">
-                                            <div className="form-outline mb-4">
-                                                <input
-                                                    placeholder="Password"
-                                                    className="form-control form-control-lg"
-                                                    type="password"
-                                                    id="password"
-                                                    name="password"
-                                                    onChange={handleChange}
-                                                    value={formData.password}
-                                                />
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div className="row">
-                                            <div className="form-outline mb-4">
-                                                <input
-                                                    placeholder="Confirmer votre password"
-                                                    className="form-control form-control-lg"
-                                                    type="password"
-                                                    id="confirmPassword"
-                                                    name="confirmPassword"
-                                                    required
-                                                    onChange={handleChange}
-                                                    value={formData.confirmPassword}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="d-flex justify-content-center pt-3">
-                                        <Link className="btn btn-warning btn-lg ms-2" type="button" style={{backgroundColor: '#3CB371 '}}  to="/Login">Retour</Link>
-                                            <button type="submit" className="btn btn-warning btn-lg ms-2" style={{backgroundColor: '#3CB371 '}}>Valider</button>
-                                        </div>
-                                        {error && <p>{error}</p>}
-                                        </form>
+                            <div className="row">
+                                <div className="col-md-6 mb-4">
+                                    <div className="form-outline">
+                                        <input
+                                            placeholder="Prénom"
+                                            className="form-control form-control-lg shadow"
+                                            htmlFor="name"
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            onChange={handleChange}
+                                            value={formData.name}
+                                        />
                                     </div>
                                 </div>
+                                <div className="col-md-6 mb-4">
+                                    <div className="form-outline">
+                                        <input
+                                            placeholder="Nom"
+                                            className="form-control form-control-lg shadow"
+                                            type="text"
+                                            id="firstname"
+                                            name="firstname"
+                                            onChange={handleChange}
+                                            value={formData.firstname}
+                                        />
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
+                            <br />
+                            <div className="row">
+                                <div className="form-outline mb-4">
+                                    <input
+                                        placeholder="Numéro de téléphone"
+                                        className="form-control form-control-lg shadow"
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        onChange={handlePhoneChange}
+                                        value={formData.phone}
+                                    />
+                                </div>
+                            </div>
+                            <br />
+                            <div className="row">
+                                <div className="form-outline mb-4">
+                                    <input
+                                        placeholder="Adresse Email"
+                                        className="form-control form-control-lg shadow"
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        onChange={handleChange}
+                                        value={formData.email}
+                                    />
+                                </div>
+                            </div>
+                            <br />
+                            <div className="row">
+                                <div className="form-outline mb-4">
+                                    <input
+                                        placeholder="Password"
+                                        className="form-control form-control-lg shadow"
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        onChange={handleChange}
+                                        value={formData.password}
+                                    />
+                                </div>
+                            </div>
+                            <br />
+                            <div className="row">
+                                <div className="form-outline mb-4">
+                                    <input
+                                        placeholder="Confirmer votre password"
+                                        className="form-control form-control-lg shadow"
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        required
+                                        onChange={handleChange}
+                                        value={formData.confirmPassword}
+                                    />
+                                </div>
+                            </div>
+                            <div className="d-flex justify-content-center pt-3">
+                                <Link className="btn btn-warning btn-lg ms-2" type="button" style={{ backgroundColor: '#8E685A ', color: 'white' }} to="/Login">Retour</Link>
+                                <button type="submit" className="btn btn-warning btn-lg ms-2" style={{ backgroundColor: '#8E685A', color: 'white' }}>Valider</button>
+                            </div>
+                            {error && <p>{error}</p>}
+                        </form>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     )
 }
 export default Register;

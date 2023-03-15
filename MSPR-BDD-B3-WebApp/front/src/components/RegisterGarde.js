@@ -10,7 +10,7 @@ const RegisterGarde = () => {
   const [garde, setGarde] = useState({
     id_plante: Number(window.sessionStorage.getItem('plante')),
     begining: "",
-    finish: ""                
+    finish: ""
   });
 
   const handleChange = (event) => {
@@ -20,16 +20,22 @@ const RegisterGarde = () => {
       [name]: value,
     }));
   };
+  console.log(garde.begining)
 
   const handleOnClick = (event) => {
-    try {  
+    try {
+      const gardeData = {
+        id_plante: garde.id_plante,
+        begining: garde.begining + ':00.000Z',
+        finish: garde.finish + '00:000Z'
+      }
       event.preventDefault();
-      const add_garde = axios
-        .post(`${baseUrl}/plants_garde`, garde)
+      axios
+        .post(`${baseUrl}/plants_garde`, gardeData)
         .then(res => console.log(res))
         .catch(err => console.error(err));
       navigate(`/Plante/${garde.id_plante}`);
-    } catch(error) {
+    } catch (error) {
       console.error(error);
     }
   };
@@ -38,38 +44,43 @@ const RegisterGarde = () => {
   return (
 
     <>
-            <div className="d-flex align-items-center justify-content-center mx-auto m-5">
-            <div className="card card-register card-color d-flex align-items-center justify-content-center " style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
-                <form>
-                <div>
-                    <label htmlFor="begining">Début de la garde :</label>
-                    <input
-                    className="form-control m-2 w-auto"
-                    type="datetime-local"
-                    id="begining"
-                    name="begining"
-                    onChange={handleChange}
-                    value={garde.begining}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="finish">Fin de la garde :</label>
-                    <input
-                    className="form-control m-2 w-auto"
-                    type="datetime-local"
-                    id="finish"
-                    name="finish"
-                    onChange={handleChange}
-                    value={garde.finish}
-                    />
-                </div>
-                <div className="d-flex align-items-center justify-content-center m-3">
-                    <Link className="btn btn-success " onClick={handleOnClick} to="/">Valider</Link>
-                    <Link className="btn btn-success " type="submit" to="/">Retour</Link>
-                </div>
-                </form>
-            </div>
+      <div className="body">
+        <div className=" d-flex align-items-center justify-content-center">
+          <h1><b><u>Enregister ici une demande de garde de votre plante </u></b></h1>
+        </div>
+        <div className="d-flex align-items-center justify-content-center mx-auto m-5">
+          <div className="card card-register card-color d-flex align-items-center justify-content-center " style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
+            <form>
+              <div className=" align-items-center justify-content-center m-4">
+                <label htmlFor="begining"><b>Début de la garde :</b></label>
+                <input
+                  className="form-control m-2 w-auto"
+                  type="datetime-local"
+                  id="begining"
+                  name="begining"
+                  onChange={handleChange}
+                  value={garde.begining}
+                />
+              </div>
+              <div className="align-items-center justify-content-center m-4">
+                <label htmlFor="finish"><b>Fin de la garde :</b></label>
+                <input
+                  className="form-control m-2 w-auto"
+                  type="datetime-local"
+                  id="finish"
+                  name="finish"
+                  onChange={handleChange}
+                  value={garde.finish}
+                />
+              </div>
+              <div className="d-flex align-items-center justify-content-center m-3">
+                <Link className="btn btn-success m-2" onClick={handleOnClick} to="/">Valider</Link>
+                <Link className="btn btn-success m-2" type="submit" to="/">Retour</Link>
+              </div>
+            </form>
           </div>
+        </div>
+      </div>
     </>
   );
 };

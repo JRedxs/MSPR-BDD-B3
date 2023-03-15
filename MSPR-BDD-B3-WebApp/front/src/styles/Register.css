@@ -13,8 +13,8 @@
     margin: 1em;
 }
 
-.register{
-    background-color: rgb(206, 204, 204);
+.form-register{
+    background: rgba(236,237,232, 0.5) !important; 
     
 
 }

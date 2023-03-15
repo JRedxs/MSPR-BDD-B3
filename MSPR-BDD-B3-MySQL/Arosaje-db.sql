@@ -1,4 +1,6 @@
-Use Arosaje-db;
+ALTER DATABASE Arosaje_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+Use Arosaje_db;
 
 CREATE TABLE Role(
    id_role INT NOT NULL AUTO_INCREMENT,
