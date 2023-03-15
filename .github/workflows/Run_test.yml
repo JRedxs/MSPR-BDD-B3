@@ -28,6 +28,7 @@ jobs:
       - name: Run tests file 1
         run: |
           cd ..
+          pip install pytest
           python MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src/test_takeLatinTupleGetUtf8List.py
 
       - name: Run tests file 2
