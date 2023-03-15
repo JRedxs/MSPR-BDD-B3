@@ -25,7 +25,6 @@ function Map() {
     };
     fetchData(); // appelle la fonction fetchData()
   }, []); // les crochets vides indiquent que le hook d'effet ne doit être appelé qu'une fois au chargement du composant
-
   return (
     <>
       <div className="body">
