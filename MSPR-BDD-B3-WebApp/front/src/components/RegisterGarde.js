@@ -10,7 +10,7 @@ const RegisterGarde = () => {
   const [garde, setGarde] = useState({
     id_plante: Number(window.sessionStorage.getItem('plante')),
     begining: "",
-    finish: ""                
+    finish: ""
   });
 
   const handleChange = (event) => {
@@ -20,16 +20,22 @@ const RegisterGarde = () => {
       [name]: value,
     }));
   };
+  console.log(garde.begining)
 
   const handleOnClick = (event) => {
-    try {  
+    try {
+      const gardeData = {
+        id_plante: garde.id_plante,
+        begining: garde.begining + ':00.000Z',
+        finish: garde.finish + '00:000Z'
+      }
       event.preventDefault();
-      const add_garde = axios
-        .post(`${baseUrl}/plants_garde`, garde)
+      axios
+        .post(`${baseUrl}/plants_garde`, gardeData)
         .then(res => console.log(res))
         .catch(err => console.error(err));
       navigate(`/Plante/${garde.id_plante}`);
-    } catch(error) {
+    } catch (error) {
       console.error(error);
     }
   };
