@@ -27,7 +27,7 @@ jobs:
           pwd
           ls
           python -m pip install --upgrade pip
-          pip install -r MSPR-BDD-B3/Backend/requirements.txt
+          pip install -r MSPR-BDD-B3-BackEnd/Backend/requirements.txt
 
       - name: Run tests file 1
         run: |
