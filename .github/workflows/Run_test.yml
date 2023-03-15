@@ -13,6 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: Checkout my project
+        with:
+           ref: ${{ github.sha }}
+        working-directory: MSPR-BDD-B3
+
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
