@@ -36,3 +36,4 @@ jobs:
           python ../MSPR-BDD-B3-Tests/test_testLogin.py
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        
