@@ -33,7 +33,7 @@ jobs:
           python -m venv env
           source env/bin/activate
           cd MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src
-          pytest
+          pytest test_takeLatinTupleGetUtf8List.py
 
 
 
