@@ -6,38 +6,43 @@ from datetime import datetime, timedelta
 from typing import Union, Any
 from jose import jwt
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 30  # 30 minutes
-REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
-ALGORITHM = "HS256"
-JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY']     # should be kept secret
-JWT_REFRESH_SECRET_KEY = os.environ['JWT_REFRESH_SECRET_KEY']      # should be kept secret
+# connection = MSQL
 
-password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# SECRET_KEY = os.getenv('SECRET')
+# ALGORITHM = os.getenv('ALGORITHM')
+# ACCES_TOKEN_EXPIRE_MINUTES = 30
 
-def get_hashed_password(password: str) -> str:
-    return password_context.hash(password)
+# def create_access_token(data: dict):
+#     to_encode = data.copy()
+#     expire = datetime.utcnow() + timedelta(minutes=ACCES_TOKEN_EXPIRE_MINUTES)
+#     to_encode.update({"expiration_date": expire})
+#     encoded_jwt = jwt.encode(to_encode, SECRET_KEY,algorithm=ALGORITHM)
+#     return encoded_jwt
+
+# # def verify_token(token: str, credentials_exception):
+# #     try:
+# #         payload = jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
+# #         username: str = payload.get("sub")
+# #         if username is None:
+# #             raise credentials_exception
+# #         token_data = TokenData(username=username)
+# #     except JWTError:
+# #         raise credentials_exception
 
 
-def verify_password(password: str, hashed_pass: str) -> bool:
-    return password_context.verify(password, hashed_pass)
+# def verify_token(token: str, credentials_exception):
+#     try:
+#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+#         username: str = payload.get("sub")
+#         if username is None:
+#             raise credentials_exception
+#         token_data = TokenData(username=username)
+#     except JWTError:
+#         raise credentials_exception
 
-
-def create_access_token(subject: Union[str, Any], expires_delta: int = None) -> str:
-    if expires_delta is not None:
-        expires_delta = datetime.utcnow() + expires_delta
-    else:
-        expires_delta = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    
-    to_encode = {"exp": expires_delta, "sub": str(subject)}
-    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, ALGORITHM)
-    return encoded_jwt
-
-def create_refresh_token(subject: Union[str, Any], expires_delta: int = None) -> str:
-    if expires_delta is not None:
-        expires_delta = datetime.utcnow() + expires_delta
-    else:
-        expires_delta = datetime.utcnow() + timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
-    
-    to_encode = {"exp": expires_delta, "sub": str(subject)}
-    encoded_jwt = jwt.encode(to_encode, JWT_REFRESH_SECRET_KEY, ALGORITHM)
-    return encoded_jwt
+#     cursor = connection.cursor(dictionary=True)
+#     cursor.execute("SELECT * FROM users WHERE username=%s", (token_data.username,))
+#     user = cursor.fetchone()
+#     if not user:
+#         raise credentials_exception
+#     return user

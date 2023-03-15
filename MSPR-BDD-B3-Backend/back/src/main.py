@@ -4,6 +4,8 @@ from fastapi import FastAPI, HTTPException
 from models import *
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
+# from security import *
+# from oauth import *
 
 # Connexion à la base de données
 connection = MSQL
@@ -81,7 +83,8 @@ def get_user_by_id(user_id: int):
         
 
 
-@app.post("/persons")
+
+@app.post("/persons", summary="Création de personnes et ajout d'un accès token")
 async def add_user(person: Person):
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM Person WHERE email=%s", (person.email,))
@@ -94,6 +97,14 @@ async def add_user(person: Person):
 
     cursor.close()
     return {"message": "Ajout avec succès"}
+
+# @app.post('/login')
+# def login(request: OAuth2PasswordRequestForm = Depends()):
+#     user = authenticate_user(request.username, request.password)
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+#     access_token = create_access_token(data={"sub": user["username"]})
+#     return {"access_token": access_token, "token_type": "bearer"}
 
 
 @app.post("/image")
@@ -144,6 +155,7 @@ def create_advice(advice: dict):
         except:
             cursor.close()
             raise HTTPException(status_code=500, detail="Database connection error !")
+        
 
 
 @app.get("/advices")
