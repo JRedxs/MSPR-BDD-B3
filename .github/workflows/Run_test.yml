@@ -26,7 +26,7 @@ jobs:
 
       - name: Run tests file 1
         run: |
-          python MSPR-BDD-B3-BackEnd/back/src/test_takeLatinTupleGetUtf8List.py
+          python back/src/test_takeLatinTupleGetUtf8List.py
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
