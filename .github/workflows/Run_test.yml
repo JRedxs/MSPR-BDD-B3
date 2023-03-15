@@ -29,8 +29,6 @@ jobs:
         run: |
           cd ..
           python MSPR-BDD-B3-Backend/back/src/test_takeLatinTupleGetUtf8List.py
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Run tests file 2
         run: |
