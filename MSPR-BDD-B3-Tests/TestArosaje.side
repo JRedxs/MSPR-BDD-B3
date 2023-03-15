@@ -1,0 +1,127 @@
+{
+  "id": "0f53cbed-e7d0-4bb0-aa43-acb7ce819b95",
+  "version": "2.0",
+  "name": "TestArosaje",
+  "url": "http://localhost:3000",
+  "tests": [{
+    "id": "4c13d031-9ead-4570-a815-90429723e827",
+    "name": "testLogin",
+    "commands": [{
+      "id": "5d4f4a6e-ee62-4e2e-ad51-d7fa95f8ce75",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6c4f461f-bcc0-40a5-b338-b984e6b081b8",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9e42ef8b-cd9b-427b-adc6-bd7fd066d27b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.circle",
+      "targets": [
+        ["css=.circle", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/nav/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7de02f2f-ebf8-475b-adc8-6919882e5039",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Se connecter",
+      "targets": [
+        ["linkText=Se connecter", "linkText"],
+        ["css=.mb-3 > .btn", "css:finder"],
+        ["xpath=//a[contains(text(),'Se connecter')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/nav/div[2]/div/div[2]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login')]", "xpath:href"],
+        ["xpath=//div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Se connecter')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e889b65c-65d0-44c8-970f-ea628822cc12",
+      "comment": "",
+      "command": "click",
+      "target": "id=form2Example17",
+      "targets": [
+        ["id=form2Example17", "id"],
+        ["css=#form2Example17", "css:finder"],
+        ["xpath=//input[@id='form2Example17']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/section/div/div/div/div/div/div[2]/div/form/div[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f53b38f2-88e3-4a65-9f21-e24a63341b19",
+      "comment": "",
+      "command": "type",
+      "target": "id=form2Example17",
+      "targets": [
+        ["id=form2Example17", "id"],
+        ["css=#form2Example17", "css:finder"],
+        ["xpath=//input[@id='form2Example17']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/section/div/div/div/div/div/div[2]/div/form/div[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "remi@remi.fr"
+    }, {
+      "id": "bb9eb3a2-5b72-4c22-b6cc-e28251eb6380",
+      "comment": "",
+      "command": "click",
+      "target": "id=form2Example27",
+      "targets": [
+        ["id=form2Example27", "id"],
+        ["css=#form2Example27", "css:finder"],
+        ["xpath=//input[@id='form2Example27']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/section/div/div/div/div/div/div[2]/div/form/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0f3499b3-f1dc-49df-8072-a3f16c6a5b5e",
+      "comment": "",
+      "command": "type",
+      "target": "id=form2Example27",
+      "targets": [
+        ["id=form2Example27", "id"],
+        ["css=#form2Example27", "css:finder"],
+        ["xpath=//input[@id='form2Example27']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/section/div/div/div/div/div/div[2]/div/form/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "test"
+    }, {
+      "id": "74f561bf-ca6c-46a4-ac07-9f88a00c3c68",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-dark",
+      "targets": [
+        ["css=.btn-dark", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/section/div/div/div/div/div/div[2]/div/form/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Login')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "ebca06ad-7629-41d6-a1d5-8c1edcde6abf",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["4c13d031-9ead-4570-a815-90429723e827"]
+  }],
+  "urls": ["http://localhost:3000/"],
+  "plugins": []
+}
