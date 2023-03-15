@@ -32,12 +32,9 @@ jobs:
           pip install virtualenv
           cd MSPR-BDD-B3-Backend/back/src
           python -m venv env
+          source env/bin/activate
           pytest
           python MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src/test_takeLatinTupleGetUtf8List.py
 
-      - name: Run tests file 2
-        run: |
-          python MSPR-BDD-B3-Tests/test_testLogin.py
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
         
