@@ -30,7 +30,6 @@ jobs:
           cd ..
           pip install pytest
           pip install virtualenv
-          cd MSPR-BDD-B3-Backend/back/src
           python -m venv env
           source env/bin/activate
           pytest
