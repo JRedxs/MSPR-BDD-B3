@@ -229,8 +229,8 @@ def get_info_plants():
             cursor.execute(sql)
             results = cursor.fetchall()
             person_info = []
-            for result in results:
-                row = takeLatinTupleGetUtf8List(result)
+            for row in results:
+                # row = takeLatinTupleGetUtf8List(result) a corriger
                 person_info.append({
                     "begining": row[0],
                     "finish": row[1],
