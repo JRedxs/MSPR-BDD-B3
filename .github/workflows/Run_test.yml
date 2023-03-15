@@ -30,7 +30,8 @@ jobs:
           cd ..
           pip install pytest
           pip install virtualenv
-          python .\venv\Scripts\Activate.ps1
+          cd MSPR-BDD-B3-Backend/back/src
+          python -m venv env
           pytest
           python MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src/test_takeLatinTupleGetUtf8List.py
 
