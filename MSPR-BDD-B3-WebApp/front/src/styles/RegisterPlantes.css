@@ -1,4 +1,17 @@
-.register-plant {
-    background-color: rgb(206, 204, 204) !important;
+.card-register {
+   background: rgba(236,237,232, 0.5) !important; 
+   background-size: cover;
+   background-position: center;
+}
 
+.form-text {
+    color: rgb(0, 0, 0);
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.title-text {
+    color: rgb(0, 0, 0);
+    font-size: x-large;
+    font-weight: bold;
 }

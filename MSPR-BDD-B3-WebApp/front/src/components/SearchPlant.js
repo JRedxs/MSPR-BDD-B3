@@ -23,7 +23,7 @@ function SearchPlant() {
             .then(response => {
                 setPlants(response.data.Plants);
             })
-            .catch(error => {
+            .catch(error => {   
                 console.log(error);
             });
     }, []);
@@ -55,8 +55,6 @@ function SearchPlant() {
                                 <ListGroup className='list-group-flush'>
                                     <Card.Body>
                                         <div className="d-flex justify-content-center">
-
-                                        
                                         <Card.Link 
                                             className="btn btn-success"
                                             onClick={() => {

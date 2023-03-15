@@ -79,44 +79,48 @@ function RegisterPlante(){
     
 
     return (
-        <div className=" register-plant d-flex align-items-center justify-content-center mx-auto">
-            <div className="card card-register card-color d-flex align-items-center justify-content-center" style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
-                <div className='d-flex align-items-center justify-content-center mt-4'>
-                    <h1><u>Enregistrer une Plante</u></h1>
+        <div className='body'>
+            <div className=" register-plant d-flex align-items-center justify-content-center mx-auto">
+                <div className="card card-register card-color d-flex align-items-center shadow justify-content-center" style={{ width: "50%", borderRadius: "75px", border: "1px solid black" }}>
+                    <div className='title-text d-flex align-items-center justify-content-center mt-4'>
+                        <h1><u>Enregistrer une Plante</u></h1>
+                    </div>
+                    <form className=' form-text d-flex align-items-center justify-content-center shadow-1-strong'>
+                        <div className=''>
+                            <div>
+                                <label className="form_label  mt-1"><b>Nom de la plante :</b></label>
+                                <input className="form-control  shadow m-2 w-auto" type="text" placeholder='Nom de votre plante' value={name} onChange={changeName} />
+                            </div>
+                            <div>
+                                <label className="form_label"><b>Numero :</b></label>
+                                <input className="form-control shadow m-2 w-auto" type="text" placeholder='Numero' value={number} onChange={changeNumber} />
+                            </div>
+                            <div>
+                                <label className="form_label"><b>Rue :</b></label>
+                                <input className="form-control  shadow m-2 w-auto" type="text" placeholder='Rue' value={road} onChange={changeRoad} />
+                            </div>
+                            <div>
+                                <label className="form_label"><b>Complément d'Adresse :</b></label>
+                                <input className="form-control shadow m-2 w-auto" type="text" placeholder='Complement' value={complement} onChange={changeComplement} />
+                            </div>
+                            <div>
+                                <label className="form_label"><b>Ville :</b></label>
+                                <input className="form-control shadow m-2 w-auto" type="text" placeholder='Ville' value={town} onChange={changeTown} />
+                            </div>
+                            <div>
+                                <label className="form_label"><b>Code Postal :</b></label>
+                                <input className="form-control shadow m-2 w-auto" type="text" placeholder='Code Postal' value={code} onChange={changeCode} />
+                            </div>
+                            <div className='d-flex align-items-center justify-content-center mx-auto'>
+                                <input className="btn btn-success form-button " type="button" value=" Prendre une Photo" onClick={openPhoto} />
+                            </div>
+                            <div className='d-flex align-items-center justify-content-center mb-4'>
+                                {/* remove "!" pour faire disparaître le boutton */}
+                                {photo && (<input className="btn btn-success form-button  " type="button" value="Enregistrer votre plante" onClick={uploadPlante} />)}
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <form>
-                    <div>
-                        <label className="form_label mt-1"><b>Nom de la plante :</b></label>
-                        <input className="form-control m-2 w-auto" type="text" placeholder='Nom de votre plante' value={name} onChange={changeName }/>
-                    </div>
-                    <div>
-                        <label className="form_label"><b>Numero :</b></label>
-                        <input className="form-control m-2 w-auto" type="text" placeholder='Numero' value={number} onChange={changeNumber }/>
-                    </div>
-                    <div>
-                        <label className="form_label"><b>Rue :</b></label>
-                        <input className="form-control m-2 w-auto" type="text" placeholder='Rue'  value={road} onChange={changeRoad }/>
-                    </div>
-                    <div>
-                        <label className="form_label"><b>Complément d'Adresse :</b></label>
-                        <input className="form-control m-2 w-auto" type="text" placeholder='Complement' value={complement} onChange={changeComplement }/>
-                    </div>
-                    <div> 
-                        <label className="form_label"><b>Ville :</b></label>
-                        <input className="form-control m-2 w-auto" type="text" placeholder='Ville' value={town} onChange={changeTown }/>
-                    </div>
-                    <div>
-                        <label className="form_label"><b>Code Postal :</b></label>
-                        <input className="form-control m-2 w-auto" type="text" placeholder='Code Postal' value={code} onChange={changeCode }/>
-                    </div>
-                    <div className='d-flex align-items-center justify-content-center mx-auto'>
-                        <input className="btn btn-success form-button " type="button" value=" Prendre une Photo" onClick={openPhoto}/>
-                    </div>
-                    <div className='d-flex align-items-center justify-content-center mb-4'>
-                        {/* remove "!" pour faire disparaître le boutton */}
-                        { photo && (<input className="btn btn-success form-button  " type="button" value="Enregistrer votre plante" onClick={uploadPlante}/>)}
-                    </div>
-                </form>
             </div>
         </div>
     );
