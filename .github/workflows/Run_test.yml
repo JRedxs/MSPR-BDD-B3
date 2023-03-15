@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-     - uses: actions/checkout@v2
-       with:
+      - uses: actions/checkout@v2:
+        with:
           ref: ${{ github.sha }}
-       working-directory: MSPR-BDD-B3
+        working-directory: MSPR-BDD-B3
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v2
@@ -31,4 +31,4 @@ jobs:
           python MSPR-BDD-B3-BackEnd/back/src/test_takeLatinTupleGetUtf8List.py
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        
+
