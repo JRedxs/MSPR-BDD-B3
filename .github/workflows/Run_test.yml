@@ -5,35 +5,30 @@ on:
   push:
     branches:
       - main
-      -
 
 jobs:
   tests:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-        name: Checkout my project
+      - uses: actions/checkout@v2:
+        with:
+          ref: ${{ github.sha }}
+        working-directory: MSPR-BDD-B3
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
           python-version: '3.11'
 
       - name: Install requirements
         run: |
           python -m pip install --upgrade pip
-          pip install -r ./MSPR-BDD-B3-Backend/requirements.txt
+          pip install -r MSPR-BDD-B3-BackEnd/back/requirements.txt
 
-      - name: Run tests file 1
+      - name: Run tests
         run: |
-          python ./MSPR-BDD-B3-BackEnd/back/src/test_takeLatinTupleGetUtf8List.py
+          python MSPR-BDD-B3-BackEnd/back/src/test_takeLatinTupleGetUtf8List.py
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      - name: Run tests file 2
-        run: |
-          python ./MSPR-BDD-B3-Tests/test_testLogin.py
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        
