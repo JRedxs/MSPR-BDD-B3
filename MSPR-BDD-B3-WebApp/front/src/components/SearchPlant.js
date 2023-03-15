@@ -10,12 +10,13 @@ function SearchPlant() {
     const navigate = useNavigate();
     const url = process.env.REACT_APP_API_URL + `/plant/`;
 
-    const openPlante = (id_plante)=> {
+    const openPlante = (id_plante) => {
         navigate(`/Plante/${id_plante}`);
     }
     const openPlanteRegister = () => {
         navigate(`/RegisterPlante`);
     }
+    
     useEffect(() => {
         window.sessionStorage.removeItem("plante");
         axios.get(url)
@@ -29,11 +30,6 @@ function SearchPlant() {
 
     return (
         <>
-            <div className="d-flex justify-content-center mt-5">
-                <button className='btn btn-success mb-5' onClick={openPlanteRegister}>
-                        Enregistrer une plante
-                </button>
-            </div>
             <div className='plants-container d-flex align-items-center justify-content-center'>
                 {plants.map((plant) => (
                     <div key={plant.id_plante} style={{ margin: '10px' }}>
@@ -71,7 +67,13 @@ function SearchPlant() {
                         </Card>
                     </div>
                 ))}
+
             </div>
+            <div className="center-align">
+                <button className='btn btn-success mb-5' onClick={openPlanteRegister}>Enregistrer une plante</button>
+            </div>
+
+
         </>
     );
 }
