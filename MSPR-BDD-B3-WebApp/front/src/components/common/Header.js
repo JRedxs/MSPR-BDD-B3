@@ -10,7 +10,12 @@ const Header = () => {
         setIsOpen(!isOpen);
     };
     return (
+<<<<<<< HEAD
         <div >
+=======
+        <>
+            
+>>>>>>> da4c02574c60cfb128cf37169679bc3ab902bad9
             <nav className="navbar navbar-expand-lg navbar-light shadow-lg">
                 <a class="navbar-brand" href="/" style={{ marginLeft: '20px', color: 'white' }}> <b>Arosa-Je </b></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,12 +28,6 @@ const Header = () => {
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/SearchPlant" style={{ color: 'white', fontSize: 'xx-large' }}>Rechercher une plante</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/AddAdvice" style={{ color: 'white', fontSize: 'xx-large' }}>Ajouter un conseil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/RegisterGarde" style={{ color: 'white', fontSize: 'xx-large' }}>Enregistrer une garde</a>
                         </li>
                     </ul>
                 </div>
