@@ -37,15 +37,16 @@ const Header = () => {
                     </button>
                     {isOpen && (
                         <div className="position-absolute end-0 mt-2 me-2 shadow-lg bg-white rounded" style={{ zIndex: 1 }}>
-                            <div className="py-2 px-3 border-bottom d-flex justify-content-between align-items-center">
-                                <h5 className="m-0">Mon profil</h5>
+                            <div className="py-2 px-3 border-bottom d-flex justify-content-center align-items-center" style={{ backgroundColor: '#8E685A ', color: 'white'}}>
+                                <h5 className="d-flex m-0 justify-content-center" >Mon profil</h5>
                             </div>
-                            <div className="p-3">
+                            <div className="p-3" style={{ backgroundColor: '#6F8C4F ', color: 'white', borderBlockColor: 'black' }}>
                                 <div className="mb-3">
                                     <Link
                                         to="/login"
                                         className="btn btn-primary w-100"
                                         role="button"
+                                        style={{ backgroundColor: '#8E685A ', color: 'white', border:'none' }}
                                     >
                                         Se connecter
                                     </Link>
@@ -55,6 +56,7 @@ const Header = () => {
                                         to="/register"
                                         className="btn btn-primary w-100"
                                         role="button"
+                                        style={{ backgroundColor: '#8E685A ', color: 'white' , border:'none' }}
                                     >
                                         S'inscrire
                                     </Link>
@@ -65,6 +67,7 @@ const Header = () => {
                                         to="/UserProfil"
                                         className="btn btn-primary w-100"
                                         role="button"
+                                        style={{ backgroundColor: '#8E685A ', color: 'white' , border:'none'}}
                                     >
                                         Profil
                                     </Link>

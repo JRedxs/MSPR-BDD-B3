@@ -30,6 +30,11 @@ const ResetPassword = () => {
             //APPEL  POST API A COMPLETER 
     }
     return (
+        <div className="body">
+
+        <div className="d-flex justify-content-center">
+            <h1 className=""> Changer de mot de passe</h1>
+        </div>
         <div class="m-lg-4">
             <div className="d-flex align-items-center justify-content-center">
                 <div className="card card-register card-color p-3" style={{ width: "33%", borderRadius: "30px", border: "1px solid black" }}>
@@ -53,7 +58,7 @@ const ResetPassword = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="confirm-new-password"><b>Confirmer le nouveau mot de passe :</b></label>
+                            <label htmlFor="confirm-new-password" ><b>Confirmer le nouveau mot de passe :</b></label>
                             <input
                                 className="form-control"
                                 type="password" id="confirm-new-password"
@@ -63,6 +68,7 @@ const ResetPassword = () => {
                         </div>
                         <div className="d-flex justify-content-center">
                             <button
+                                style={{ backgroundColor: '#8E685A ', color: 'white' }}
                                 className="btn btn-dark mt-3"
                                 onClick={() => NAVIGATE("/login")}
                                 type="submit"
@@ -73,6 +79,7 @@ const ResetPassword = () => {
                     </form>
                 </div>
             </div>
+        </div>
         </div>
     )
 }
