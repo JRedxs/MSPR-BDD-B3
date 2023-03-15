@@ -85,13 +85,11 @@ function Plante(props) {
                         <div className="card-body mx-auto">
                             <div className="d-flex justify-content-center margin-login-card" style={{ height: 125 }}>
                                 <div className="card-body mx-auto" style={{ textAlign: 'center' }}>
-                                    <p className="card-body mx-auto" style={{ color: 'black', fontSize: '20px' }}> <u> <b>Titre du conseil:</b> </u> {plante[id_plante].advice_title}</p>
                                     <div className="m-1">
                                     <button className='btn btn-success' onClick={openPhoto}>Enregistrer une photo</button>
                             </div>
                                 </div>
                                 <div className="card-body mx-auto" style={{ textAlign: 'center' }}>
-                                    <p className="card-body mx-auto" style={{ color: 'black', fontSize: '20px' }}> <u><b>Conseil d'entretien:</b> </u> {plante[id_plante].advice} </p>
                                     <button className='btn btn-success' onClick={openGarde}>Enregistrer une demande de garde</button>
                                 </div>
                             </div>
