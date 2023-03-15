@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      -
 
 jobs:
   tests:
@@ -27,13 +26,13 @@ jobs:
 
       - name: Run tests file 1
         run: |
-          python ./MSPR-BDD-B3-BackEnd/back/src/test_takeLatinTupleGetUtf8List.py
+          python MSPR-BDD-B3-BackEnd/back/src/test_takeLatinTupleGetUtf8List.py
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Run tests file 2
         run: |
-          python ./MSPR-BDD-B3-Tests/test_testLogin.py
+          python MSPR-BDD-B3-Tests/test_testLogin.py
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         
