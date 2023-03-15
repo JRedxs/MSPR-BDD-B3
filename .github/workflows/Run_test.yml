@@ -29,6 +29,9 @@ jobs:
         run: |
           cd ..
           pip install pytest
+          pip install virtualvenv
+          .\venv\Scripts\Activate.ps1
+          pytest
           python MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src/test_takeLatinTupleGetUtf8List.py
 
       - name: Run tests file 2
