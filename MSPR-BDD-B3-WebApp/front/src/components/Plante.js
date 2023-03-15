@@ -68,7 +68,7 @@ function Plante(props) {
         return jsx;
     };
     if (!plante) {
-        return <div className="alert alert-danger">
+        return <div className="alert alert-danger d-flex justify-content-center">
                     <h1>Aucune donnée...</h1>
                </div>;
     }
@@ -97,7 +97,6 @@ function Plante(props) {
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
             
