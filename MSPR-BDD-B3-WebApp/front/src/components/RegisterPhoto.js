@@ -60,6 +60,9 @@ const RegisterPhoto = () => {
   };
 
   return (
+    <div className='body'>
+
+    
     <div>
       {
         isCameraActive && (
@@ -109,6 +112,7 @@ const RegisterPhoto = () => {
           </div>
         )
       }
+    </div>
     </div>
   );
 };

@@ -28,7 +28,7 @@ function Map() {
 
   return (
     <>
-
+      <div className="body">
       <div className="global-wrapper">
         <div className="title-wrapper">
           <h1 style={{ textAlign: 'center' }}>
@@ -62,6 +62,7 @@ function Map() {
             </div>
           </div>
         </div>
+      </div>
     </>
   )
 }
