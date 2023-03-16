@@ -6,7 +6,6 @@ from database import *
 import bcrypt
 from fastapi.middleware.cors import CORSMiddleware
 from security import *
-# from oauth import *
 
 # Connexion à la base de données
 connection = MSQL
