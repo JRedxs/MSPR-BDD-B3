@@ -13,13 +13,13 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const handleSubmit = async (event) => {
-        event.preventDefault();
+        event.preventDefault(); 
         try {
-          const response = await axios.get(`${baseUrl}/users?email=${email}&password=${password}`);
-          const user = response.data.User;
-          console.log(user);
-          if (user) {
-            window.sessionStorage.setItem('person', JSON.stringify(user.id_person));
+          const response = await axios.post(`${baseUrl}/token_log?email=${email}&password=${password}`,);
+          const access_token = response.data.access_token;
+          console.log(access_token);
+          if (access_token) {
+            window.sessionStorage.setItem('access_token', access_token);
             navigate(`/SearchPlant`);
           } else {
             console.log("Incorrect email or password");
@@ -28,8 +28,6 @@ const LoginPage = () => {
           console.error(error);
         }
       };
-      
-    
 
     
 

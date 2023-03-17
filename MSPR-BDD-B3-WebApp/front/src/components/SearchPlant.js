@@ -9,6 +9,7 @@ function SearchPlant() {
     const [plants, setPlants] = useState([]);
     const navigate = useNavigate();
     const url = process.env.REACT_APP_API_URL + `/plant/`;
+    
 
     const openPlante = (id_plante) => {
         navigate(`/Plante/${id_plante}`);

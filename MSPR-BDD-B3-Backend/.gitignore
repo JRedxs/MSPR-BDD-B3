@@ -1,2 +1,3 @@
 venv
 back/src/__pycache__/*
+.env

@@ -13,26 +13,27 @@ import {
 } from 'mdb-react-ui-kit';
 
 const UserProfil = () => {
-    const [users, setUsers] = useState([{firstname:"",email:"",phone:""}]);
-    const [person] = useState(Number(sessionStorage.getItem('person')));
-  
-    const requestAxios = () => {
-      console.log("request axios")
-      axios.get(process.env.REACT_APP_API_URL + `/users/${person}`)
-        .then(response => {
-          setUsers(response.data.Person)
-          console.log(response.data.Person)
-          
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
-  
+    const [currentUser, setCurrentUser] = useState();
+    const baseUrl = process.env.REACT_APP_API_URL
+
     useEffect(() => {
-      requestAxios();
-      
+      const fetchCurrentUser = async () => {
+        try {
+          const accessToken = window.sessionStorage.getItem("access_token");
+          const response =  await axios.get(`${baseUrl}/user/me`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+          setCurrentUser(response.data.user); //a vérifier asynchrone lors de la récupération des infos
+          // console.log(response.data.user)
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchCurrentUser();
     }, []);
+  
   
     return (
         <>
@@ -42,10 +43,7 @@ const UserProfil = () => {
           <MDBCol>
             <MDBBreadcrumb className="bg-light rounded-3 p-3 mb-4">
               <MDBBreadcrumbItem>
-                <a href='#'>Home</a>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem>
-                <a href="#">User</a>
+                <a href='/'>Home</a>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem active>User Profile</MDBBreadcrumbItem>
             </MDBBreadcrumb>
@@ -71,15 +69,11 @@ const UserProfil = () => {
               <MDBCardBody>
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Nom</MDBCardText>
+                    <MDBCardText>Nom : {currentUser.name}</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
                     
                     <MDBCardText className="text-muted">
-        {
-        users.map(user => (
-          <p key={user.id_person}> {user.name}</p>     
-        ))}
       </MDBCardText>
                   </MDBCol>
                 </MDBRow>
@@ -87,30 +81,30 @@ const UserProfil = () => {
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Prénom</MDBCardText>
+                    <MDBCardText>Prénom : {currentUser.firstname} </MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">{users[0].firstname}</MDBCardText>
+                    <MDBCardText className="text-muted"></MDBCardText>
                   </MDBCol>
                 </MDBRow>
 
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Email</MDBCardText>
+                    <MDBCardText>Email : {currentUser.email} </MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">{users[0].email}</MDBCardText>
+                    <MDBCardText className="text-muted"></MDBCardText>
                   </MDBCol>
                 </MDBRow>
 
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Téléphone</MDBCardText>
+                    <MDBCardText>Téléphone : {currentUser.phone} </MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">{users[0].phone}</MDBCardText>
+                    <MDBCardText className="text-muted"></MDBCardText>
                   </MDBCol>
                 </MDBRow>
 

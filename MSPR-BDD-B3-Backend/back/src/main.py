@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from fastapi import FastAPI, HTTPException
 from models import *
 from database import *
-import bcrypt
 from fastapi.middleware.cors import CORSMiddleware
 from security import *
 
@@ -45,22 +43,47 @@ def takeLatinTupleGetUtf8List(theTuple):
     return newList
 
 
-@app.post("/token" ,summary="Création de personnes et ajout d'un accès token")
+@app.post("/token", summary="Création de personnes et ajout d'un accès token")
 def login(person: Person):
-    # Hash the password
     hashed_password = pwd_context.hash(person.password)
 
-    # Save the user to the database
     with connection.cursor() as cursor:
         insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role) VALUES (%s, %s, %s, %s,%s,%s)"
         cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone,person.id_role))
         connection.commit()
 
+        # Get inserted person's ID
+        cursor.execute("SELECT LAST_INSERT_ID()")
+        person_id = cursor.fetchone()[0]
+
     # Generate JWT payload
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={"sub": person.email}, expires_delta=access_token_expires)
+    access_token = create_access_token(user_id=str(person_id), expires_delta=access_token_expires)
 
     return {"Ajout": "Avec succès", "access_token": access_token, "token_type": "bearer"}
+
+
+@app.post("/token_log")
+def login_token(email: str, password: str):
+    with connection.cursor() as cursor:
+        query = "SELECT * FROM Person WHERE email=%s"
+        cursor.execute(query, (email))
+        result = cursor.fetchone()
+        if result:
+            user_id = result[0]
+            hashed_password = result[3]
+            if pwd_context.verify(password.encode("utf-8"), hashed_password):
+                access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+                access_token = create_access_token(user_id=user_id, expires_delta=access_token_expires)
+                return {"access_token": access_token, "token_type": "bearer"}
+            else:
+                raise HTTPException(status_code=400, detail="Incorrect email or password")
+        else:
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+
+
+
+        
 
 @app.get("/users", summary="Récupération des personnes en fonction de leur email & mot de passe")
 def get_user(email: str, password: str):
@@ -84,7 +107,7 @@ def get_user(email: str, password: str):
                         "longitude": row[7],
                         "id_role": row[8]
                     }
-                    return {"User": user}
+                    return {"User": user }
                 else:
                     raise HTTPException(status_code=400, detail="Incorrect email or password")
             else:
@@ -93,6 +116,31 @@ def get_user(email: str, password: str):
             cursor.close()
             raise HTTPException(status_code=500, detail="Database connection error!")
 
+
+@app.get("/user/me")
+async def get_current_user(current_user: str = Depends(BearerAuth())):
+    decoded_token = decoded_jwt(current_user)
+    user_id = decoded_token.get("user_id")
+    with connection.cursor() as cursor:
+        query = "SELECT * FROM Person WHERE id_person=%s"
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+        if result:
+            user = {
+                "user_id" : result[0],
+                "name": result[1],
+                "firstname": result[2],
+                "email": result[4],
+                "phone": result[5],
+            }
+            return {"user": user}
+        else:
+            raise HTTPException(status_code=404, detail="User not found eh")
+
+# @app.get("/users/me")
+# async def read_users_me(current_user: str = Depends(BearerAuth())):
+#     decoded_token = decoded_jwt(current_user)
+#     return decoded_token
         
 @app.get("/users_all" ,summary="Récupération de toutes les utilisateurs")
 def get_user():
@@ -116,7 +164,7 @@ def get_user():
 
 
 @app.get("/users/{user_id}", summary="Récupération en fonction de l'id utilisateur" )
-def get_user_by_id(user_id: int):
+def get_user_by_id(user_id: int ):
     
     with connection.cursor() as cursor:
         try :
@@ -132,32 +180,6 @@ def get_user_by_id(user_id: int):
         except:
             cursor.close()
             raise HTTPException(status_code=404, detail="Personne inexistante")
-        
-
-
-
-# @app.post("/persons", summary="")
-# async def add_user(person: Person):
-#     cursor = connection.cursor()
-#     cursor.execute("SELECT * FROM Person WHERE email=%s", (person.email,))
-#     if cursor.fetchone() is not None:
-#         raise HTTPException(status_code=409, detail="Email déjà existants")
-    
-#     insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role) VALUES (%s, %s, %s, %s,%s,%s)"
-#     cursor.execute(insert_query, (person.name, person.firstname, person.password, person.email, person.phone,person.id_role))
-#     connection.commit()
-
-#     cursor.close()
-#     return {"message": "Ajout avec succès"}
-
-# @app.post('/login')
-# def login(request: OAuth2PasswordRequestForm = Depends()):
-#     user = authenticate_user(request.username, request.password)
-#     if not user:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-#     access_token = create_access_token(data={"sub": user["username"]})
-#     return {"access_token": access_token, "token_type": "bearer"}
-
 
 @app.post("/image" , summary="Insertion d'une image")
 async def register_image(image: NewImage):
