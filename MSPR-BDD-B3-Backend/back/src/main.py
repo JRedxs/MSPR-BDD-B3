@@ -62,25 +62,37 @@ def login(person: Person):
 
     return {"Ajout": "Avec succès", "access_token": access_token, "token_type": "bearer"}
 
-@app.get("/users" ,summary="Récupération des personnes en fonction de leur email & mot de passe")
+@app.get("/users", summary="Récupération des personnes en fonction de leur email & mot de passe")
 def get_user(email: str, password: str):
-    
     with connection.cursor() as cursor:
         try:
-            sql = "SELECT * FROM Person WHERE email=%s and pwd=%s"
-            cursor.execute(sql, (email, password))
-            results = cursor.fetchall()
-            users = []
-            for result in results:
+            sql = "SELECT * FROM Person WHERE email=%s"
+            cursor.execute(sql, (email,))
+            result = cursor.fetchone()
+            if result:
                 row = takeLatinTupleGetUtf8List(result)
-                users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8]})
-            if users:
-                return {"User": users}
+                hashed_password = row[3].encode("utf-8") 
+                if pwd_context.verify(password.encode("utf-8"), hashed_password):
+                    user = {
+                        "id_person": row[0],
+                        "name": row[1],
+                        "firstname": row[2],
+                        "pwd": row[3],
+                        "email": row[4],
+                        "phone": row[5],
+                        "latitude": row[6],
+                        "longitude": row[7],
+                        "id_role": row[8]
+                    }
+                    return {"User": user}
+                else:
+                    raise HTTPException(status_code=400, detail="Incorrect email or password")
             else:
                 raise HTTPException(status_code=400, detail="Incorrect email or password")
         except:
             cursor.close()
-            raise HTTPException(status_code=500, detail="Database connection error !")
+            raise HTTPException(status_code=500, detail="Database connection error!")
+
         
 @app.get("/users_all" ,summary="Récupération de toutes les utilisateurs")
 def get_user():
