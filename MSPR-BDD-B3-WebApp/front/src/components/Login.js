@@ -14,16 +14,24 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const response = await axios.get(`${baseUrl}/users?email=${email}&password=${password}`);
-        const user = response.data.User;
-        if (user.length > 0) {
-            window.sessionStorage.setItem('person', JSON.stringify(Number(user[0].id_person)));
+        try {
+          const response = await axios.get(`${baseUrl}/users?email=${email}&password=${password}`);
+          const user = response.data.User;
+          console.log(user);
+          if (user) {
+            window.sessionStorage.setItem('person', JSON.stringify(user.id_person));
             navigate(`/SearchPlant`);
-
-        } else {
-            console.log("Utilisateur inexistant dans la base de données", response);
+          } else {
+            console.log("Incorrect email or password");
+          }
+        } catch (error) {
+          console.error(error);
         }
-    };
+      };
+      
+    
+
+    
 
     return (
         <>
