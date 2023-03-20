@@ -30,9 +30,9 @@ class TestTestLogin():
       self.driver.find_element(By.ID, "form2Example17").send_keys("remi@remi.fr")
       self.driver.find_element(By.ID, "form2Example27").click()
       self.driver.find_element(By.ID, "form2Example27").send_keys("test")
-      self.driver.find_element(By.CSS_SELECTOR, ".btn-success").click()
-    
-      self.driver.find_element(By.CSS_SELECTOR, ".btn-success")
+      self.driver.find_element(By.ID, "logButton").click()
+      WebDriverWait(self.driver, 5)
+      print(self.driver.current_url)
       if self.driver.current_url == url + "SearchPlant":
         assert True
       else:
