@@ -18,7 +18,7 @@ COPY . .
 RUN echo "REACT_APP_API_URL=http://localhost:8005" > .env.local
 
 # Expose port 3000 for the Node server
-EXPOSE ${EXPOSE_PORT}
+EXPOSE ${PORT}
 
 # Specify the command to start the Node server
 
