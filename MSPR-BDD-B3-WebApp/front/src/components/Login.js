@@ -13,17 +13,23 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const handleSubmit = async (event) => {
-        event.preventDefault();
-        const response = await axios.get(`${baseUrl}/users?email=${email}&password=${password}`);
-        const user = response.data.User;
-        if (user.length > 0) {
-            window.sessionStorage.setItem('person', JSON.stringify(Number(user[0].id_person)));
+        event.preventDefault(); 
+        try {
+          const response = await axios.post(`${baseUrl}/token_log?email=${email}&password=${password}`,);
+          const access_token = response.data.access_token;
+          console.log(access_token);
+          if (access_token) {
+            window.sessionStorage.setItem('access_token', access_token);
             navigate(`/SearchPlant`);
-
-        } else {
-            console.log("Utilisateur inexistant dans la base de données", response);
+          } else {
+            console.log("Incorrect email or password");
+          }
+        } catch (error) {
+          console.error(error);
         }
-    };
+      };
+
+    
 
     return (
         <>

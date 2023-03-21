@@ -39,7 +39,7 @@ const Register = () => {
             return;
         }
         axios
-            .post(`${baseUrl}/persons`, formData)
+            .post(`${baseUrl}/token`, formData)
             .then(res => {
                 console.log(res);
                 NAVIGATE('/login')

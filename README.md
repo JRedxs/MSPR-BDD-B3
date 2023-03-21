@@ -22,6 +22,51 @@ Ouvrez le dossier MSPR-BDD-B3
 ```
 cd MSPR-BDD-B3
 ```
+
+Ecrire un fichier .env avec de véritable crédentials
+```
+ROOT_PASSWORD=admin
+DATABASE=Arosaje_db
+USER=admin
+PASSWORD=admin
+PORT=3306
+```
+
+Ouvrer le dossier des sources du serveur Backend
+```
+cd MSPR-BDD-B3-Backend/back/src
+```
+
+Créer un secret 
+```
+python
+imports secrets
+secrets.token_hex(32)
+```
+
+Ecrire un fichier .env avec de véritable crédentials
+```
+SECRET = "<Votre Secret !>"
+ALGORITHM = 'HS256'
+
+
+HOST_LOCAL = "localhost"
+HOST_CONTAINER = "mysql-db-compose"
+USER_LOCAL = "admin"
+USER_CONTAINER = "admin"
+PASSWORD_LOCAL = "admin"
+PASSWORD_CONTAINER = "admin"
+DB_LOCAL = "Arosaje_db"
+DB_CONTAINER = "Arosaje_db"
+PORT_LOCAL = 3306
+PORT_CONTAINER = 3306
+```
+
+Retourner à la racine du dossier
+```
+cd ../../..
+```
+
 Activez la stack docker
 ```
 docker-compose up -d
@@ -33,9 +78,35 @@ Réccuperez l'application
 ```
 git clone https://github.com/JRedxs/MSPR-BDD-B3.git
 ```
-Personnalisez l'url de la base de donnée au sein du fichier MSPR-BDD-B3-Backend/back/src/database.py
+
+Créer un secret 
+```
+python
+imports secrets
+secrets.token_hex(32)
+```
+
+Ecrire un fichier .env dans MSPR-BDD-B3-Backend/back/src avec de véritable crédentials
+```
+SECRET = "<Votre Secret !>"
+ALGORITHM = 'HS256'
+
+
+HOST_LOCAL = "localhost"
+HOST_CONTAINER = "mysql-db-compose"
+USER_LOCAL = "admin"
+USER_CONTAINER = "admin"
+PASSWORD_LOCAL = "admin"
+PASSWORD_CONTAINER = "admin"
+DB_LOCAL = "Arosaje_db"
+DB_CONTAINER = "Arosaje_db"
+PORT_LOCAL = 3306
+PORT_CONTAINER = 3306
+```
 
 Personnalisez l'url de l'API au sein du fichier MSPR-BDD-B3-WebApp/front/Dockerfile
+
+Personnalisez les crédentials du fichier MSPR-BDD-B3-MySQL/Dockerfile
 
 Montez les trois images grâce aux Dockerfiles disponible aux emplacements:
 * MSPR-BDD-B3-Backend/Dockerfile
