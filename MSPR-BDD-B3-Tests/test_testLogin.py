@@ -31,7 +31,7 @@ class TestTestLogin():
       self.driver.find_element(By.ID, "form2Example27").click()
       self.driver.find_element(By.ID, "form2Example27").send_keys("T@st96745")
       self.driver.find_element(By.ID, "logButton").click()
-      time.sleep(1)
+      time.sleep(2)
       print(self.driver.current_url)
       if self.driver.current_url == url + "SearchPlant":
         assert True
