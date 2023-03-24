@@ -97,15 +97,15 @@ function RegisterPlante(){
                         <div className=''>
                             <div>
                                 <label className="form_label  mt-1"><b>Nom de la plante :</b></label>
-                                <input className="form-control  shadow m-2 w-auto" type="text" placeholder='Nom de votre plante' value={name} onChange={changeName} />
+                                <input className="form-control  shadow m-2 w-auto" id="name" type="text" placeholder='Nom de votre plante' value={name} onChange={changeName} />
                             </div>
                             <div>
                                 <label className="form_label"><b>Numero :</b></label>
-                                <input className="form-control shadow m-2 w-auto" type="text" placeholder='Numero' value={number} onChange={changeNumber} />
+                                <input className="form-control shadow m-2 w-auto" id="number" type="text" placeholder='Numero' value={number} onChange={changeNumber} />
                             </div>
                             <div>
                                 <label className="form_label"><b>Rue :</b></label>
-                                <input className="form-control  shadow m-2 w-auto" type="text" placeholder='Rue' value={road} onChange={changeRoad} />
+                                <input className="form-control  shadow m-2 w-auto" id="road" type="text" placeholder='Rue' value={road} onChange={changeRoad} />
                             </div>
                             <div>
                                 <label className="form_label"><b>Complément d'Adresse :</b></label>
@@ -113,18 +113,18 @@ function RegisterPlante(){
                             </div>
                             <div>
                                 <label className="form_label"><b>Ville :</b></label>
-                                <input className="form-control shadow m-2 w-auto" type="text" placeholder='Ville' value={town} onChange={changeTown} />
+                                <input className="form-control shadow m-2 w-auto" id="town" type="text" placeholder='Ville' value={town} onChange={changeTown} />
                             </div>
                             <div>
                                 <label className="form_label"><b>Code Postal :</b></label>
-                                <input className="form-control shadow m-2 w-auto" type="text" placeholder='Code Postal' value={code} onChange={changeCode} />
+                                <input className="form-control shadow m-2 w-auto" id="code" type="text" placeholder='Code Postal' value={code} onChange={changeCode} />
                             </div>
                             <div className='d-flex align-items-center justify-content-center mx-auto'>
-                                <input className="btn btn-success form-button " type="button" value=" Prendre une Photo" onClick={openPhoto} />
+                                <input className="btn btn-success form-button " id="openPhoto" type="button" value=" Prendre une Photo" onClick={openPhoto} />
                             </div>
                             <div className='d-flex align-items-center justify-content-center mb-4'>
                                 {/* remove "!" pour faire disparaître le boutton */}
-                                {photo && (<input className="btn btn-success form-button  " type="button" value="Enregistrer votre plante" onClick={uploadPlante} />)}
+                                {photo && (<input className="btn btn-success form-button  " id="uploadPlante" type="button" value="Enregistrer votre plante" onClick={uploadPlante} />)}
                             </div>
                         </div>
                     </form>

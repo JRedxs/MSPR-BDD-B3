@@ -70,7 +70,7 @@ const RegisterFirstPhoto = () => {
                   <b><p className="card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
                 </div>
                 <div className="d-flex justify-content-center align-items-center">
-                  <button className='btn btn-success' style={{margin:"1em"}} onClick={handleTakePhoto}>Prendre une Photo</button>
+                  <button className='btn btn-success' id="TakePhoto" style={{margin:"1em"}} onClick={handleTakePhoto}>Prendre une Photo</button>
                   <button className='btn btn-success' style={{margin:"1em"}} onClick={handleStopCamera}>Arreter la Camera</button>
                 </div>
               </div>
@@ -87,7 +87,7 @@ const RegisterFirstPhoto = () => {
                 <b><p className="card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
               </div>
                 <div className="d-flex justify-content-center">
-                  <button className='btn btn-success' style={{margin:"2em"}} onClick={handleStartCamera}>Lancer la Camera</button>
+                  <button className='btn btn-success' id="StartCamera" style={{margin:"2em"}} onClick={handleStartCamera}>Lancer la Camera</button>
                 </div>
               </div>
             </div> 
@@ -100,7 +100,7 @@ const RegisterFirstPhoto = () => {
               <img src={imageSrc} alt="" />
               <div className="card-body">
                 <div className="d-flex justify-content-center align-items-center"> 
-                  <button className='btn btn-success' style={{margin:"1em"}} onClick={handleUploadPhoto}>Enregister la Photo</button>
+                  <button className='btn btn-success' id="UploadPhoto" style={{margin:"1em"}} onClick={handleUploadPhoto}>Enregister la Photo</button>
                   <button className='btn btn-success' style={{margin:"1em"}} onClick={handleTakeNewPhoto}>Prendre une nouvelle Photo</button>
                 </div>
               </div>
