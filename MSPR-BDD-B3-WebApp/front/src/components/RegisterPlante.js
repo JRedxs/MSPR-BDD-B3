@@ -97,7 +97,7 @@ function RegisterPlante(){
                         <div className=''>
                             <div>
                                 <label className="form_label  mt-1"><b>Nom de la plante :</b></label>
-                                <input className="form-control  shadow m-2 w-auto" id="name" type="text" placeholder='Nom de votre plante' value={name} onChange={changeName} />
+                                <input className="form-control  shadow m-2 w-auto" id="inputname" type="text" placeholder='Nom de votre plante' value={name} onChange={changeName} />
                             </div>
                             <div>
                                 <label className="form_label"><b>Numero :</b></label>

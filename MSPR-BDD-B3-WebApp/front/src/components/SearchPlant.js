@@ -33,7 +33,7 @@ function SearchPlant() {
         <>
             <div className="body">
                 <div className="d-flex justify-content-center">
-                    <button className='btn btn-success btn-lg mb-5 '  onClick={openPlanteRegister}>Enregistrer une plante</button> 
+                    <button className='btn btn-success btn-lg mb-5 ' id="registerPlante" onClick={openPlanteRegister}>Enregistrer une plante</button> 
                 </div>
               
                 <div className='plants-container d-flex flex-wrap align-items-center justify-content-center'>
