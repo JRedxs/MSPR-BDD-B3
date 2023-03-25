@@ -1,5 +1,5 @@
 # Use the official Node.js image from Docker Hub
-FROM node:14-buster
+FROM node:19-buster
 
 # Set the working directory in the container
 WORKDIR /app
