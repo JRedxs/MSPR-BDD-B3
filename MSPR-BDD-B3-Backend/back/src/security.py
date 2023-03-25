@@ -59,7 +59,7 @@ class BearerAuth(HTTPBearer):
             payload = jwt.decode(jwt_token, SECRET_KEY, algorithms=ALGORITHM)
             user_id = payload.get("user_id, nom, prenom, phone")
             if user_id is None:
-                return False, None  # User ID not found in payload
+                return False, None  # User ID non trouvé dans le payload
             return True, user_id
         except jwt_exceptions.ExpiredSignatureError:
             raise HTTPException(status_code=403, detail="Token has expired")
