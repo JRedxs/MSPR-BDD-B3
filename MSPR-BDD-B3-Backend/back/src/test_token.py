@@ -1,6 +1,6 @@
 import pytest
-from fastapi import HTTPException, Request
-from security import decoded_jwt, SECRET_KEY, ALGORITHM,create_access_token
+from fastapi import HTTPException
+from main_test import decoded_jwt, SECRET_KEY, ALGORITHM,create_access_token
 import jwt
 from fastapi import HTTPException
 import time
@@ -10,7 +10,6 @@ def test_create_access_token():
 
     token = create_access_token()
     assert isinstance(token, str)
-
 
     user_id = "123"
     token = create_access_token(user_id=user_id)
