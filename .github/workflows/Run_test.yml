@@ -34,7 +34,17 @@ jobs:
           source env/bin/activate
           cd MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src
           pytest test_takeLatinTupleGetUtf8List.py
+          
+      - name: Run Test Token
+        run : |
+          cd ..
+          pip install pytest
+          pip install virtualenv
+          python -m venv env
+          source env/bin/activate
+          cd MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src
           pytest test_token.py
+
 
 
 
