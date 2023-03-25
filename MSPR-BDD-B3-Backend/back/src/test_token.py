@@ -1,7 +1,7 @@
 import pytest
 from fastapi import HTTPException, Request
-from security import *
-from security import decoded_jwt, SECRET_KEY, ALGORITHM
+from security import decoded_jwt, SECRET_KEY, ALGORITHM,create_access_token
+import jwt
 from fastapi import HTTPException
 import time
 from datetime import timedelta
