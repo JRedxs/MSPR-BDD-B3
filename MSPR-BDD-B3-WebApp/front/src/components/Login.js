@@ -17,7 +17,6 @@ const LoginPage = () => {
         try {
           const response = await axios.post(`${baseUrl}/token_log?email=${email}&password=${password}`,);
           const access_token = response.data.access_token;
-          console.log(access_token);
           if (access_token) {
             window.sessionStorage.setItem('access_token', access_token);
             navigate(`/SearchPlant`);
