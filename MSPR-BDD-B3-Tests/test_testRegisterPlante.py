@@ -9,10 +9,16 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import TimeoutException
 
 class TestTestRegisterPlante():
   def setup_method(self, method):
-    self.driver = webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_argument("--use-fake-ui-for-media-stream")
+
+    self.driver = webdriver.Chrome(chrome_options=chrome_options)
+    
     self.vars = {}
   
   def teardown_method(self, method):
@@ -22,7 +28,6 @@ class TestTestRegisterPlante():
     self.driver.get("http://localhost:3000/")
     self.driver.set_window_size(1920, 1040)
     self.driver.find_element(By.CSS_SELECTOR, ".circle").click()
-    element = self.driver.find_element(By.CSS_SELECTOR, ".circle")
 
     self.driver.find_element(By.LINK_TEXT, "Se connecter").click()
     time.sleep(2)
@@ -53,5 +58,16 @@ class TestTestRegisterPlante():
     time.sleep(2)
     self.driver.find_element(By.ID, "UploadPhoto").click()
     time.sleep(2)
-    self.driver.find_element(By.ID, "uploadPlante").click()
+    uploadPlante = self.driver.find_element(By.ID, "uploadPlante")
+    self.driver.execute_script("arguments[0].click();", uploadPlante)
+    time.sleep(5)
+    xpath_selector = f"//*[contains(text(), 'Testrosa')]"
+    try:
+      # Wait up to 10 seconds for the element to appear
+      element = WebDriverWait(self.driver, 10).until(
+          expected_conditions.presence_of_element_located((By.XPATH, xpath_selector))
+      )
+      assert True
+    except TimeoutException :
+        assert False
   
