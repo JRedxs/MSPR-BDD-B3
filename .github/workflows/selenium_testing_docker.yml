@@ -27,6 +27,9 @@ jobs:
       run: |
         docker-compose build
         docker-compose up -d
+    
+    - name: Wait for 2 minutes while the database is setting up
+      run: sleep 120
 
     - name: Run Selenium tests
       run: |
