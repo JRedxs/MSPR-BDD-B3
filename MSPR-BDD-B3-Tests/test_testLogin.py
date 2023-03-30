@@ -23,6 +23,7 @@ class TestTestLogin():
     url = "http://localhost:3000/"
     self.driver.get(url)
     self.driver.set_window_size(1936, 1056)
+    
     try:
       self.driver.find_element(By.CSS_SELECTOR, ".circle").click()
       self.driver.find_element(By.LINK_TEXT, "Se connecter").click()
