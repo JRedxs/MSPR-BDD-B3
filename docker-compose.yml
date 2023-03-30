@@ -5,12 +5,12 @@ services:
     build:
       context: ./MSPR-BDD-B3-MySQL/.
       dockerfile: Dockerfile
-    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=${ROOT_PASSWORD}
-      - MYSQL_DATABASE=${DATABASE}
-      - MYSQL_USER=${USER}
-      - MYSQL_PASSWORD=${PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE}
+      MYSQL_USER: ${USER}
+      MYSQL_PASSWORD: ${PASSWORD}
+    restart: always
 
     ports:
       - '3306:3306'
