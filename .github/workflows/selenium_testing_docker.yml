@@ -106,9 +106,9 @@ jobs:
     - name: Show container logs
       run: |
         docker ps
-        docker logs mspr-bdd-b3_react-web-compose-1
-        docker logs mspr-bdd-b3_python-api-compose-1
-        docker logs mspr-bdd-b3_mysql-db-compose-1
+        docker logs mspr-bdd-b3_react-web-compose
+        docker logs mspr-bdd-b3_python-api-compose
+        docker logs mspr-bdd-b3_mysql-db-compose
 
     - name: Run Selenium tests
       run: |
