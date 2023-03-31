@@ -18,6 +18,63 @@ jobs:
       with:
         ref: selenium
 
+    - name: Creating the test environment files
+      env:
+        SECRET: "7e9356d97f7a42d61d9194f2c82f39f545620fb45fc95a34d92330f14d7869f3"
+        ALGORITHM: 'HS256'
+
+        HOST_LOCAL: "localhost"
+        HOST_CONTAINER: "mysql-db-compose"
+        USER_LOCAL: "admin"
+        USER_CONTAINER: "admin"
+        PASSWORD_LOCAL: "admin"
+        PASSWORD_CONTAINER: "admin"
+        DB_LOCAL: "Arosaje_db"
+        DB_CONTAINER: "Arosaje_db"
+        PORT_LOCAL: 3306
+        PORT_CONTAINER: 3306
+
+        REACT_APP_API_URL: "http://localhost:8005"
+
+        envBackPath: "./MSPR-BDD-B3-Backend/back/src/.env"
+        envTestPath: "./MSPR-BDD-B3-Tests/.env"
+        envWebPath: "./MSPR-BDD-B3-WebApp/front/.env.local"
+        envDockerCompose: "./.env"
+
+      run: |
+        echo "SECRET = $SECRET \n" > $envBackPath
+        echo "ALGORITHM = $ALGORITHM \n" >> $envBackPath
+        echo "HOST_LOCAL = $HOST_LOCAL \n" >> $envBackPath
+        echo "HOST_CONTAINER = $HOST_CONTAINER \n" >> $envBackPath
+        echo "USER_LOCAL = $USER_LOCAL \n" >> $envBackPath
+        echo "USER_CONTAINER = $USER_CONTAINER \n" >> $envBackPath
+        echo "PASSWORD_LOCAL = $PASSWORD_LOCAL \n" >> $envBackPath
+        echo "PASSWORD_CONTAINER = $PASSWORD_CONTAINER \n" >> $envBackPath
+        echo "DB_LOCAL = $DB_LOCAL \n" >> $envBackPath
+        echo "DB_CONTAINER = $DB_CONTAINER \n" >> $envBackPath
+        echo "PORT_LOCAL = $PORT_LOCAL \n" >> $envBackPath
+        echo "PORT_CONTAINER = $PORT_CONTAINER \n" >> $envBackPath
+
+        echo "SECRET = $SECRET \n" > $envTestPath
+        echo "ALGORITHM = $ALGORITHM \n" >> $envTestPath
+        echo "HOST_LOCAL = $HOST_LOCAL \n" >> $envTestPath
+        echo "HOST_CONTAINER = $HOST_CONTAINER \n" >> $envTestPath
+        echo "USER_LOCAL = $USER_LOCAL \n" >> $envTestPath
+        echo "USER_CONTAINER = $USER_CONTAINER \n" >> $envTestPath
+        echo "PASSWORD_LOCAL = $PASSWORD_LOCAL \n" >> $envTestPath
+        echo "PASSWORD_CONTAINER = $PASSWORD_CONTAINER \n" >> $envTestPath
+        echo "DB_LOCAL = $DB_LOCAL \n" >> $envTestPath
+        echo "DB_CONTAINER = $DB_CONTAINER \n" >> $envTestPath
+        echo "PORT_LOCAL = $PORT_LOCAL \n" >> $envTestPath
+        echo "PORT_CONTAINER = $PORT_CONTAINER \n" >> $envTestPath
+
+        echo "REACT_APP_API_URL = $REACT_APP_API_URL \n" > $envWebPath 
+        
+        echo "ROOT_PASSWORD = $PASSWORD_CONTAINER \n" > $envDockerCompose
+        echo "DATABASE = $DB_CONTAINER \n" >> $envDockerCompose
+        echo "USER = $USER_CONTAINER \n" >> $envDockerCompose
+        echo "PORT = $PORT_CONTAINER \n" >> $envDockerCompose
+
     - name: Install Docker Compose
       run: |
         sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
