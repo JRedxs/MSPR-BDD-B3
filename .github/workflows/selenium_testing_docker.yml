@@ -96,6 +96,12 @@ jobs:
     - name: Wait for 2 minutes while the database is setting up
       run: sleep 120
 
+    - name: Install Google Chrome
+      run: |
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt-get install -y -f
+
     - name: Run Selenium tests
       run: |
         cd ./MSPR-BDD-B3-Tests
