@@ -103,6 +103,12 @@ jobs:
         sudo apt-get install -y -f
         sudo apt-get install -y libxss1 libappindicator1 libindicator7
 
+    - name: Show container logs
+      run: |
+        docker logs mspr-bdd-b3-react-web-compose-1
+        docker logs mspr-bdd-b3-python-api-compose-1
+        docker logs mspr-bdd-b3-mysql-db-compose-1
+
     - name: Run Selenium tests
       run: |
         cd ./MSPR-BDD-B3-Tests
