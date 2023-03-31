@@ -55,6 +55,8 @@ jobs:
         echo "PORT_LOCAL = $PORT_LOCAL" >> $envBackPath
         echo "PORT_CONTAINER = $PORT_CONTAINER" >> $envBackPath
 
+        echo cat $envBackPath
+
         echo "SECRET = $SECRET" > $envTestPath
         echo "ALGORITHM = $ALGORITHM" >> $envTestPath
         echo "HOST_LOCAL = $HOST_LOCAL" >> $envTestPath
@@ -68,12 +70,18 @@ jobs:
         echo "PORT_LOCAL = $PORT_LOCAL" >> $envTestPath
         echo "PORT_CONTAINER = $PORT_CONTAINER" >> $envTestPath
 
+        echo cat $envTestPath
+
         echo "REACT_APP_API_URL = $REACT_APP_API_URL" > $envWebPath 
         
+        echo cat $envWebPath
+
         echo "ROOT_PASSWORD = $PASSWORD_CONTAINER" > $envDockerCompose
         echo "DATABASE = $DB_CONTAINER" >> $envDockerCompose
         echo "USER = $USER_CONTAINER" >> $envDockerCompose
         echo "PORT = $PORT_CONTAINER" >> $envDockerCompose
+        
+        echo cat $envDockerCompose
 
     - name: Install Docker Compose
       run: |
