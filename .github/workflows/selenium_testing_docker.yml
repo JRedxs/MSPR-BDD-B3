@@ -106,7 +106,7 @@ jobs:
         docker-compose up -d
     
     - name: Wait for 10 minutes while the database is setting up
-      run: sleep 1200
+      run: sleep 600
 
     - name: Install Google Chrome
       run: |
@@ -115,17 +115,14 @@ jobs:
         sudo apt-get install -y -f
         sudo apt-get install -y libxss1 libappindicator1 libindicator7
 
-    - name: Show container logs
+    - name: Show mysql logs
       run: |
-        docker ps
-        echo "-----------------------------------------------------------------------------------------------------------"
-        echo "-----------------------------------------------------------------------------------------------------------"
         docker logs mspr-bdd-b3_mysql-db-compose_1
-        echo "-----------------------------------------------------------------------------------------------------------"
-        echo "-----------------------------------------------------------------------------------------------------------"
+    - name: Show python logs
+      run: |
         docker logs mspr-bdd-b3_python-api-compose_1
-        echo "-----------------------------------------------------------------------------------------------------------"
-        echo "-----------------------------------------------------------------------------------------------------------"
+    - name: Show react logs
+      run: |
         docker logs mspr-bdd-b3_react-web-compose_1
 
     - name: Run Selenium tests
