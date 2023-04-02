@@ -24,7 +24,7 @@ jobs:
         ALGORITHM: 'HS256'
 
         HOST_LOCAL: "localhost"
-        HOST_CONTAINER: mspr-bdd-b3_mysql-db-compose_1"
+        HOST_CONTAINER: "mysql-db-compose"
         USER_LOCAL: "admin"
         USER_CONTAINER: "admin"
         PASSWORD_LOCAL: "admin"
