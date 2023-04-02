@@ -106,9 +106,14 @@ jobs:
     - name: Show container logs
       run: |
         docker ps
-        docker logs mspr-bdd-b3_react-web-compose_1
+        echo "-----------------------------------------------------------------------------------------------------------"
+        echo "-----------------------------------------------------------------------------------------------------------"
         docker logs mspr-bdd-b3_python-api-compose_1
+        echo "-----------------------------------------------------------------------------------------------------------"
+        echo "-----------------------------------------------------------------------------------------------------------"
         docker logs mspr-bdd-b3_mysql-db-compose_1
+        echo "-----------------------------------------------------------------------------------------------------------"
+        echo "-----------------------------------------------------------------------------------------------------------"
 
     - name: Run Selenium tests
       run: |
@@ -118,8 +123,8 @@ jobs:
         # Install Selenium and other required packages
         pip install -r ./requirements.txt
         # Run your Selenium tests
-        python3 -m pytest ./test_testLogin.py
+        python3 -m pytest ./test_testUserRegister.py
 
     - name: Stop Docker Compose stack
       if: always()
-      run: docker-compose down
+      run: docker-compose down  --remove-orphans --volumes
