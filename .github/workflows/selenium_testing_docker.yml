@@ -56,6 +56,8 @@ jobs:
         echo "PORT_CONTAINER = $PORT_CONTAINER" >> $envBackPath
 
         cat $envBackPath
+        echo "-----------------------------------------------------------------------------------------------------------"
+        echo "-----------------------------------------------------------------------------------------------------------"
 
         echo "SECRET = $SECRET" > $envTestPath
         echo "ALGORITHM = $ALGORITHM" >> $envTestPath
@@ -71,10 +73,14 @@ jobs:
         echo "PORT_CONTAINER = $PORT_CONTAINER" >> $envTestPath
 
         cat $envTestPath
+        echo "-----------------------------------------------------------------------------------------------------------"
+        echo "-----------------------------------------------------------------------------------------------------------"
 
         echo "REACT_APP_API_URL = $REACT_APP_API_URL" > $envWebPath 
         
         cat $envWebPath
+        echo "-----------------------------------------------------------------------------------------------------------"
+        echo "-----------------------------------------------------------------------------------------------------------"
 
         echo "ROOT_PASSWORD = $PASSWORD_CONTAINER" > $envDockerCompose
         echo "DATABASE = $DB_CONTAINER" >> $envDockerCompose
@@ -82,6 +88,12 @@ jobs:
         echo "PORT = $PORT_CONTAINER" >> $envDockerCompose
         
         cat $envDockerCompose
+        echo "-----------------------------------------------------------------------------------------------------------"
+        echo "-----------------------------------------------------------------------------------------------------------"
+
+    - name: Show file system
+      run: |
+        find .
 
     - name: Install Docker Compose
       run: |
