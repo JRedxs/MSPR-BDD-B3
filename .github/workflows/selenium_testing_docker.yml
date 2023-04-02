@@ -105,8 +105,8 @@ jobs:
         docker-compose build
         docker-compose up -d
     
-    - name: Wait for 2 minutes while the database is setting up
-      run: sleep 120
+    - name: Wait for 10 minutes while the database is setting up
+      run: sleep 1200
 
     - name: Install Google Chrome
       run: |
