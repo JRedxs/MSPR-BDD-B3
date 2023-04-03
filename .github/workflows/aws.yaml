@@ -23,7 +23,7 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.HOST_USER }}
         key: ${{ secrets.SSH_PEM }}
-        port: 22
+        port: 22 
         script: |
           # Stop all running Docker Containers
           # if [ "$(docker ps -a -q)" ]; then
