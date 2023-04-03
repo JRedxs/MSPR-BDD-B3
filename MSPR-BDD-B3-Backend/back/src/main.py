@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from models import *
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
 from security import *
+from PIL import Image
+from exif import Image
 
 # Connexion à la base de données
 connection = MSQL
@@ -31,6 +33,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 def takeLatinTupleGetUtf8List(theTuple):
@@ -135,12 +138,7 @@ async def get_current_user(current_user: str = Depends(BearerAuth())):
             }
             return {"user": user}
         else:
-            raise HTTPException(status_code=404, detail="User not found eh")
-
-# @app.get("/users/me")
-# async def read_users_me(current_user: str = Depends(BearerAuth())):
-#     decoded_token = decoded_jwt(current_user)
-#     return decoded_token
+            raise HTTPException(status_code=404, detail="User not found")
         
 @app.get("/users_all" ,summary="Récupération de toutes les utilisateurs")
 def get_user():
@@ -181,20 +179,47 @@ def get_user_by_id(user_id: int ):
             cursor.close()
             raise HTTPException(status_code=404, detail="Personne inexistante")
 
-@app.post("/image" , summary="Insertion d'une image")
+
+# @app.post("/image" , summary="Insertion d'une image")
+# async def register_image(image: NewImage):
+#     request_select = "select id_plante from Plante where id_plante = %s limit 1;"
+#     request_insert = "insert into Photo (image_data, id_plante) values(%s,%s);"
+
+#     cursor = connection.cursor()
+#     cursor.execute(request_select, (image.id_plante))
+#     if cursor.fetchone() is None:
+#         raise HTTPException(status_code=404, detail="Photo pour une plante inexistante")        
+#     cursor.execute(request_insert, (image.data,image.id_plante))
+#     connection.commit()
+#     cursor.close()
+#     return {"message": "Photo enregistrée"}
+
+
+@app.post("/image", summary="Insertion d'une image")
 async def register_image(image: NewImage):
-    request_select = "select id_plante from Plante where id_plante = %s limit 1;"
-    request_insert = "insert into Photo (image_data, id_plante) values(%s,%s);"
+    request_select = "SELECT id_plante FROM Plante WHERE id_plante = %s LIMIT 1;"
+    request_insert = "INSERT INTO Photo (image_data, id_plante) VALUES (%s, %s);"
 
     cursor = connection.cursor()
-    cursor.execute(request_select, (image.id_plante))
+    cursor.execute(request_select, (image.id_plante,))
     if cursor.fetchone() is None:
-        raise HTTPException(status_code=404, detail="Photo pour une plante inexistante")
-    
-    cursor.execute(request_insert, (image.data,image.id_plante))
+       raise HTTPException(status_code=404, detail="Photo pour une plante inexistante")
+    encoded_data = image.data.encode()
+    my_img = Image(encoded_data)
+    try:
+        if 'GPSInfo' in my_img:
+            del my_img['GPSInfo']
+        else: 
+            print('pas de métadata')
+    except Exception as e:
+        print(e)
+    cursor.execute(request_insert, (image.data, image.id_plante))
     connection.commit()
     cursor.close()
     return {"message": "Photo enregistrée"}
+
+
+
     
 @app.get("/image/{id}", response_model=DBImage, summary="Récupération d'une image en fonction de l'id")
 def send_image(id):

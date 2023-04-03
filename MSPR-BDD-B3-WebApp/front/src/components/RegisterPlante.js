@@ -55,7 +55,7 @@ function RegisterPlante(){
 
     const uploadPlante = async () => {
         // This function will be ugly and will work
-
+    
         let querry = "https://api-adresse.data.gouv.fr/search/?q=";
         querry += number.toString() + "+";
         querry += road.trim().replace(' ','+') + '+';
@@ -64,15 +64,23 @@ function RegisterPlante(){
         await axios.get(querry)
             .then( async (apiAdresseResponse) => {
                 const coordinates = apiAdresseResponse.data.features[0].geometry.coordinates;
-                await axios.post(`${baseUrl}/plante`, {id_person: person, name: name, number: number, road_first: road, road_second: complement, town: town, postal_code: code, latitude: coordinates[1], longitude: coordinates[0]})
+                await axios.post(`${baseUrl}/plante`, {id_person: person, name: name, number: number, road_first: road, road_second: complement, town: town, postal_code: code, latitude: coordinates[1], longitude: coordinates[0]}, {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*'
+                    }
+                })
                     .then( async (planteResponse) => {
-                        await axios.post(`${baseUrl}/image`, {id_plante: planteResponse.data.id_plante, data: photo})
+                        await axios.post(`${baseUrl}/image`, {id_plante: planteResponse.data.id_plante, data: photo}, {
+                            headers: {
+                                'Access-Control-Allow-Origin': '*'
+                            }
+                        })
                         .then( () => {
                             navigate(`/SearchPlant`)
                         })
                     })
             });
-
+    
     }
 
     // Cette fonction va peut-être être activée ailleurs
