@@ -3,7 +3,7 @@
 import pymysql,os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv('/.env')
 
 HOST_LOCAL = os.getenv('HOST_LOCAL')
 HOST_CONTAINER = os.getenv('HOST_CONTAINER')
@@ -13,8 +13,8 @@ PASSWORD_LOCAL = os.getenv('PASSWORD_LOCAL')
 PASSWORD_CONTAINER = os.getenv('PASSWORD_CONTAINER')
 DB_LOCAL = os.getenv('DB_LOCAL')
 DB_CONTAINER = os.getenv('DB_CONTAINER')
-PORT_LOCAL = 3306
-PORT_CONTAINER = 3306
+PORT_LOCAL = int(os.getenv('PORT_LOCAL'))
+PORT_CONTAINER = int(os.getenv('PORT_CONTAINER'))
 
 # Connexion à la base de données
 
