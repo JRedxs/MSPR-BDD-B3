@@ -70,7 +70,7 @@ def login(person: Person):
 def login_token(email: str, password: str):
     with connection.cursor() as cursor:
         query = "SELECT * FROM Person WHERE email=%s"
-        cursor.execute(query, (email))
+        cursor.execute(query, (email,))
         result = cursor.fetchone()
         if result:
             user_id = result[0]
@@ -196,7 +196,7 @@ def get_user_by_id(user_id: int ):
 
 
 @app.post("/image", summary="Insertion d'une image")
-async def register_image(image: NewImage):
+async def register_image(image: NewImage = Depends(BearerAuth())):
     request_select = "SELECT id_plante FROM Plante WHERE id_plante = %s LIMIT 1;"
     request_insert = "INSERT INTO Photo (image_data, id_plante) VALUES (%s, %s);"
 
@@ -221,8 +221,8 @@ async def register_image(image: NewImage):
 
 
     
-@app.get("/image/{id}", response_model=DBImage, summary="Récupération d'une image en fonction de l'id")
-def send_image(id):
+@app.get("/image/{id}", response_model=DBImage, summary="Récupération d'une image en fonction de l'id" )
+def send_image(id = Depends(BearerAuth())):
     request_select = "select id_photo, id_plante, image_data, advice_title, advice from Photo where id_photo = %s limit 1;"
     cursor = connection.cursor()
     cursor.execute(request_select, (id))
@@ -242,7 +242,7 @@ def send_image(id):
 
 
 @app.put("/advices" , summary="Modification d'un titre conseil")
-def create_advice(advice: dict):
+def create_advice(advice: dict = Depends(BearerAuth())):
     
     with connection.cursor() as cursor:
         try:
@@ -311,7 +311,7 @@ def get_plants():
 
 #maybe broken
 @app.get("/plants" , summary="Récupération des garde de plantes")
-def get_info_plants():
+def get_info_plants(token: str = Depends(BearerAuth())):
     
     with connection.cursor() as cursor:
         try:
@@ -359,7 +359,7 @@ def get_info_plants():
 
 
 @app.post("/plants_garde" , summary="Insertion des gardes")
-def add_garde(garde: Garde):
+def add_garde(garde: Garde = Depends(BearerAuth())):
     
     with connection.cursor() as cursor:
         try:
@@ -378,7 +378,7 @@ def add_garde(garde: Garde):
 
 
 @app.post("/plante" , summary="Insertion des plantes")
-async def register_plante(plante : PlantToCreate):
+async def register_plante(plante : PlantToCreate = Depends(BearerAuth())):
     cursor = connection.cursor()
     sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
     val = (plante.id_person, plante.name, plante.number, plante.road_first, plante.road_second, plante.town, plante.postal_code, plante.latitude, plante.longitude)
@@ -393,7 +393,7 @@ async def register_plante(plante : PlantToCreate):
     return {"message": "Plante enregistrée", "id_plante": result[0]}
 
 @app.get("/plant/{id_plante}" , summary="Récupération des plantes en fonction de son id")
-def get_plant_by_id(id_plante: int):
+def get_plant_by_id(id_plante: int = Depends(BearerAuth())):
     
     with connection.cursor() as cursor:
         try :
@@ -411,7 +411,7 @@ def get_plant_by_id(id_plante: int):
             return {"Plante inexistante"}
     
 @app.put("/garde/{id_garde}" , summary="Récupération des gardes en fonction de son id")
-def put_garde_by_id(id_garde: int, id_person: int):
+def put_garde_by_id(id_garde: int, id_person: int = Depends(BearerAuth())):
     with connection.cursor() as cursor:
         # Recherche du garde existant dans la base de données
         sql_select = "SELECT * FROM Garde WHERE id_garde = %s"
@@ -432,7 +432,7 @@ def put_garde_by_id(id_garde: int, id_person: int):
 
 
 @app.get("/all_gardes" , summary="Récupération des gardes")
-def get_all_gardes():
+def get_all_gardes(token : str = Depends(BearerAuth())):
     
     with connection.cursor() as cursor:
         try:
@@ -450,7 +450,7 @@ def get_all_gardes():
     
 
 @app.get("/plantandgallery/{id_plante}" , summary="Récupération des photos de plantes en fonction de leur id")
-def get_plant_photos_by_id(id_plante: int):
+def get_plant_photos_by_id(id_plante: int = Depends(BearerAuth())):
     
     with connection.cursor() as cursor:
         try :

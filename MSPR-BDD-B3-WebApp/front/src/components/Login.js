@@ -55,7 +55,7 @@ const LoginPage = () => {
                                                     <label className="form-label" htmlFor="form2Example27">Password</label>
                                                 </div>
                                                 <div className="d-flex justify-content-center pt-1 mb-4">
-                                                    <button className="btn btn-success btn-lg btn-block m-1" style={{ backgroundColor: '#8E685A ', color: 'white' }} id="logButton" type="submit" to="/RegisterPlante">Login</button>
+                                                    <button className="btn btn-success btn-lg btn-block m-1" style={{ backgroundColor: '#8E685A ', color: 'white' }} type="submit" to="/RegisterPlante">Login</button>
                                                     {/* <button className="btn btn-success btn-lg btn-block m-1"  style={{ backgroundColor: '#8E685A ', color: 'white' }} to="/changePass">Forgot password?</button> */}
                                                 </div>
                                                 
