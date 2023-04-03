@@ -20,19 +20,19 @@ jobs:
 
     - name: Creating the test environment files
       env:
-        SECRET: "7e9356d97f7a42d61d9194f2c82f39f545620fb45fc95a34d92330f14d7869f3"
-        ALGORITHM: 'HS256'
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        ALGORITHM: ${{ secrets.ALGORITHM }}
 
-        HOST_LOCAL: "localhost"
-        HOST_CONTAINER: "mysql-db-compose"
-        USER_LOCAL: "admin"
-        USER_CONTAINER: "admin"
-        PASSWORD_LOCAL: "admin"
-        PASSWORD_CONTAINER: "admin"
-        DB_LOCAL: "Arosaje_db"
-        DB_CONTAINER: "Arosaje_db"
-        PORT_LOCAL: 3306
-        PORT_CONTAINER: 3306
+        HOST_LOCAL: ${{ secrets.HOST_LOCAL }}
+        HOST_CONTAINER: ${{ secrets.HOST_CONTAINER}}
+        USER_LOCAL: ${{ secrets.USER_LOCAL}}
+        USER_CONTAINER: ${{ secrets.USER_CONTAINER}}
+        PASSWORD_LOCAL: ${{ secrets.PASSWORD_LOCAL}}
+        PASSWORD_CONTAINER: ${{ secrets.PASSWORD_CONTAINER}}
+        DB_LOCAL: ${{ secrets.DB_LOCAL}}
+        DB_CONTAINER: ${{ secrets.DB_LOCAL}}
+        PORT_LOCAL: ${{ secrets.PORT}}
+        PORT_CONTAINER: ${{ secrets.PORT}}
 
         REACT_APP_API_URL: "http://localhost:8005"
 
@@ -42,54 +42,54 @@ jobs:
         envDockerCompose: "./.env"
 
       run: |
-        echo "SECRET=$SECRET" > $envBackPath
-        echo "ALGORITHM=$ALGORITHM" >> $envBackPath
-        echo "HOST_LOCAL=$HOST_LOCAL" >> $envBackPath
-        echo "HOST_CONTAINER=$HOST_CONTAINER" >> $envBackPath
-        echo "USER_LOCAL=$USER_LOCAL" >> $envBackPath
-        echo "USER_CONTAINER=$USER_CONTAINER" >> $envBackPath
-        echo "PASSWORD_LOCAL=$PASSWORD_LOCAL" >> $envBackPath
-        echo "PASSWORD_CONTAINER=$PASSWORD_CONTAINER" >> $envBackPath
-        echo "DB_LOCAL=$DB_LOCAL" >> $envBackPath
-        echo "DB_CONTAINER=$DB_CONTAINER" >> $envBackPath
-        echo "PORT_LOCAL=$PORT_LOCAL" >> $envBackPath
-        echo "PORT_CONTAINER=$PORT_CONTAINER" >> $envBackPath
+        # echo "SECRET=$SECRET" > $envBackPath
+        # echo "ALGORITHM=$ALGORITHM" >> $envBackPath
+        # echo "HOST_LOCAL=$HOST_LOCAL" >> $envBackPath
+        # echo "HOST_CONTAINER=$HOST_CONTAINER" >> $envBackPath
+        # echo "USER_LOCAL=$USER_LOCAL" >> $envBackPath
+        # echo "USER_CONTAINER=$USER_CONTAINER" >> $envBackPath
+        # echo "PASSWORD_LOCAL=$PASSWORD_LOCAL" >> $envBackPath
+        # echo "PASSWORD_CONTAINER=$PASSWORD_CONTAINER" >> $envBackPath
+        # echo "DB_LOCAL=$DB_LOCAL" >> $envBackPath
+        # echo "DB_CONTAINER=$DB_CONTAINER" >> $envBackPath
+        # echo "PORT_LOCAL=$PORT_LOCAL" >> $envBackPath
+        # echo "PORT_CONTAINER=$PORT_CONTAINER" >> $envBackPath
 
-        cat $envBackPath
-        echo "-----------------------------------------------------------------------------------------------------------"
-        echo "-----------------------------------------------------------------------------------------------------------"
+        # cat $envBackPath
+        # echo "-----------------------------------------------------------------------------------------------------------"
+        # echo "-----------------------------------------------------------------------------------------------------------"
 
-        echo "SECRET=$SECRET" > $envTestPath
-        echo "ALGORITHM=$ALGORITHM" >> $envTestPath
-        echo "HOST_LOCAL=$HOST_LOCAL" >> $envTestPath
-        echo "HOST_CONTAINER=$HOST_CONTAINER" >> $envTestPath
-        echo "USER_LOCAL=$USER_LOCAL" >> $envTestPath
-        echo "USER_CONTAINER=$USER_CONTAINER" >> $envTestPath
-        echo "PASSWORD_LOCAL=$PASSWORD_LOCAL" >> $envTestPath
-        echo "PASSWORD_CONTAINER=$PASSWORD_CONTAINER" >> $envTestPath
-        echo "DB_LOCAL=$DB_LOCAL" >> $envTestPath
-        echo "DB_CONTAINER=$DB_CONTAINER" >> $envTestPath
-        echo "PORT_LOCAL=$PORT_LOCAL" >> $envTestPath
-        echo "PORT_CONTAINER=$PORT_CONTAINER" >> $envTestPath
+        # echo "SECRET=$SECRET" > $envTestPath
+        # echo "ALGORITHM=$ALGORITHM" >> $envTestPath
+        # echo "HOST_LOCAL=$HOST_LOCAL" >> $envTestPath
+        # echo "HOST_CONTAINER=$HOST_CONTAINER" >> $envTestPath
+        # echo "USER_LOCAL=$USER_LOCAL" >> $envTestPath
+        # echo "USER_CONTAINER=$USER_CONTAINER" >> $envTestPath
+        # echo "PASSWORD_LOCAL=$PASSWORD_LOCAL" >> $envTestPath
+        # echo "PASSWORD_CONTAINER=$PASSWORD_CONTAINER" >> $envTestPath
+        # echo "DB_LOCAL=$DB_LOCAL" >> $envTestPath
+        # echo "DB_CONTAINER=$DB_CONTAINER" >> $envTestPath
+        # echo "PORT_LOCAL=$PORT_LOCAL" >> $envTestPath
+        # echo "PORT_CONTAINER=$PORT_CONTAINER" >> $envTestPath
 
-        cat $envTestPath
-        echo "-----------------------------------------------------------------------------------------------------------"
-        echo "-----------------------------------------------------------------------------------------------------------"
+        # cat $envTestPath
+        # echo "-----------------------------------------------------------------------------------------------------------"
+        # echo "-----------------------------------------------------------------------------------------------------------"
 
-        echo "REACT_APP_API_URL=$REACT_APP_API_URL" > $envWebPath 
+        # echo "REACT_APP_API_URL=$REACT_APP_API_URL" > $envWebPath 
         
-        cat $envWebPath
-        echo "-----------------------------------------------------------------------------------------------------------"
-        echo "-----------------------------------------------------------------------------------------------------------"
+        # cat $envWebPath
+        # echo "-----------------------------------------------------------------------------------------------------------"
+        # echo "-----------------------------------------------------------------------------------------------------------"
 
-        echo "ROOT_PASSWORD=$PASSWORD_CONTAINER" > $envDockerCompose
-        echo "DATABASE=$DB_CONTAINER" >> $envDockerCompose
-        echo "USER=$USER_CONTAINER" >> $envDockerCompose
-        echo "PORT=$PORT_CONTAINER" >> $envDockerCompose
+        # echo "ROOT_PASSWORD=$PASSWORD_CONTAINER" > $envDockerCompose
+        # echo "DATABASE=$DB_CONTAINER" >> $envDockerCompose
+        # echo "USER=$USER_CONTAINER" >> $envDockerCompose
+        # echo "PORT=$PORT_CONTAINER" >> $envDockerCompose
         
-        cat $envDockerCompose
-        echo "-----------------------------------------------------------------------------------------------------------"
-        echo "-----------------------------------------------------------------------------------------------------------"
+        # cat $envDockerCompose
+        # echo "-----------------------------------------------------------------------------------------------------------"
+        # echo "-----------------------------------------------------------------------------------------------------------"
 
     - name: Show file system
       run: |
