@@ -10,5 +10,5 @@ ENV MYSQL_PASSWORD=${PASSWORD}
 # Copy the initialization SQL script to the container
 COPY Arosaje-db.sql /docker-entrypoint-initdb.d/
 
-
+# Expose the port used by MySQL
 EXPOSE ${PORT}
