@@ -20,4 +20,4 @@ COPY ./back/src/. .
 EXPOSE 8005
 
 # Specify the command to run the app when the container is started
-CMD sleep 2s;uvicorn main:app --host 0.0.0.0 --port 8005
+CMD sleep 60s;uvicorn main:app --host 0.0.0.0 --port 8005

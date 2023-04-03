@@ -4,7 +4,6 @@ from models import *
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
 from security import *
-from PIL import Image
 from exif import Image
 
 # Connexion à la base de données
