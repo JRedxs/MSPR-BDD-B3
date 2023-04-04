@@ -29,6 +29,7 @@ jobs:
 
     steps:
     - name : Environnements Variables
+      uses:  actions/checkout@v2
       run: |
              echo "SECRET=$SECRET" > $envBackPath
              echo "ALGORITHM=$ALGORITHM" >> $envBackPath
@@ -42,6 +43,7 @@ jobs:
              echo "DB_CONTAINER=$DB_CONTAINER" >> $envBackPath
              echo "PORT_LOCAL=$PORT_LOCAL" >> $envBackPath
              echo "PORT_CONTAINER=$PORT_CONTAINER" >> $envBackPath
+   
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
       with:
