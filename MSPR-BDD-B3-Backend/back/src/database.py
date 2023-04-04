@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv('/.env')
 
+
 HOST_LOCAL = os.getenv('HOST_LOCAL')
 HOST_CONTAINER = os.getenv('HOST_CONTAINER')
 USER_LOCAL = os.getenv('USER_LOCAL')
