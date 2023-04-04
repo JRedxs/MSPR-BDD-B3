@@ -29,7 +29,7 @@ jobs:
 
     steps:
     - name: Copy .env file to remote server
-      run: scp -i ${{ secrets.SSH_PEM }} ${env.envBackPath} ${{ secrets.HOST_USER }}@${{ secrets.HOST }}:/MSPR-BDD-B3
+      run: scp -i ${secrets.SSH_PEM} ${env.envBackPath} ${secrets.HOST_USER}@${secrets.HOST}:/MSPR-BDD-B3
 
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
