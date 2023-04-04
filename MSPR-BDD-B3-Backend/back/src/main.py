@@ -120,11 +120,10 @@ def get_user(email: str, password: str):
 
 
 @app.get("/user/me")
-async def get_current_user(current_user: str = Depends(BearerAuth())):
-    decoded_token = decoded_jwt(current_user)
+async def get_current_user(current_user: Tuple[str, str] = Depends(BearerAuth())):
     with connection.cursor() as cursor:
         query = "SELECT * FROM Person WHERE id_person=%s"
-        cursor.execute(query, (user_id,))
+        cursor.execute(query, (current_user[0]))
         result = cursor.fetchone()
         if result:
             user = {
