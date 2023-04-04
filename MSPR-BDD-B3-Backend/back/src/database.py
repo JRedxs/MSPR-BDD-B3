@@ -25,6 +25,7 @@ def mysql_local():
 def mysql_container():
     return pymysql.connect(host="mysql-db-compose", user="admin", password="admin", db="Arosaje_db", port=3306, charset='utf8')
 
+
 def mysql():
     mysql = ''
     try :
