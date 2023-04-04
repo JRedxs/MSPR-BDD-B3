@@ -39,11 +39,12 @@ def decoded_jwt(token: str) -> dict:
         raise HTTPException(status_code=403, detail="Token has expired")
     except JWTError:
         raise HTTPException(status_code=403, detail="Invalid token")
+
 class BearerAuth(HTTPBearer):
     def __init__(self, auto_error: bool = True):
         super().__init__(auto_error=auto_error)
 
-    async def __call__(self, request: Request) -> Optional[str]:
+    async def __call__(self, request: Request) -> Tuple[Optional[str], Optional[str]]:
         credentials: HTTPAuthorizationCredentials = await super().__call__(request)
         
         if credentials:
@@ -53,17 +54,19 @@ class BearerAuth(HTTPBearer):
             
             if not is_valid_token[0]:
                 raise HTTPException(status_code=403, detail="Invalid token")
-            return credentials.credentials
+            
+            return is_valid_token[1], is_valid_token[2]
         else:
             raise HTTPException(status_code=403, detail="Invalid authorization credentials")
 
-    def verify_jwt(self, jwt_token: str) -> Tuple[bool, Optional[str]]:
+    def verify_jwt(self, jwt_token: str) -> Tuple[bool, Optional[str], Optional[str]]:
         try:
             payload = jwt.decode(jwt_token, SECRET_KEY, algorithms=ALGORITHM)
             user_id = payload.get("user_id")
+            user_role = payload.get("id_role")
             if user_id is None:
                 return False, None  # User ID non trouvé dans le payload
-            return True, user_id
+            return True, user_id, user_role
         except jwt_exceptions.ExpiredSignatureError:
             raise HTTPException(status_code=403, detail="Token has expired")
         except jwt_exceptions.JWTError:

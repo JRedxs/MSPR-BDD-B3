@@ -277,7 +277,7 @@ def get_advices():
     
 
 @app.get("/plant" , summary="Récupération des plantes")
-def get_plants(current_user: str = Depends(BearerAuth())):
+def get_plants(current_user: Tuple[str, str] = Depends(BearerAuth())):
     with connection.cursor() as cursor:
         try:
             sql = """
@@ -309,8 +309,9 @@ def get_plants(current_user: str = Depends(BearerAuth())):
 
 #maybe broken
 @app.get("/plants" , summary="Récupération des garde de plantes")
-def get_info_plants(token: str = Depends(BearerAuth())):
-    
+def get_info_plants(token: Tuple[str, str] = Depends(BearerAuth())):
+    if token[1] != 2 and token[1] != 3:
+        raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
         try:
             sql = """
