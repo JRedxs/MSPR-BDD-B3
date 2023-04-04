@@ -20,12 +20,18 @@ function SearchPlant() {
     
     useEffect(() => {
         window.sessionStorage.removeItem("plante");
-        axios.get(url)
+        const accessToken = window.sessionStorage.getItem("access_token");
+        axios.get(url, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
             .then(response => {
                 setPlants(response.data.Plants);
             })
             .catch(error => {   
                 console.log(error);
+                navigate(`/`);
             });
     }, []);
 

@@ -76,7 +76,7 @@ def login_token(email: str, password: str):
             hashed_password = result[3]
             if pwd_context.verify(password.encode("utf-8"), hashed_password):
                 access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-                access_token = create_access_token(user_id=user_id, expires_delta=access_token_expires)
+                access_token = create_access_token(user_id=user_id, data={'id_role':result[8]}, expires_delta=access_token_expires)
                 return {"access_token": access_token, "token_type": "bearer"}
             else:
                 raise HTTPException(status_code=400, detail="Incorrect email or password")
@@ -122,7 +122,6 @@ def get_user(email: str, password: str):
 @app.get("/user/me")
 async def get_current_user(current_user: str = Depends(BearerAuth())):
     decoded_token = decoded_jwt(current_user)
-    user_id = decoded_token.get("user_id")
     with connection.cursor() as cursor:
         query = "SELECT * FROM Person WHERE id_person=%s"
         cursor.execute(query, (user_id,))
@@ -278,7 +277,7 @@ def get_advices():
     
 
 @app.get("/plant" , summary="Récupération des plantes")
-def get_plants():
+def get_plants(current_user: str = Depends(BearerAuth())):
     with connection.cursor() as cursor:
         try:
             sql = """

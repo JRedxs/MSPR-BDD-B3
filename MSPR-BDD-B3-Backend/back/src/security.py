@@ -24,7 +24,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 def create_access_token(user_id: str = None, data: dict = None, expires_delta: timedelta = None) -> str:
     to_encode = {"user_id": user_id} if user_id else {}
     if data:
-        to_encode.update(data)
+        for key in data:
+            to_encode.update({key: data[key]})
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=15))
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -57,7 +58,7 @@ class BearerAuth(HTTPBearer):
     def verify_jwt(self, jwt_token: str) -> Tuple[bool, Optional[str]]:
         try:
             payload = jwt.decode(jwt_token, SECRET_KEY, algorithms=ALGORITHM)
-            user_id = payload.get("user_id, nom, prenom, phone")
+            user_id = payload.get("user_id")
             if user_id is None:
                 return False, None  # User ID non trouvé dans le payload
             return True, user_id
