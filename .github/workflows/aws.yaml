@@ -32,7 +32,7 @@ jobs:
       
     - name: Set environment variables
       run: |
-        source path/to/your/.env
+        source ./MSPR-BDD-B3-Backend/back/src/.env
         envBackPath="./MSPR-BDD-B3-Backend/back/src/.env"
       
     - name: Deploy to Server via SSH action
