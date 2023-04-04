@@ -25,10 +25,16 @@ jobs:
       DB_CONTAINER: ${{ secrets.DB_LOCAL}}
       PORT_LOCAL: ${{ secrets.PORT}}
       PORT_CONTAINER: ${{ secrets.PORT}}
-      envBackPath: "./MSPR-BDD-B3-Backend/back/src/.env"
 
     steps:
-    
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set environment variables
+      run: |
+        source path/to/your/.env
+        envBackPath="./MSPR-BDD-B3-Backend/back/src/.env"
+      
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
       with:
@@ -44,6 +50,4 @@ jobs:
           # fi
           cd MSPR-BDD-B3/
           git pull
-          sudo docker-compose up -d --build
-          # Setup .env file
-          sudo cp ubuntu/MSPR-BDD-B3 /MSPR-BDD-B3/backend/src/.env
+          sudo docker compose up -d --build
