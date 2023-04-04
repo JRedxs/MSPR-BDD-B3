@@ -15,7 +15,7 @@ jobs:
       DB_NAME: ${{ secrets.DB_NAME }}
       ALGORITHM: ${{ secrets.ALGORITHM }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      envDockerCompose: "./MSPR-BDD-B3-BackEnd/.env"
+      envBackPath: "./MSPR-BDD-B3-Backend/back/src/.env"
 
     steps:
     - name: Deploy to Server via SSH action
