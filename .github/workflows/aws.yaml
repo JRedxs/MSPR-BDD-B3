@@ -9,22 +9,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    env:
-      DB_USERS: ${{ secrets.DB_USERS }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
-      ALGORITHM: ${{ secrets.ALGORITHM }}
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      HOST_LOCAL: ${{ secrets.HOST_LOCAL }}
-      HOST_CONTAINER: ${{ secrets.HOST_CONTAINER}}
-      USER_LOCAL: ${{ secrets.USER_LOCAL}}
-      USER_CONTAINER: ${{ secrets.USER_CONTAINER}}
-      PASSWORD_LOCAL: ${{ secrets.PASSWORD_LOCAL}}
-      PASSWORD_CONTAINER: ${{ secrets.PASSWORD_CONTAINER}}
-      DB_LOCAL: ${{ secrets.DB_LOCAL}}
-      DB_CONTAINER: ${{ secrets.DB_LOCAL}}
-      PORT_LOCAL: ${{ secrets.PORT}}
-      PORT_CONTAINER: ${{ secrets.PORT}}
 
     steps:
     - name: Checkout code
@@ -32,9 +16,22 @@ jobs:
       
     - name: Set environment variables
       run: |
-        cd ..
-        source MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src/.env
         envBackPath="./MSPR-BDD-B3-Backend/back/src/.env"
+        echo "DB_USERS=${{ secrets.DB_USERS }}" >> $envBackPath
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $envBackPath
+        echo "DB_NAME=${{ secrets.DB_NAME }}" >> $envBackPath
+        echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> $envBackPath
+        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $envBackPath
+        echo "HOST_LOCAL=${{ secrets.HOST_LOCAL }}" >> $envBackPath
+        echo "HOST_CONTAINER=${{ secrets.HOST_CONTAINER }}" >> $envBackPath
+        echo "USER_LOCAL=${{ secrets.USER_LOCAL }}" >> $envBackPath
+        echo "USER_CONTAINER=${{ secrets.USER_CONTAINER }}" >> $envBackPath
+        echo "PASSWORD_LOCAL=${{ secrets.PASSWORD_LOCAL }}" >> $envBackPath
+        echo "PASSWORD_CONTAINER=${{ secrets.PASSWORD_CONTAINER }}" >> $envBackPath
+        echo "DB_LOCAL=${{ secrets.DB_LOCAL }}" >> $envBackPath
+        echo "DB_CONTAINER=${{ secrets.DB_LOCAL }}" >> $envBackPath
+        echo "PORT_LOCAL=${{ secrets.PORT }}" >> $envBackPath
+        echo "PORT_CONTAINER=${{ secrets.PORT }}" >> $envBackPath
       
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
