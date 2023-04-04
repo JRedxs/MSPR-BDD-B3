@@ -45,11 +45,13 @@ class BearerAuth(HTTPBearer):
 
     async def __call__(self, request: Request) -> Optional[str]:
         credentials: HTTPAuthorizationCredentials = await super().__call__(request)
+        
         if credentials:
             if not credentials.scheme == "Bearer":
                 raise HTTPException(status_code=403, detail="Invalid authentication scheme")
             is_valid_token = self.verify_jwt(credentials.credentials)
-            if not is_valid_token:
+            
+            if not is_valid_token[0]:
                 raise HTTPException(status_code=403, detail="Invalid token")
             return credentials.credentials
         else:

@@ -15,7 +15,16 @@ function Map() {
   useEffect(() => { // Hook d'effet pour effectuer des appels API au chargement du composant
     const fetchData = async () => { // fonction asynchrone pour effectuer l'appel API
       try {
-        const response_user = await axios.get(`${baseUrl}/plants`)
+        const accessToken = window.sessionStorage.getItem("access_token");
+        const response_user = await axios.get(`${baseUrl}/plants`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .catch(error => {   
+            console.log(error);
+            NAVIGATE(`/`);
+        });
         const usersData = response_user.data.Person
         setUsers(usersData)
         console.log(usersData)
