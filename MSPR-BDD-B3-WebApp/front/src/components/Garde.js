@@ -27,9 +27,14 @@ const Garde = () => {
 
     const handleOnClick = async () => {
         const usersInfo = JSON.parse(sessionStorage.getItem("user"));
+        const accessToken = window.sessionStorage.getItem("access_token");
         try {
-            const response_garde = await axios.put(
-                `${baseUrl}/garde/${usersInfo.id_garde}?id_person=${person}`
+            const response_garde = await axios.get(
+                `${baseUrl}/garde/${usersInfo.id_garde}`, {
+                    headers: {
+                      Authorization: `Bearer ${accessToken}`,
+                    },
+                  }
             );
             const gardeData = response_garde.data;
             console.log("Garde ajouté :", gardeData);

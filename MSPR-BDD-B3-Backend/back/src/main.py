@@ -434,8 +434,11 @@ def get_plant_by_id(id_plante: int = Depends(BearerAuth())):
             cursor.close()
             return {"Plante inexistante"}
     
-@app.put("/garde/{id_garde}" , summary="Récupération des gardes en fonction de son id")
-def put_garde_by_id(id_garde: int, id_person: int = Depends(BearerAuth())):
+@app.get("/garde/{id_garde}" , summary="Récupération des gardes en fonction de son id")
+def put_garde_by_id(id_garde: int, token: Tuple[str, str] = Depends(BearerAuth())):
+
+    if token[1] != 2 and token[1] != 3:
+        raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
         # Recherche du garde existant dans la base de données
         sql_select = "SELECT * FROM Garde WHERE id_garde = %s"
@@ -448,7 +451,7 @@ def put_garde_by_id(id_garde: int, id_person: int = Depends(BearerAuth())):
 
         # Mise à jour du garde avec le nouvel ID de personne
         sql_update = "UPDATE Garde SET id_person = %s WHERE id_garde = %s"
-        cursor.execute(sql_update, (id_person, id_garde))
+        cursor.execute(sql_update, (token[0], id_garde))
         connection.commit()
         cursor.close()
 
