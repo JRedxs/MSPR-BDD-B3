@@ -14,8 +14,8 @@ PASSWORD_LOCAL = os.getenv('PASSWORD_LOCAL')
 PASSWORD_CONTAINER = os.getenv('PASSWORD_CONTAINER')
 DB_LOCAL = os.getenv('DB_LOCAL')
 DB_CONTAINER = os.getenv('DB_CONTAINER')
-PORT_LOCAL = int(os.getenv('PORT_LOCAL'))
-PORT_CONTAINER = int(os.getenv('PORT_CONTAINER'))
+PORT_LOCAL = 3306
+PORT_CONTAINER = 3306
 
 # Connexion à la base de données
 
