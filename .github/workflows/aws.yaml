@@ -28,6 +28,9 @@ jobs:
       envBackPath: "./MSPR-BDD-B3-Backend/back/src/.env"
 
     steps:
+    - name: Copy .env file to remote server
+      run: scp -i ${secrets.SSH_PEM} ${env.envBackPath} ${secrets.HOST_USER}@${secrets.HOST}:/path/to/destination
+
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
       with:
