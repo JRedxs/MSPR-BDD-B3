@@ -29,7 +29,7 @@ jobs:
 
     steps:
     - name: Copy .env file to remote server
-      run: scp -i ${secrets.SSH_PEM} ${env.envBackPath} ${secrets.HOST_USER}@${secrets.HOST}:/MSPR-BDD-B3
+      run: scp -i ${secrets.SSH_PEM} $envBackPath ${secrets.HOST_USER}@${secrets.HOST}:/MSPR-BDD-B3
 
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
@@ -46,6 +46,6 @@ jobs:
           # fi
           cd MSPR-BDD-B3/
           git pull
-          sudo docker compose up -d --build
-      
-          
+          sudo docker-compose up -d --build
+          # Setup .env file
+          sudo cp /MSPR-BDD-B3 /MSPR-BDD-B3/backend/src/.env
