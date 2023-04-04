@@ -46,4 +46,4 @@ jobs:
           git pull
           sudo docker-compose up -d --build
           # Setup .env file
-          sudo cp home/ubuntu/MSPR-BDD-B3 /MSPR-BDD-B3/backend/src/.env
+          sudo cp ubuntu/MSPR-BDD-B3 /MSPR-BDD-B3/backend/src/.env
