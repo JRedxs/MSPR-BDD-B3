@@ -7,6 +7,7 @@ from typing import Union, Any,Optional,Tuple
 from jose import jwt, exceptions as jwt_exceptions
 from jose import jwt, JWTError, ExpiredSignatureError
 from database import MSQL
+from jwt.exceptions import ExpiredSignatureError
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timedelta

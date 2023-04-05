@@ -8,7 +8,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
       MYSQL_DATABASE: ${DATABASE}
-      # MYSQL_USER: ${USER}
+      MYSQL_USER: ${USER}
+      #A ajouter dans les variables .env de mon instance
       MYSQL_PASSWORD: ${PASSWORD}
     restart: always
     ports:

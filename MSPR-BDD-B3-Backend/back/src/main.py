@@ -32,12 +32,21 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 #     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:3000"
 # ]
 
+
+# ajouter en .env
+
 origins = [
     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:3000",
     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005/docs",
     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005",
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:3001",
     "http://localhost:8000",
-    "http://127.0.0.1:3000"
+    "http://127.0.0.1",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    "http://127.0.0.1:8000"
 ]
 
 app.add_middleware(
@@ -156,7 +165,6 @@ async def get_current_user(current_user: Tuple[str, str] = Depends(BearerAuth())
         
 @app.get("/users_all" ,summary="Récupération de toutes les utilisateurs")
 def get_user():
-    
     with connection.cursor() as cursor:
         try:
             sql = "SELECT * FROM Person"
@@ -177,7 +185,6 @@ def get_user():
 
 @app.get("/users/{user_id}", summary="Récupération en fonction de l'id utilisateur" )
 def get_user_by_id(user_id: int ):
-    
     with connection.cursor() as cursor:
         try :
             sql = "SELECT * FROM Person WHERE id_person=%s"
@@ -432,8 +439,7 @@ async def register_plante(plante : PlantToCreate, token: Tuple[str, str] = Depen
 
 
 @app.get("/plant/{id_plante}" , summary="Récupération des plantes en fonction de son id")
-def get_plant_by_id(id_plante: int = Depends(BearerAuth())):
-    
+def get_plant_by_id(id_plante: int , token: Tuple[str,str] = Depends(BearerAuth())):
     with connection.cursor() as cursor:
         try :
             sql = "SELECT * FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
@@ -451,7 +457,6 @@ def get_plant_by_id(id_plante: int = Depends(BearerAuth())):
     
 @app.get("/garde/{id_garde}" , summary="Récupération des gardes en fonction de son id")
 def put_garde_by_id(id_garde: int, token: Tuple[str, str] = Depends(BearerAuth())):
-
     if token[1] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
@@ -474,8 +479,9 @@ def put_garde_by_id(id_garde: int, token: Tuple[str, str] = Depends(BearerAuth()
 
 
 @app.get("/all_gardes" , summary="Récupération des gardes")
-def get_all_gardes(token : str = Depends(BearerAuth())):
-    
+def get_all_gardes(token : Tuple[str,str] = Depends(BearerAuth())):
+    if token[1] != 2 and token[1] != 3:
+        raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
         try:
             sql = "SELECT * FROM Garde"
@@ -492,8 +498,10 @@ def get_all_gardes(token : str = Depends(BearerAuth())):
     
 
 @app.get("/plantandgallery/{id_plante}" , summary="Récupération des photos de plantes en fonction de leur id")
-def get_plant_photos_by_id(id_plante: int = Depends(BearerAuth())):
-    
+
+def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(BearerAuth())):
+    if token[1] != 2 and token[1] != 3:
+        raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
         try :
             sql = "SELECT name, id_person, image_data, advice_title, advice, id_photo FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
