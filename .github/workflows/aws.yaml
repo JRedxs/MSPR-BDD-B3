@@ -15,7 +15,7 @@ env:
   DB_LOCAL: "Arosaje_db"
   DB_CONTAINER: "Arosaje_db"
   PORT_CONTAINER: "3306"
-  REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+  react: ${{ secrets.REACT_APP_API_URL }}
 
 jobs:
 
@@ -45,5 +45,5 @@ jobs:
           echo "This is an environment variable: $HOST_LOCAL"
           echo "This is an environment variable: $SECRET"
           echo "This is an environment variable: $ALGORITHM"
-          echo "REACT_APP_API_URL: $REACT_APP_API_URL"
+          echo "REACT_APP_API_URL: $react"
           echo "This is an environment variable: $PORT_LOCAL"
