@@ -14,18 +14,24 @@ app = FastAPI()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # not ideal
+# origins = [
+#     "http://localhost",
+#     "http://localhost:3000",
+#     "http://localhost:3001",
+#     "http://localhost:8000",
+#     "http://127.0.0.1",
+#     "http://127.0.0.1:3000",
+#     "http://127.0.0.1:3001",
+#     "http://127.0.0.1:8000",
+#     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005/docs",
+#     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005",
+#     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:3000"
+# ]
+
 origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:8000",
-    "http://127.0.0.1",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:3001",
-    "http://127.0.0.1:8000",
+    "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:3000",
     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005/docs",
-    "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005",
-    "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:3000"
+    "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005"
 ]
 
 app.add_middleware(
