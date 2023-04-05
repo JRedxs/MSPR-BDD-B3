@@ -33,6 +33,7 @@ jobs:
           cd MSPR-BDD-B3/
           git pull
           sudo docker compose up -d --build
+          echo "This is an environment variable: $HOST_LOCAL"
       env:
         SECRET: ${{ secrets.MY_SECRET }}
         ALGORITHM: "HS256"
