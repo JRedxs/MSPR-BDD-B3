@@ -201,21 +201,6 @@ def get_user_by_id(user_id: int ):
             raise HTTPException(status_code=404, detail="Personne inexistante")
 
 
-# @app.post("/image" , summary="Insertion d'une image")
-# async def register_image(image: NewImage):
-#     request_select = "select id_plante from Plante where id_plante = %s limit 1;"
-#     request_insert = "insert into Photo (image_data, id_plante) values(%s,%s);"
-
-#     cursor = connection.cursor()
-#     cursor.execute(request_select, (image.id_plante))
-#     if cursor.fetchone() is None:
-#         raise HTTPException(status_code=404, detail="Photo pour une plante inexistante")        
-#     cursor.execute(request_insert, (image.data,image.id_plante))
-#     connection.commit()
-#     cursor.close()
-#     return {"message": "Photo enregistrée"}
-
-
 @app.post("/image", summary="Insertion d'une image")
 async def register_image(image: NewImage, token: Tuple[str, str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3:
