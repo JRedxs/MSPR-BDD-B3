@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import axios from 'axios';
 import '../styles/Register.css';
 
-import photo from '../styles/image_register.jpg'
 
 const Register = () => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
