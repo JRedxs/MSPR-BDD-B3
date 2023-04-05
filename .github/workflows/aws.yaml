@@ -16,22 +16,6 @@ jobs:
       
     - name: Set environment variables
       run: |
-        envBackPath="./MSPR-BDD-B3-Backend/back/src/.env"
-        echo "DB_USERS=${{ secrets.DB_USERS }}" >> $envBackPath
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $envBackPath
-        echo "DB_NAME=${{ secrets.DB_NAME }}" >> $envBackPath
-        echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> $envBackPath
-        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $envBackPath
-        echo "HOST_LOCAL=${{ secrets.HOST_LOCAL }}" >> $envBackPath
-        echo "HOST_CONTAINER=${{ secrets.HOST_CONTAINER }}" >> $envBackPath
-        echo "USER_LOCAL=${{ secrets.USER_LOCAL }}" >> $envBackPath
-        echo "USER_CONTAINER=${{ secrets.USER_CONTAINER }}" >> $envBackPath
-        echo "PASSWORD_LOCAL=${{ secrets.PASSWORD_LOCAL }}" >> $envBackPath
-        echo "PASSWORD_CONTAINER=${{ secrets.PASSWORD_CONTAINER }}" >> $envBackPath
-        echo "DB_LOCAL=${{ secrets.DB_LOCAL }}" >> $envBackPath
-        echo "DB_CONTAINER=${{ secrets.DB_LOCAL }}" >> $envBackPath
-        echo "PORT_LOCAL=${{ secrets.PORT }}" >> $envBackPath
-        echo "PORT_CONTAINER=${{ secrets.PORT }}" >> $envBackPath
       
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
@@ -41,6 +25,9 @@ jobs:
         key: ${{ secrets.SSH_PEM }}
         port: 22 
         script: |
+
+
+
           # Stop all running Docker Containers
           # if [ "$(docker ps -a -q)" ]; then
           #   docker kill $(docker ps -a -q)
@@ -49,6 +36,21 @@ jobs:
           cd MSPR-BDD-B3/
           git pull
           sudo docker compose up -d --build
+        env:
+          export SECRET="7e9356d97f7a42d61d9194f2c82f39f545620fb45fc95a34d92330f14d7869f3"
+          export ALGORITHM="HS256"
+
+
+          export HOST_LOCAL="172.19.0.4"
+          export HOST_CONTAINER="mysql-db-compose"
+          export USER_LOCAL="admin"
+          export USER_CONTAINER="admin"
+          export PASSWORD_LOCAL="admin"
+          export PASSWORD_CONTAINER="admin"
+          export DB_LOCAL="Arosaje_db"
+          export DB_CONTAINER="Arosaje_db"
+          export PORT_LOCAL="3306"
+          export PORT_CONTAINER="3306"
 
 
   
