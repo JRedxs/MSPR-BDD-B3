@@ -23,8 +23,9 @@ origins = [
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3001",
     "http://127.0.0.1:8000",
-    "http://ec2-15-237-105-191.eu-west-3.compute.amazonaws.com:8005/docs",
-    "http://ec2-15-237-105-191.eu-west-3.compute.amazonaws.com:3000"
+    "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005/docs",
+    "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005",
+    "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:3000"
 ]
 
 app.add_middleware(
