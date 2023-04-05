@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import {
   MDBCol,
   MDBContainer,
@@ -13,8 +14,9 @@ import {
 } from 'mdb-react-ui-kit';
 
 const UserProfil = () => {
-    const [currentUser, setCurrentUser] = useState();
-    const baseUrl = process.env.REACT_APP_API_URL
+    const [currentUser, setCurrentUser] = useState({name:"",firstname:"",email:"",phone:""});
+    const baseUrl = process.env.REACT_APP_API_URL;
+    const navigate = useNavigate();
 
     useEffect(() => {
       const fetchCurrentUser = async () => {
@@ -24,6 +26,10 @@ const UserProfil = () => {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
+          })
+          .catch(error => {   
+              console.log(error);
+              navigate(`/`);
           });
           setCurrentUser(response.data.user); //a vérifier asynchrone lors de la récupération des infos
           // console.log(response.data.user)
