@@ -391,7 +391,7 @@ def add_garde(garde: Garde = Depends(BearerAuth())):
 
 
 @app.post("/plante" , summary="Insertion des plantes")
-async def register_plante(plante : PlantToCreate):
+async def register_plante(plante : PlantToCreate = Depends(BearerAuth())):
     encrypted_plante_location_number = encryption.encrypt(str(plante.number))
     encrypted_plante_location_road_first = encryption.encrypt(plante.road_first)
     encrypted_plante_location_road_second = encryption.encrypt(plante.road_second)
