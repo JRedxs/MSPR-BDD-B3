@@ -20,7 +20,7 @@ DB_CONTAINER = os.getenv('DB_CONTAINER')
 # Connexion à la base de données
 
 def mysql_local():
-    return pymysql.connect(host="172.19.0.4", user=USER_LOCAL, password="admin", db=DB_LOCAL, port=3306, charset='utf8')
+    return pymysql.connect(host=HOST_LOCAL, user=USER_LOCAL, password=PASSWORD_LOCAL, db=DB_LOCAL, port=3306, charset='utf8')
 
 
 
