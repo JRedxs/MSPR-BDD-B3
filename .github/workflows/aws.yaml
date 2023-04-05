@@ -36,7 +36,7 @@ jobs:
       env:
         SECRET: ${{ secrets.MY_SECRET }}
         ALGORITHM: "HS256"
-        HOST_LOCAL: "172.19.0.4"
+        HOST_LOCAL: ${{ secrets.HOST_LOCAL }}
         HOST_CONTAINER: "mysql-db-compose"
         USER_LOCAL: "admin"
         USER_CONTAINER: "admin"
