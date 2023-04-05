@@ -28,6 +28,7 @@ print('ICIIIIIIIIIIIIIIIIII',HOST_CONTAINER)
 print('IIIIIIIIIIIIIIIIII', REACT_APP_API_URL)
 
 
+
 def mysql_local():
     return pymysql.connect(host=HOST_LOCAL, user=USER_LOCAL, password=PASSWORD_LOCAL, db=DB_LOCAL, port=3306, charset='utf8')
 
