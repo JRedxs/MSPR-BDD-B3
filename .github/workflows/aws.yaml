@@ -19,7 +19,7 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.HOST_USER }}
         key: ${{ secrets.SSH_PEM }}
-       REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+        REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
         port: 22 
         script: |
