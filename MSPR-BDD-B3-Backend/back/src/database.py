@@ -35,8 +35,6 @@ def mysql_container():
     return pymysql.connect(host=HOST_CONTAINER, user=USER_CONTAINER, password=PASSWORD_CONTAINER, db=DB_CONTAINER, port=3306, charset='utf8')
 
 
-
-
 def mysql():
     mysql = ''
     try :
