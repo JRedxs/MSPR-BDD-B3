@@ -3,7 +3,7 @@
 import pymysql,os
 from dotenv import load_dotenv
 
-load_dotenv('./.env')
+load_dotenv()
 
 
 HOST_LOCAL = os.getenv('HOST_LOCAL')
