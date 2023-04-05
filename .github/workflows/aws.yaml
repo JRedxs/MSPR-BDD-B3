@@ -46,8 +46,6 @@ jobs:
         DB_CONTAINER: "Arosaje_db"
         # PORT_LOCAL: "3306"
         PORT_CONTAINER: "3306"
-        
-        
         # REACT_API_APP_URL: ${{ secrets.REACT_API_APP_URL }}
 
 
