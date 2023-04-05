@@ -15,7 +15,6 @@ env:
   DB_LOCAL: "Arosaje_db"
   DB_CONTAINER: "Arosaje_db"
   PORT_CONTAINER: "3306"
-  REACTURL: 'ec2-13-37-248-200.eu-west-3.compute.amazonaws.com'
 
 jobs:
 
@@ -45,5 +44,5 @@ jobs:
           echo "This is an environment variable: $HOST_LOCAL"
           echo "This is an environment variable: $SECRET"
           echo "This is an environment variable: $ALGORITHM"
-          echo "REACT_APP_API_URL: $REACTURL"
+          echo "REACT_APP_API_URL: ${{ REACTURL }}"
           echo "This is an environment variable: $PORT_LOCAL"
