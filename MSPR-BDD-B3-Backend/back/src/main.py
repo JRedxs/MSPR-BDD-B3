@@ -5,12 +5,16 @@ from database import *
 from fastapi.middleware.cors import CORSMiddleware
 from security import *
 from exif import Image
+from cryptography.fernet import Fernet
+from crypto import *
 
 # Connexion à la base de données
 connection = MSQL
 
 # Initialisez l'application
 app = FastAPI()
+
+encryption = Encryption()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # not ideal
@@ -58,6 +62,8 @@ def takeLatinTupleGetUtf8List(theTuple):
 def login(person: Person):
     hashed_password = pwd_context.hash(person.password)
 
+    encrypted_phone = encryption.encrypt(person.phone)
+    
     with connection.cursor() as cursor:
         insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role) VALUES (%s, %s, %s, %s,%s,%s)"
         cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone,person.id_role))
@@ -385,10 +391,20 @@ def add_garde(garde: Garde = Depends(BearerAuth())):
 
 
 @app.post("/plante" , summary="Insertion des plantes")
-async def register_plante(plante : PlantToCreate = Depends(BearerAuth())):
+async def register_plante(plante : PlantToCreate):
+    encrypted_plante_location_number = encryption.encrypt(str(plante.number))
+    encrypted_plante_location_road_first = encryption.encrypt(plante.road_first)
+    encrypted_plante_location_road_second = encryption.encrypt(plante.road_second)
+    encrypted_plante_location_town = encryption.encrypt(plante.town)
+    encrypted_plante_location_postal_code = encryption.encrypt(str(plante.postal_code))
+    encrypted_plante_location_latitude = encryption.encrypt(str(plante.latitude))
+    encrypted_plante_location_longitude = encryption.encrypt(str(plante.longitude))
+    
     cursor = connection.cursor()
     sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-    val = (plante.id_person, plante.name, plante.number, plante.road_first, plante.road_second, plante.town, plante.postal_code, plante.latitude, plante.longitude)
+    val = (plante.id_person, plante.name, encrypted_plante_location_number, encrypted_plante_location_road_first, 
+           encrypted_plante_location_road_second, encrypted_plante_location_town, encrypted_plante_location_postal_code,
+             encrypted_plante_location_latitude, encrypted_plante_location_longitude)
     cursor.execute(sql, val)
 
     sql = "select id_plante from Plante order by 1 Desc limit 1;"
@@ -398,6 +414,7 @@ async def register_plante(plante : PlantToCreate = Depends(BearerAuth())):
     connection.commit()
     cursor.close()
     return {"message": "Plante enregistrée", "id_plante": result[0]}
+
 
 @app.get("/plant/{id_plante}" , summary="Récupération des plantes en fonction de son id")
 def get_plant_by_id(id_plante: int = Depends(BearerAuth())):
