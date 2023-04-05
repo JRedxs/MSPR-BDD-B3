@@ -208,27 +208,34 @@ def get_user_by_id(user_id: int ):
 
 
 @app.post("/image", summary="Insertion d'une image")
-async def register_image(image: NewImage = Depends(BearerAuth())):
-    request_select = "SELECT id_plante FROM Plante WHERE id_plante = %s LIMIT 1;"
-    request_insert = "INSERT INTO Photo (image_data, id_plante) VALUES (%s, %s);"
+async def register_image(image: NewImage, token: Tuple[str, str] = Depends(BearerAuth())):
+    if token[1] != 2 and token[1] != 3:
+        raise HTTPException(status_code=401, detail="User is not a client")
+    with connection.cursor() as cursor:
+        try:
+            request_select = "SELECT id_plante FROM Plante WHERE id_plante = %s LIMIT 1;"
+            request_insert = "INSERT INTO Photo (image_data, id_plante) VALUES (%s, %s);"
 
-    cursor = connection.cursor()
-    cursor.execute(request_select, (image.id_plante,))
-    if cursor.fetchone() is None:
-       raise HTTPException(status_code=404, detail="Photo pour une plante inexistante")
-    encoded_data = image.data.encode()
-    my_img = Image(encoded_data)
-    try:
-        if 'GPSInfo' in my_img:
-            del my_img['GPSInfo']
-        else: 
-            print('pas de métadata')
-    except Exception as e:
-        print(e)
-    cursor.execute(request_insert, (image.data, image.id_plante))
-    connection.commit()
-    cursor.close()
-    return {"message": "Photo enregistrée"}
+            cursor.execute(request_select, (image.id_plante,))
+            if cursor.fetchone() is None:
+                raise HTTPException(status_code=404, detail="Photo pour une plante inexistante") 
+            encoded_data = image.data.encode()
+            my_img = Image(encoded_data)
+            try:
+                if 'GPSInfo' in my_img:
+                    del my_img['GPSInfo']
+                else: 
+                    print('pas de métadata')
+            except Exception as e:
+                print(e)
+            cursor.execute(request_insert, (image.data, image.id_plante))
+            connection.commit()
+            cursor.close()
+            return {"message": "Photo enregistrée"}
+    
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Database connection error !")
 
 
 
@@ -391,29 +398,35 @@ def add_garde(garde: Garde = Depends(BearerAuth())):
 
 
 @app.post("/plante" , summary="Insertion des plantes")
-async def register_plante(plante : PlantToCreate = Depends(BearerAuth())):
-    encrypted_plante_location_number = encryption.encrypt(str(plante.number))
-    encrypted_plante_location_road_first = encryption.encrypt(plante.road_first)
-    encrypted_plante_location_road_second = encryption.encrypt(plante.road_second)
-    encrypted_plante_location_town = encryption.encrypt(plante.town)
-    encrypted_plante_location_postal_code = encryption.encrypt(str(plante.postal_code))
-    encrypted_plante_location_latitude = encryption.encrypt(str(plante.latitude))
-    encrypted_plante_location_longitude = encryption.encrypt(str(plante.longitude))
-    
-    cursor = connection.cursor()
-    sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-    val = (plante.id_person, plante.name, encrypted_plante_location_number, encrypted_plante_location_road_first, 
-           encrypted_plante_location_road_second, encrypted_plante_location_town, encrypted_plante_location_postal_code,
-             encrypted_plante_location_latitude, encrypted_plante_location_longitude)
-    cursor.execute(sql, val)
+async def register_plante(plante : PlantToCreate, token: Tuple[str, str] = Depends(BearerAuth())):
+    if token[1] != 2 and token[1] != 3:
+        raise HTTPException(status_code=401, detail="User is not a client")
 
-    sql = "select id_plante from Plante order by 1 Desc limit 1;"
-    cursor.execute(sql)
-    result = cursor.fetchone()
+    with connection.cursor() as cursor:
+        try:
+            encrypted_plante_location_number = encryption.encrypt(str(plante.number))
+            encrypted_plante_location_road_first = encryption.encrypt(plante.road_first)
+            encrypted_plante_location_road_second = encryption.encrypt(plante.road_second)
+            encrypted_plante_location_town = encryption.encrypt(plante.town)
+            encrypted_plante_location_postal_code = encryption.encrypt(str(plante.postal_code))
+            encrypted_plante_location_latitude = encryption.encrypt(str(plante.latitude))
+            encrypted_plante_location_longitude = encryption.encrypt(str(plante.longitude))
+            sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+            val = (plante.id_person, plante.name, encrypted_plante_location_number, encrypted_plante_location_road_first, 
+                encrypted_plante_location_road_second, encrypted_plante_location_town, encrypted_plante_location_postal_code,
+                    encrypted_plante_location_latitude, encrypted_plante_location_longitude)
+            cursor.execute(sql, val)
 
-    connection.commit()
-    cursor.close()
-    return {"message": "Plante enregistrée", "id_plante": result[0]}
+            sql = "select id_plante from Plante order by 1 Desc limit 1;"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+
+            connection.commit()
+            cursor.close()
+            return {"message": "Plante enregistrée", "id_plante": result[0]}
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Durant l'enregistrement de la plante !")
 
 
 @app.get("/plant/{id_plante}" , summary="Récupération des plantes en fonction de son id")
