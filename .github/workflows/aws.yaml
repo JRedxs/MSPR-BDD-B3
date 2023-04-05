@@ -33,9 +33,9 @@ jobs:
           cd MSPR-BDD-B3/
           git pull
           sudo docker compose up -d --build
-          echo 'This is an environment variable: $HOST_LOCAL'
-          echo 'This is an environment variable: $SECRET'
-          echo 'This is an environment variable: $ALGORITHM'
+          echo "This is an environment variable: $HOST_LOCAL"
+          echo "This is an environment variable: $SECRET"
+          echo "This is an environment variable: $ALGORITHM"
 
       env:
         SECRET: ${{ secrets.MY_SECRET }}
