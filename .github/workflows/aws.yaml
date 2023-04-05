@@ -15,7 +15,7 @@ env:
   DB_LOCAL: "Arosaje_db"
   DB_CONTAINER: "Arosaje_db"
   PORT_CONTAINER: "3306"
-  REACTURL: "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com/"
+  REACTURL: 'http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com/'
 
 jobs:
 
