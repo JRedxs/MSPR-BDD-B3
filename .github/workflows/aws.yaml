@@ -20,7 +20,7 @@ jobs:
         username: ${{ secrets.HOST_USER }}
         key: ${{ secrets.SSH_PEM }}
         port: 22 
-        run: |
+        script: |
           # Stop all running Docker Containers
           # if [ "$(docker ps -a -q)" ]; then
           #   docker kill $(docker ps -a -q)
@@ -34,16 +34,21 @@ jobs:
           echo "This is an environment variable: $ALGORITHM"
           echo "This is an environment variable: $REACT_APP_API_URL"
           echo "This is an environment variable: $PORT_LOCAL"
-        env:
-          ALGORITHM: "HS256"
-          HOST_CONTAINER: "mysql-db-compose"
-          USER_LOCAL: "admin"
-          USER_CONTAINER: "admin"
-          PASSWORD_LOCAL: "admin"
-          PASSWORD_CONTAINER: "admin"
-          DB_LOCAL: "Arosaje_db"
-          DB_CONTAINER: "Arosaje_db"
-          # PORT_LOCAL: "3306"
-          PORT_CONTAINER: "3306"
-          # REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
-          REACT_APP_API_URL: "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com/" 
+
+      env:
+        ALGORITHM: "HS256"
+        HOST_CONTAINER: "mysql-db-compose"
+        USER_LOCAL: "admin"
+        USER_CONTAINER: "admin"
+        PASSWORD_LOCAL: "admin"
+        PASSWORD_CONTAINER: "admin"
+        DB_LOCAL: "Arosaje_db"
+        DB_CONTAINER: "Arosaje_db"
+        # PORT_LOCAL: "3306"
+        PORT_CONTAINER: "3306"
+        # REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+        REACT_APP_API_URL: "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com/"
+
+
+  
+  
