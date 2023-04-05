@@ -36,7 +36,7 @@ jobs:
           echo "This is an environment variable: $HOST_LOCAL"
           echo "This is an environment variable: $SECRET"
           echo "This is an environment variable: $ALGORITHM"
-          echo 'This is an environment variable: $REACT_API_APP_URL'
+          echo "This is an environment variable: $REACT_API_APP_URL"
 
       env:
         ALGORITHM: "HS256"
