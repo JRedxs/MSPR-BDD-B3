@@ -20,7 +20,7 @@ load_dotenv()
 # Connexion à la base de données
 
 def mysql_local():
-    return pymysql.connect(host="localhost", user="root", password="admin", db="Arosaje_db", port=3306, charset='utf8')
+    return pymysql.connect(host="127.0.0.1", user="admin", password="admin", db="Arosaje_db", port=3306, charset='utf8')
 
 
 def mysql_container():
