@@ -38,7 +38,7 @@ jobs:
           echo "This is an environment variable: $ALGORITHM"
 
       env:
-        SECRET: ${{ secrets.SECRET_KEY }}
+        # SECRET: ${{ secrets.MY_SECRET }}
         ALGORITHM: "HS256"
         HOST_LOCAL: ${{ secrets.HOST_LOCAL }}
         HOST_CONTAINER: "mysql-db-compose"
