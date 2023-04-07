@@ -32,6 +32,6 @@ jobs:
           python -m venv env
           source env/bin/activate
           cd MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src
-          pytest test_takeLatinTupleGetUtf8List.py
-          pytest test_token.py
+          pytest test/test_takeLatinTupleGetUtf8List.py
+          pytest test/test_token.py
 
