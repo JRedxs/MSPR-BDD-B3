@@ -2,8 +2,8 @@ name: main branch CI/CD
 
 on:
   workflow_dispatch:
- push:       #Instance à l'arret , changez l'ip pour pouvoir le relancer
- branches: [ "main" ]
+  push: #Instance à l'arret , changez l'ip pour pouvoir le relancer
+    branches: [ "main" ]
 
 env:
   ALGORITHM: "HS256"
