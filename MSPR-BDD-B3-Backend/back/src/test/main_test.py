@@ -7,12 +7,7 @@ from jose import jwt, JWTError, ExpiredSignatureError
 from fastapi import HTTPException, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
 
-load_dotenv()
-
-SECRET_KEY = os.getenv('SECRET')
-ALGORITHM = os.getenv('ALGORITHM')
 
 
 

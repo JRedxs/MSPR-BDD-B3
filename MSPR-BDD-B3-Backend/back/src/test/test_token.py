@@ -1,6 +1,6 @@
 import pytest
 from fastapi import HTTPException
-from main_test import decoded_jwt, SECRET_KEY, ALGORITHM,create_access_token
+from main_test import decoded_jwt,create_access_token
 import jwt
 from fastapi import HTTPException
 import time
