@@ -33,12 +33,12 @@ def create_access_token(user_id: str = None, data: dict = None, expires_delta: t
         to_encode.update(data)
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=15))
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm='HS256')
+    encoded_jwt = jwt.encode(to_encode, 'test_key', algorithm='HS256')
     return encoded_jwt
 
 def decoded_jwt(token: str) -> dict:
     try:
-        decoded_token = jwt.decode(token, SECRET_KEY, algorithms='HS256')
+        decoded_token = jwt.decode(token, 'test_key', algorithms='HS256')
         return decoded_token
     except ExpiredSignatureError:
         raise HTTPException(status_code=403, detail="Token has expired")
@@ -62,7 +62,7 @@ class BearerAuth(HTTPBearer):
 
     def verify_jwt(self, jwt_token: str) -> Tuple[bool, Optional[str]]:
         try:
-            payload = jwt.decode(jwt_token, SECRET_KEY, algorithms='HS256')
+            payload = jwt.decode(jwt_token, 'test_key', algorithms='HS256')
             user_id = payload.get("user_id, nom, prenom, phone")
             if user_id is None:
                 return False, None  # User ID non trouvé dans le payload
