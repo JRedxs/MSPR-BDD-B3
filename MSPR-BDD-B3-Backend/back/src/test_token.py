@@ -7,21 +7,17 @@ import time
 from datetime import timedelta
 
 def test_create_access_token():
-
-    token = create_access_token()
-    assert isinstance(token, str)
-
-    user_id = "123"
-    token = create_access_token(user_id=user_id)
-    assert isinstance(token, str)
-
+    user_id = "1"
     data = {"name": "John Doe"}
-    token = create_access_token(data=data)
-    assert isinstance(token, str)
-
     expires_delta = timedelta(minutes=30)
-    token = create_access_token(user_id=user_id, expires_delta=expires_delta)
-    assert isinstance(token, str)
+
+    token = create_access_token(user_id=user_id, data=data, expires_delta=expires_delta)
+
+    decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    assert decoded_token["user_id"] == user_id
+    assert decoded_token["name"] == data["name"]
+    assert "exp" in decoded_token
+
 
 # Test d'un token valide
 def test_decoded_jwt_valid_token():
