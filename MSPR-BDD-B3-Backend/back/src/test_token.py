@@ -20,6 +20,13 @@ def test_decode_jwt():
     assert decoded_token == {'user': 'John'}
 
 
+def test_decode_jwt_expired():
+    token = jwt.encode({'exp': time.time() - 3600 }, 'test_key', 'HS256')
+    with pytest.raises(HTTPException) as error:
+        decoded_jwt(token)
+    
+    assert error.value.status_code == 403
+    assert error.value.detail == "Token has expired"
 
 # # Test d'un token valide
 # def test_decoded_jwt_valid_token():
