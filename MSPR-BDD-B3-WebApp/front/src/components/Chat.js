@@ -17,7 +17,7 @@ function Chat() {
 
   useEffect(() => {
     const url =
-      "ws://ec2-15-237-81-71.eu-west-3.compute.amazonaws.com:8000/ws/" +
+      "ws://ec2-15-237-81-71.eu-west-3.compute.amazonaws.com:8005/ws/" +
       decoded_token.user_id;
     const ws = new WebSocket(url);
 
