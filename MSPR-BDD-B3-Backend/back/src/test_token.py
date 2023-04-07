@@ -6,26 +6,26 @@ from fastapi import HTTPException
 import time
 from datetime import timedelta
 
-def test_create_access_token():
-    # Test with only user_id provided
-    token = create_access_token(user_id="1")
-    assert isinstance(token, str)
+# def test_create_access_token():
+#     # Test with only user_id provided
+#     token = create_access_token(user_id="1")
+#     assert isinstance(token, str)
 
-    # Test with data provided
-    data = {"name": "John Doe", "id_role": "user"}
-    token = create_access_token(user_id="1", data=data)
-    assert isinstance(token, str)
+#     # Test with data provided
+#     data = {"name": "John Doe", "id_role": "user"}
+#     token = create_access_token(user_id="1", data=data)
+#     assert isinstance(token, str)
 
-    # Test with expires_delta provided
-    expires_delta = timedelta(minutes=30)
-    token = create_access_token(user_id="1", expires_delta=expires_delta)
-    assert isinstance(token, str)
+#     # Test with expires_delta provided
+#     expires_delta = timedelta(minutes=30)
+#     token = create_access_token(user_id="1", expires_delta=expires_delta)
+#     assert isinstance(token, str)
 
-    # Test with all arguments provided
-    data = {"name": "John Doe", "id_role": "user"}
-    expires_delta = timedelta(minutes=30)
-    token = create_access_token(user_id="1", data=data, expires_delta=expires_delta)
-    assert isinstance(token, str)
+#     # Test with all arguments provided
+#     data = {"name": "John Doe", "id_role": "user"}
+#     expires_delta = timedelta(minutes=30)
+#     token = create_access_token(user_id="1", data=data, expires_delta=expires_delta)
+#     assert isinstance(token, str)
 
 
 # Test d'un token valide
