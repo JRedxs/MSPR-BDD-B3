@@ -2,7 +2,14 @@
 
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Optional,List
+from websocket import WebSocket
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+
+
+
+
+
 
 class Person(BaseModel):
         name: str
@@ -58,9 +65,23 @@ class PlantToCreate(BaseModel):
         latitude : float
         longitude : float 
 
-# class Token(BaseModel):
-#       access_token: str
-#       token_type: str
+class ConnectionManager:
+    
+    def __init__(self) -> None:
+        self.active_connections: List[WebSocket] = []
 
-# class TokenData(BaseModel):
-#       username: Optional[str] = None
+    async def connect(self,websocket:WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+    
+    def disconnect(self,websocket:WebSocket):
+        self.active_connections.remove(websocket)
+    
+    async def send_personal_message(self, message: str,websocket:WebSocket):
+         await websocket.send_text(message)
+        
+    async def broadcast(self,message:str):
+        for connection in self.active_connections:
+            await connection.send_text(message)
+
+

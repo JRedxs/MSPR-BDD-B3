@@ -17,6 +17,7 @@ import UserProfil from './components/UserProfil';
 import AddAdvice from './components/AdvicePlant';
 import Plante from './components/Plante';
 import SearchPlant from './components/SearchPlant';
+import Chat from './components/Chat';
 
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/Plante/:id_plante" element={<Plante/>}/>
             <Route path="/SearchPlant" element={<SearchPlant/>}/>
             <Route path="/RegisterGarde" element={<RegisterGarde/>}/>
+            <Route path="/Chat" element={<Chat/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
         <Footer/>
