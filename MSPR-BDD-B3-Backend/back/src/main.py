@@ -7,12 +7,16 @@ from security import *
 from exif import Image
 from cryptography.fernet import Fernet
 from crypto import *
+from datetime import datetime
+import json
 
 # Connexion à la base de données
 connection = MSQL
 
 # Initialisez l'application
 app = FastAPI()
+
+manager = ConnectionManager()
 
 encryption = Encryption()
 
@@ -522,3 +526,21 @@ def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(Beare
         except:
             cursor.close()
             return {"Plante inexistante"}
+
+
+
+
+@app.websocket("/ws/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: int):
+    await manager.connect(websocket)
+    now = datetime.now()
+    currency_time = now.strftime("%H:%M")
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+            message = {"time": currency_time, "client_id": user_id,"message": data}
+            await manager.broadcast(json.dumps(message))
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        message = {"time": currency_time, "client_id": user_id,"message": "Offline"}
