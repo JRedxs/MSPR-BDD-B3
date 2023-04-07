@@ -15,7 +15,8 @@ env:
   DB_LOCAL: "Arosaje_db"
   DB_CONTAINER: "Arosaje_db"
   PORT_CONTAINER: "3306"
-
+  
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
