@@ -24,7 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r MSPR-BDD-B3-Backend/requirements.txt
 
-      - name: Run Tests
+      - name: Run Tests Unit
         run: |
           cd ..
           pip install pytest
@@ -33,4 +33,5 @@ jobs:
           source env/bin/activate
           cd MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src
           pytest test_takeLatinTupleGetUtf8List.py
+          pytest test_token.py
 
