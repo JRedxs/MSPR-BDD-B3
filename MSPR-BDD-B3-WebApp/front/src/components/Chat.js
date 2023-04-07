@@ -14,7 +14,7 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const baseUrl = process.env.REACT_APP_API_URL
   useEffect(() => {
-    const url = "ws://localhost:8000/ws/" + decoded_token.user_id;
+    const url = "ws://ec2-15-237-81-71.eu-west-3.compute.amazonaws.com:8000/ws/" + decoded_token.user_id;
     const ws = new WebSocket(url);
 
     ws.onopen = (event) => {
