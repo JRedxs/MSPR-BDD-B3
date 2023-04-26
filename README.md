@@ -14,7 +14,7 @@ Un ou trois serveurs équipés du docker daemon.
 ## Installation Rapide : architecture uni-serveur
 *Ce guide est prévu pour tout type d'informaticien*
 
-Réccuperez l'application
+Récuperez l'application
 ```
 git clone https://github.com/JRedxs/MSPR-BDD-B3.git
 ```
