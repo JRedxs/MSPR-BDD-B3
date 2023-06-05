@@ -24,8 +24,8 @@ services:
     build:
       context: ./MSPR-BDD-B3-Backend/.
       dockerfile: Dockerfile
-    # environment:
-    #   DB_HOST: @mysql-db-compose:3306
+     environment:
+       DB_HOST: @mysql-db-compose:3306
     restart: always
     ports:
       - '8005:8005'
