@@ -46,4 +46,5 @@ jobs:
           echo "This is an environment variable: $ALGORITHM"
           echo "REACT_APP_API_URL: ${{ secrets.REACTURL }}"
           echo "This is an environment variable: $PORT_LOCAL"
+          
 
