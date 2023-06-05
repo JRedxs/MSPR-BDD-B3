@@ -16,3 +16,4 @@ class Encryption:
     def decrypt(self, encrypted_message):
         decrypted_message = self.fernet.decrypt(encrypted_message)
         return decrypted_message
+    
