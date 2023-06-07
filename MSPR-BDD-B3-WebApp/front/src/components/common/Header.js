@@ -1,14 +1,23 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/Header.css';
 import { FaUser } from 'react-icons/fa';
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
+    
     const handleToggle = () => {
         setIsOpen(!isOpen);
+    };
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        window.sessionStorage.removeItem('access_token');
+        setIsOpen(false);  // ferme le menu si ouvert
+        navigate('/login');  // redirige vers la page de connexion
     };
 
     const isLoggedIn = !!window.sessionStorage.getItem('access_token');
@@ -36,7 +45,7 @@ const Header = () => {
                         type="button"
                         onClick={handleToggle}
                     >
-                         <FaUser />
+                        <FaUser />
                         <i className="bi bi-person"></i>
                     </button>
                     {isOpen && (
@@ -85,6 +94,7 @@ const Header = () => {
                                             to=""
                                             className="btn btn-primary w-100"
                                             role="button"
+                                            onClick={handleLogout}
                                             style={{ backgroundColor: '#8E685A ', color: 'white', border: 'none' }}
                                         >
                                             Se déconnecter

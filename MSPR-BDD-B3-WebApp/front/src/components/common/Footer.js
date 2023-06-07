@@ -42,11 +42,11 @@ const Footer = () => {
                         </div>
 
                         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-                            <div style={{ width: '100%', height: '500px' }}>
-                                <Document file={pdfUrl}>
-                                    <Page pageNumber={1} width="100%" />
-                                </Document>
-                            </div>
+                            <h6 class="text-uppercase mb-4 font-weight-bold">RGPD</h6>
+
+                            <p>
+                                <a class="text-white" href='/rgpd/NoticeTraitementsDesDonnées.pdf' target="_blank" rel="noopener noreferrer">Notice du traitement</a>
+                            </p>
 
                         </div>
 
