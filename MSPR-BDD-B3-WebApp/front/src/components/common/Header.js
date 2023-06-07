@@ -2,16 +2,19 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/Header.css'
+import '../../styles/Header.css';
+import { FaUser } from 'react-icons/fa';
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const handleToggle = () => {
         setIsOpen(!isOpen);
     };
+
+    const isLoggedIn = !!window.sessionStorage.getItem('access_token');
     return (
         <>
-            
+
             <nav className="navbar navbar-expand-lg navbar-light shadow-lg">
                 <a class="navbar-brand" href="/" style={{ marginLeft: '20px', color: 'white' }}> <b>Arosa-Je </b></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,12 +36,13 @@ const Header = () => {
                         type="button"
                         onClick={handleToggle}
                     >
+                         <FaUser />
                         <i className="bi bi-person"></i>
                     </button>
                     {isOpen && (
                         <div className="position-absolute end-0 mt-2 me-2 shadow-lg bg-white rounded" style={{ zIndex: 1 }}>
-                            <div className="py-2 px-3 border-bottom d-flex justify-content-center align-items-center" style={{ backgroundColor: '#8E685A ', color: 'white'}}>
-                                <h5 className="d-flex m-0 justify-content-center" >Mon profil</h5>
+                            <div className="py-2 px-3 border-bottom d-flex justify-content-center align-items-center" style={{ backgroundColor: '#8E685A ', color: 'white' }}>
+                                <h5 className="d-flex m-0 justify-content-center" >Partie utilisateur</h5>
                             </div>
                             <div className="p-3" style={{ backgroundColor: '#6F8C4F ', color: 'white', borderBlockColor: 'black' }}>
                                 <div className="mb-3">
@@ -46,7 +50,7 @@ const Header = () => {
                                         to="/login"
                                         className="btn btn-primary w-100"
                                         role="button"
-                                        style={{ backgroundColor: '#8E685A ', color: 'white', border:'none' }}
+                                        style={{ backgroundColor: '#8E685A ', color: 'white', border: 'none' }}
                                     >
                                         Se connecter
                                     </Link>
@@ -56,28 +60,43 @@ const Header = () => {
                                         to="/register"
                                         className="btn btn-primary w-100"
                                         role="button"
-                                        style={{ backgroundColor: '#8E685A ', color: 'white' , border:'none' }}
+                                        style={{ backgroundColor: '#8E685A ', color: 'white', border: 'none' }}
                                     >
                                         S'inscrire
                                     </Link>
                                 </div>
                                 <br />
                                 <div>
-                                    <Link
-                                        to="/UserProfil"
-                                        className="btn btn-primary w-100"
-                                        role="button"
-                                        style={{ backgroundColor: '#8E685A ', color: 'white' , border:'none'}}
-                                    >
-                                        Profil
-                                    </Link>
+                                    {isLoggedIn && (
+                                        <Link
+                                            to="/UserProfil"
+                                            className="btn btn-primary w-100"
+                                            role="button"
+                                            style={{ backgroundColor: '#8E685A ', color: 'white', border: 'none' }}
+                                        >
+                                            Profil
+                                        </Link>
+                                    )}
+                                </div>
+                                <br />
+                                <div>
+                                    {isLoggedIn && (
+                                        <Link
+                                            to=""
+                                            className="btn btn-primary w-100"
+                                            role="button"
+                                            style={{ backgroundColor: '#8E685A ', color: 'white', border: 'none' }}
+                                        >
+                                            Se déconnecter
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     )}
                 </div>
             </nav>
-        </>           
+        </>
     )
 }
 export default Header;
