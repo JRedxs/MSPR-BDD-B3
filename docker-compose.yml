@@ -8,7 +8,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
       MYSQL_DATABASE: ${DATABASE}
-      # MYSQL_USER: ${USER}
+      MYSQL_USER: ${USER}
       #A ajouter dans les variables .env de mon instance
       MYSQL_PASSWORD: ${PASSWORD}
     restart: always
@@ -38,6 +38,8 @@ services:
     build:
       context: ./MSPR-BDD-B3-WebApp/front/.
       dockerfile: Dockerfile
+    environment:
+      REACT_APP_API_URL: ${REACT_APP_API_URL}
     restart: always
     ports:
       - '3000:3000'
