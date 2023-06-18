@@ -30,6 +30,7 @@ DATABASE=Arosaje_db
 USER=admin
 PASSWORD=admin
 PORT=3306
+REACT_APP_API_URL="http://127.0.0.1:8005"
 ```
 
 Ouvrer le dossier des sources du serveur Backend
