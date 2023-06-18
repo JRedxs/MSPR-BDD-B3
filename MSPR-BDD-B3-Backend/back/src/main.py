@@ -22,7 +22,7 @@ encryption = Encryption()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # not ideal
-# origins = [
+ origins = [
 #     "http://localhost",
 #     "http://localhost:3000",
 #     "http://localhost:3001",
@@ -34,12 +34,14 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 #     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005/docs",
 #     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:8005",
 #     "http://ec2-13-37-248-200.eu-west-3.compute.amazonaws.com:3000"
-# ]
+      "http://ec2-35-180-89-202.eu-west-3.compute.amazonaws.com:8005",
+      "http://ec2-35-180-89-202.eu-west-3.compute.amazonaws.com:8005/docs"
+ ]
 
 
 # ajouter en .env
 
-origins = ["*"]
+#origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
