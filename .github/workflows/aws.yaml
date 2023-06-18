@@ -53,6 +53,13 @@ jobs:
           echo "PORT_CONTAINER=3306" >> .env
           echo "REACT_APP_API_URL=${{ secrets.HOST }}" >> .env
           
+          cd ../../..
+          echo "DATABASE=${{ secrets.DB_LOCAL }}" > .env
+          echo "USER=${{ secrets.USER_CONTAINER }}" >> .env
+          echo "PASSWORD=${{ secrets.PASSWORD_CONTAINER }}" >> .env
+          echo "PORT=3306" >> .env
+          echo "REACT_APP_API_URL=${{ secrets.HOST }}" >> .env
+          
           sudo docker compose up -d --build
           
           echo "This is an environment variable: $HOST_LOCAL"
