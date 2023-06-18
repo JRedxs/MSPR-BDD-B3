@@ -8,6 +8,7 @@ on:
 env:
   SECRET: ${{ secrets.SECRET_KEY }}
   ALGORITHM: ${{ secrets.ALGORITHM }}
+  HOST_LOCAL: ${{ secrets.HOST }}
   HOST_CONTAINER: ${{ secrets.HOST_CONTAINER }}
   USER_LOCAL: ${{ secrets.USER_LOCAL }}
   USER_CONTAINER: ${{ secrets.USER_LOCAL }}
@@ -41,7 +42,7 @@ jobs:
           cd MSPR-BDD-B3-Backend/back/src/
           echo "SECRET=${{ secrets.SECRET_KEY }}" > .env
           echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> .env
-          ECHO "HOST_LOCAL=${{ secrets.HOST }}" >> .env
+          echo "HOST_LOCAL=${{ secrets.HOST }}" >> .env
           echo "HOST_CONTAINER=${{ secrets.HOST_CONTAINER }}" >> .env
           echo "USER_LOCAL=${{ secrets.USER_LOCAL }}" >> .env
           echo "USER_CONTAINER=${{ secrets.USER_CONTAINER }}" >> .env
