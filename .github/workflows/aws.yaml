@@ -47,7 +47,7 @@ jobs:
           echo "PASSWORD_LOCAL=${{ secrets.PASSWORD_LOCAL }}" >> .env
           echo "PASSWORD_CONTAINER=${{ secrets.PASSWORD_CONTAINER }}" >> .env
           echo "DB_LOCAL=${{ secrets.DB_LOCAL }}" >> .env
-          echo "DB_CONTAINER=${{ secrets.DB_CONTAINER }}" >> .env
+          echo "DB_CONTAINER=${{ secrets.DB_LOCAL }}" >> .env
           echo "PORT_CONTAINER=3306" >> .env
           echo "REACT_APP_API_URL=${{ secrets.HOST }}" >> .env
           
