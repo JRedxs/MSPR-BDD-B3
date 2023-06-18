@@ -26,9 +26,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      
     - name: Create .env file
       run: |
-        cd MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src
+        cd MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src/
         echo "SECRET=${{ secrets.SECRET_KEY }}" > .env
         echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> .env
         echo "HOST_CONTAINER=${{ secrets.HOST_CONTAINER }}" >> .env
@@ -40,7 +41,7 @@ jobs:
         echo "DB_CONTAINER=${{ secrets.DB_CONTAINER }}" >> .env
         echo "PORT_CONTAINER=3306" >> .env
         echo "REACT_APP_API_URL=${{ secrets.HOST }}" >> .env
-        
+
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
       with:
