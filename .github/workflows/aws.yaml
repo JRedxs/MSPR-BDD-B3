@@ -6,15 +6,17 @@ on:
     branches: [ "main" ]
 
 env:
-  ALGORITHM: "HS256"
-  HOST_CONTAINER: "mysql-db-compose"
-  USER_LOCAL: "admin"
-  USER_CONTAINER: "admin"
-  PASSWORD_LOCAL: "admin"
-  PASSWORD_CONTAINER: "admin"
-  DB_LOCAL: "Arosaje_db"
-  DB_CONTAINER: "Arosaje_db"
+  SECRET: ${{ secrets.SECRET_KEY }}
+  ALGORITHM: ${{ secrets.ALGORITHM }}
+  HOST_CONTAINER: ${{ secrets.HOST_CONTAINER }}
+  USER_LOCAL: ${{ secrets.USER_LOCAL }}
+  USER_CONTAINER: ${{ secrets.USER_LOCAL }}
+  PASSWORD_LOCAL: ${{ secrets.PASSWORD_LOCAL }}
+  PASSWORD_CONTAINER: ${{ secrets.PASSWORD_CONTAINER }}
+  DB_LOCAL: ${{ secrets.DB_LOCAL }}
+  DB_CONTAINER: ${{ secrets.DB_CONTAINER }}
   PORT_CONTAINER: "3306"
+  REACT_APP_API_URL: $ {{ secrets.HOST }}
   
   
 jobs:
@@ -24,6 +26,21 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Create .env file
+      run: |
+        cd MSPR-BDD-B3/MSPR-BDD-B3-Backend/back/src
+        echo "SECRET=${{ secrets.SECRET_KEY }}" > .env
+        echo "ALGORITHM=${{ secrets.ALGORITHM }}" >> .env
+        echo "HOST_CONTAINER=${{ secrets.HOST_CONTAINER }}" >> .env
+        echo "USER_LOCAL=${{ secrets.USER_LOCAL }}" >> .env
+        echo "USER_CONTAINER=${{ secrets.USER_CONTAINER }}" >> .env
+        echo "PASSWORD_LOCAL=${{ secrets.PASSWORD_LOCAL }}" >> .env
+        echo "PASSWORD_CONTAINER=${{ secrets.PASSWORD_CONTAINER }}" >> .env
+        echo "DB_LOCAL=${{ secrets.DB_LOCAL }}" >> .env
+        echo "DB_CONTAINER=${{ secrets.DB_CONTAINER }}" >> .env
+        echo "PORT_CONTAINER=3306" >> .env
+        echo "REACT_APP_API_URL=${{ secrets.HOST }}" >> .env
+        
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
       with:
