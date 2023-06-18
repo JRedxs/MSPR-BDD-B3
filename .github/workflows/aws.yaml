@@ -33,11 +33,8 @@ jobs:
 
         port: 22 
         script: |
-          # Stop all running Docker Containers
-          if [ "$(docker ps -a -q)" ]; then
-            docker kill $(docker ps -a -q)
-            docker rm $(docker ps -a -q)
-          fi
+          # Stop all running Docker Containers and remove all cache
+          docker system prune -a
           cd MSPR-BDD-B3/
           git pull
           sudo docker compose up -d --build
