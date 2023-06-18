@@ -34,7 +34,7 @@ jobs:
         port: 22 
         script: |
           # Stop all running Docker Containers and remove all cache
-          docker system prune -a
+          docker system prune -a --volumes
           cd MSPR-BDD-B3/
           git pull
           sudo docker compose up -d --build
