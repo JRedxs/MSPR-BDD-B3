@@ -56,7 +56,7 @@ jobs:
           cd ../../..
           echo "DATABASE=${{ secrets.DB_LOCAL }}" > .env
           echo "USER=${{ secrets.USER_CONTAINER }}" >> .env
-          echo "PASSWORD=${{ secrets.PASSWORD_CONTAINER }}" >> .env
+          echo "ROOT_PASSWORD=${{ secrets.PASSWORD_CONTAINER }}" >> .env
           echo "PORT=3306" >> .env
           echo "REACT_APP_API_URL=${{ secrets.HOST }}" >> .env
           
