@@ -58,6 +58,10 @@ jobs:
           echo "This is an environment variable: $ALGORITHM"
           echo "REACT_APP_API_URL : $REACTURL"
           echo "This is an environment variable: $PORT_LOCAL"
-          
+          echo "DB_LOCAL : $DB_LOCAL"
+          echo "DB_USERS: $DB_USERS"
+          echo "USER_CONTAINER: $USER_CONTAINER"
+          echo "USER_LOCAL: $USER_LOCAL"
+          echo "HOST_CONTAINER: $HOST_CONTAINER"
           
 
