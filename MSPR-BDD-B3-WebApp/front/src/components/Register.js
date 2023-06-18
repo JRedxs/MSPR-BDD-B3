@@ -18,7 +18,6 @@ const Register = () => {
         password: "",
         email: "",
         phone: "",
-        confirmPassword: "",
     });
 
     const handleChange = (event) => {
