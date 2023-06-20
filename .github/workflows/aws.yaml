@@ -39,9 +39,9 @@ jobs:
         script: |
           # Stop all running Docker Containers and remove all cache
           yes | docker system prune -a --volumes
-          cd MSPR-BDD-B3-WebApp/front/
+          cd MSPR-BDD-B3/MSPR-BDD-B3-WebApp/front/
           npm cache clean --force
-          cd ../..
+          cd ../../..
           cd MSPR-BDD-B3/
           git pull
 
