@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Clear npm cache
-RUN npm cache verify
+RUN npm cache verify --force
 
 # Install the dependencies
 RUN npm install
