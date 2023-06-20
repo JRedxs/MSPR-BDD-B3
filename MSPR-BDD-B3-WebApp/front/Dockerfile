@@ -24,4 +24,5 @@ RUN echo "REACT_APP_API_URL=http://ec2-13-38-31-57.eu-west-3.compute.amazonaws.c
 EXPOSE ${PORT}
 
 # Specify the command to start the Node server
+CMD [ "npm", "cache", "verify", "--force"]
 CMD [ "npm", "start" ]
