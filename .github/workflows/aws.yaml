@@ -38,6 +38,8 @@ jobs:
           yes | docker system prune -a --volumes
           cd MSPR-BDD-B3/
           git pull
+          cd MSPR-BDD-B3-WebApp/front
+          npm cache clean --force
           
           cd MSPR-BDD-B3-Backend/back/src/
           echo "SECRET=${{ secrets.SECRET_KEY }}" > .env
