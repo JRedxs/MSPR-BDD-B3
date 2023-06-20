@@ -24,9 +24,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+
     steps:         
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
+    
+    
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.HOST_USER }}
@@ -36,6 +39,9 @@ jobs:
         script: |
           # Stop all running Docker Containers and remove all cache
           yes | docker system prune -a --volumes
+          cd MSPR-BDD-B3-WebApp/front/
+          npm cache clean --force
+          cd ../..
           cd MSPR-BDD-B3/
           git pull
 
