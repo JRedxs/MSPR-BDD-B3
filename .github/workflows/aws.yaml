@@ -24,14 +24,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Clean up disk space
-      run: |
-        df -h
-        sudo du -sh /var/cache/apt/archives
-        sudo apt-get clean
-        sudo apt-get autoremove -y
-        npm cache clean --force
-
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
       with:
@@ -40,6 +32,11 @@ jobs:
         key: ${{ secrets.SSH_PEM }}
         port: 22 
         script: |
+          df -h
+          sudo du -sh /var/cache/apt/archives
+          sudo apt-get clean
+          sudo apt-get autoremove -y
+          npm cache clean --force
           # Stop all running Docker Containers and remove all cache
           yes | docker system prune -a --volumes
           cd MSPR-BDD-B3/MSPR-BDD-B3-WebApp/front/
