@@ -2,7 +2,7 @@ name: main branch CI/CD
 
 on:
   workflow_dispatch:
-  push: #Instance à l'arret , changez l'ip pour pouvoir le relancer
+  push:
     branches: [ "main" ]
 
 env:
@@ -17,24 +17,26 @@ env:
   DB_LOCAL: ${{ secrets.DB_LOCAL }}
   DB_CONTAINER: ${{ secrets.DB_CONTAINER }}
   PORT_CONTAINER: "3306"
-  REACT_APP_API_URL: $ {{ secrets.HOST }}
-  
+  REACT_APP_API_URL: ${{ secrets.HOST }}
   
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    steps:
+    - name: Clean up disk space
+      run: |
+        df -h
+        sudo du -sh /var/cache/apt/archives
+        sudo apt-get clean
+        sudo apt-get autoremove -y
 
-    steps:         
     - name: Deploy to Server via SSH action
       uses: appleboy/ssh-action@master
-    
-    
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.HOST_USER }}
         key: ${{ secrets.SSH_PEM }}
-
         port: 22 
         script: |
           # Stop all running Docker Containers and remove all cache
@@ -78,5 +80,3 @@ jobs:
           echo "USER_CONTAINER: $USER_CONTAINER"
           echo "USER_LOCAL: $USER_LOCAL"
           echo "HOST_CONTAINER: $HOST_CONTAINER"
-          
-
