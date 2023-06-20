@@ -7,9 +7,11 @@ WORKDIR /app
 # Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
 
+# Clear npm cache
+RUN npm cache clean --force
+
 # Install the dependencies
 RUN npm install
-
 
 # Copy the rest of the code to the container
 COPY . .
@@ -22,5 +24,4 @@ RUN echo "REACT_APP_API_URL=http://ec2-13-38-31-57.eu-west-3.compute.amazonaws.c
 EXPOSE ${PORT}
 
 # Specify the command to start the Node server
-
 CMD [ "npm", "start" ]
