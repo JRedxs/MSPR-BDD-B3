@@ -24,8 +24,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 # not ideal
-origins = [*]
-
+origins = "*"
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -33,7 +32,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 
 def takeLatinTupleGetUtf8List(theTuple):
