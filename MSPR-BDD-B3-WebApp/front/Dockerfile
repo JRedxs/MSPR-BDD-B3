@@ -7,10 +7,6 @@ WORKDIR /app
 # Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
 
-CMD [ "npm", "cache", "verify", "--force"]
-# Clear npm cache
-RUN npm cache verify --force
-
 # Install the dependencies
 RUN npm install
 
@@ -18,8 +14,8 @@ RUN npm install
 COPY . .
 
 # Addition of the local environment
-#RUN echo "REACT_APP_API_URL=http://localhost:8005" > .env.local
-RUN echo "REACT_APP_API_URL=http://ec2-13-38-31-57.eu-west-3.compute.amazonaws.com:8005" > .env.local
+RUN echo "REACT_APP_API_URL=http://localhost:8005" > .env.local
+RUN echo "REACT_APP_API_URL=http://ec2-35-180-35-1.eu-west-3.compute.amazonaws.com:8005" > .env.local
 
 # Expose port 3000 for the Node server
 EXPOSE ${PORT}
