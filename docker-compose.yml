@@ -38,8 +38,8 @@ services:
     build:
       context: ./MSPR-BDD-B3-WebApp/front/.
       dockerfile: Dockerfile
-    environment:
-      REACT_APP_API_URL: ${REACT_APP_API_URL}
+    # environment:
+    #   REACT_APP_API_URL: ${REACT_APP_API_URL}
     restart: always
     ports:
       - '3000:3000'
