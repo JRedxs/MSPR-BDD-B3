@@ -24,11 +24,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 # not ideal
-origins = [
-    "http://ec2-13-38-138-8.eu-west-3.compute.amazonaws.com:3000/",
-    "http://ec2-13-38-138-8.eu-west-3.compute.amazonaws.com:8005/",
-    "http://ec2-13-38-138-8.eu-west-3.compute.amazonaws.com:8005/docs"
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
