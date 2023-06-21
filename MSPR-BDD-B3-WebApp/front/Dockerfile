@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
 
+# Update NPM
+RUN npm install -g npm@latest
+
 # Install the dependencies
 RUN npm install
 
