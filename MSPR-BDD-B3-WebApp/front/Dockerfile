@@ -17,7 +17,8 @@ RUN npm install
 COPY . .
 
 # Addition of the local environment
-RUN echo {REACT_APP_API_URL} > .env.local
+RUN echo "REACT_APP_API_URL=http://localhost:8005" > .env.local
+RUN echo "REACT_APP_API_URL=http://ec2-13-38-125-145.eu-west-3.compute.amazonaws.com:8005" > .env.local
 
 # Expose port 3000 for the Node server
 EXPOSE ${PORT}
