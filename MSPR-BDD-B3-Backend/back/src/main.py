@@ -505,17 +505,15 @@ def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(Beare
 @app.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: int):
     await manager.connect(websocket, user_id)
-    now = datetime.now()
-    currency_time = now.strftime("%H:%M")
-
     try:
         while True:
             data = await websocket.receive_text()
-            message = {"time": currency_time, "client_id": user_id, "message": data}
+            message = {"time": datetime.now().strftime("%H:%M"), "client_id": user_id, "message": data}
             await manager.broadcast(json.dumps(message))
     except WebSocketDisconnect:
         manager.disconnect(websocket, user_id)
-        message = {"time": currency_time, "client_id": user_id, "message": "Offline"}
+        message = {"time": datetime.now().strftime("%H:%M"), "client_id": user_id, "message": "Offline"}
+        await manager.broadcast(json.dumps(message))
         
 @app.post("/send-private-message")
 async def send_private_message(payload: dict):

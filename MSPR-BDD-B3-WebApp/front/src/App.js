@@ -18,6 +18,7 @@ import AddAdvice from './components/AdvicePlant';
 import Plante from './components/Plante';
 import SearchPlant from './components/SearchPlant';
 import Chat from './components/Chat';
+import ChatPrivate from './components/ChatPrivate';
 
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
             <Route path="/SearchPlant" element={<SearchPlant/>}/>
             <Route path="/RegisterGarde" element={<RegisterGarde/>}/>
             <Route path="/Chat" element={<Chat/>}/>
+            <Route path='/ChatPrivate' element={<ChatPrivate/>} />
             <Route path="*" element={<NotFound/>}/>
         </Routes>
         <Footer/>

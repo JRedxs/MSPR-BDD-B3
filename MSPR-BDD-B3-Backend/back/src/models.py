@@ -81,4 +81,6 @@ class ConnectionManager:
         if receiver_socket:
             await receiver_socket.send_text(message)
 
-
+    async def broadcast(self, data: str):
+        for connection, user_id in self.active_connections:
+            await connection.send_text(data)

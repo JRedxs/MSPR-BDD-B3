@@ -2,20 +2,27 @@ import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 
-function Chat() {
-  const [clientId, setClientId] = useState(window.sessionStorage.getItem("access_token"));
+function ChatPrivate() {
+  const [clientId, setClientId] = useState(
+    window.sessionStorage.getItem("access_token")
+  );
+
+  const [selectedUser, setSelectedUser] = useState();
   const decoded_token = jwt_decode(clientId);
   const userId = decoded_token.user_id;
-  
+  console.log(userId);
+
   const [websckt, setWebsckt] = useState();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [connectedUsers, setConnectedUsers] = useState([]);
-  
+
   const baseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const url = "ws://ec2-35-180-137-238.eu-west-3.compute.amazonaws.com:8005/ws/" + userId;
+    const url =
+      "ws://ec2-35-180-137-238.eu-west-3.compute.amazonaws.com:8005/ws/" +
+      userId;
     const ws = new WebSocket(url);
 
     ws.onopen = (event) => {
@@ -36,11 +43,12 @@ function Chat() {
     };
 
     setWebsckt(ws);
+
     return () => ws.close();
   }, [userId]);
 
   useEffect(() => {
-    fetchConnectedUsers(); 
+    fetchConnectedUsers(); // Initial call to fetch list of connected users
   }, []);
 
   const fetchConnectedUsers = async () => {
@@ -52,23 +60,34 @@ function Chat() {
     }
   };
 
-  const handleSendMessage = () => {
+  const handleSelectUser = (e) => {
+    setSelectedUser(e.target.value);
+  };
+
+  const handleSendMessage = async () => {
     if (message.trim() !== "") {
-      const newMessage = {
-        time: new Date().toLocaleTimeString(),
-        clientId: userId,
-        message: message,
-      };
-      if (websckt.readyState === WebSocket.OPEN) {
-        websckt.send(JSON.stringify(newMessage));
+      try {
+        const response = await axios.post(baseUrl + "/send-private-message", {
+          message: message,
+          receiverId: selectedUser, // Message is sent to the selected user
+          senderId: userId,
+        });
+        const newMessage = {
+          time: response.data.time,
+          clientId: userId,
+          message: response.data.message,
+        };
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessage("");
+      } catch (error) {
+        console.log("Error sending message:", error);
       }
-      setMessage("");
     }
   };
 
   return (
     <div className="container">
-      <h1>Chat</h1>
+      <h1>Private Chat</h1>
       <h2>Your client ID: {userId}</h2>
       <h3>Connected Users:</h3>
       <ul>
@@ -76,10 +95,30 @@ function Chat() {
           <li key={user}>{user}</li>
         ))}
       </ul>
+      <div>
+        <h4>Send message to:</h4>
+        <select onChange={handleSelectUser}>
+          {connectedUsers.map((user) => (
+            <option key={user} value={user}>{user}</option>
+          ))}
+        </select>
+        <div className="input-chat-container">
+          <input
+            className="input-chat"
+            type="text"
+            placeholder="Chat message ..."
+            onChange={(e) => setMessage(e.target.value)}
+            value={message}
+          />
+          <button className="submit-chat" onClick={handleSendMessage}>
+            Send
+          </button>
+        </div>
+      </div>
       <div className="chat-container">
         <div className="chat">
           {messages.map((value, index) => {
-            if (value.clientId === userId) {
+            if (value.clientId === clientId) {
               return (
                 <div key={index} className="my-message-container">
                   <div className="my-message">
@@ -100,21 +139,9 @@ function Chat() {
             }
           })}
         </div>
-        <div className="input-chat-container">
-          <input
-            className="input-chat"
-            type="text"
-            placeholder="Chat message ..."
-            onChange={(e) => setMessage(e.target.value)}
-            value={message}
-          />
-          <button className="submit-chat" onClick={handleSendMessage}>
-            Send
-          </button>
-        </div>
       </div>
     </div>
   );
-}
+}  
 
-export default Chat;
+export default ChatPrivate;
