@@ -7,6 +7,7 @@ function Chat() {
     window.sessionStorage.getItem("access_token")
   );
 
+  const [selectedUser, setSelectedUser] = useState();
   const decoded_token = jwt_decode(clientId);
   const userId = decoded_token.user_id;
   console.log(userId);
@@ -59,6 +60,14 @@ function Chat() {
     }
   };
 
+  const handleSelectUser = (e) => {
+    setSelectedUser(e.target.value);
+  };
+
+  const handleSendPrivateButtonClick = () => {
+    handleSendPrivateMessage(selectedUser);
+  };
+
   const handleSendMessage = async () => {
     if (message.trim() !== "") {
       try {
@@ -80,6 +89,28 @@ function Chat() {
     }
   };
 
+  const handleSendPrivateMessage = async (receiverId) => {
+    if (message.trim() !== "") {
+      try {
+        const response = await axios.post(baseUrl + "/send-private-message", {
+          message: message,
+          receiverId: receiverId, // Envoi du message à l'utilisateur spécifique
+          senderId: userId,
+        });
+        const newMessage = {
+          time: response.data.time,
+          clientId: userId,
+          message: response.data.message,
+        };
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessage("");
+      } catch (error) {
+        console.log("Error sending message:", error);
+      }
+    }
+  };
+
+
   return (
     <div className="container">
       <h1>Chat</h1>
@@ -90,6 +121,15 @@ function Chat() {
           <li key={user}>{user}</li>
         ))}
       </ul>
+      <div>
+        <h4>Send private message to:</h4>
+        <select onChange={handleSelectUser}>
+          {connectedUsers.map((user) => (
+            <option key={user} value={user}>{user}</option>
+          ))}
+        </select>
+        <button onClick={handleSendPrivateButtonClick}>Send Private Message</button>
+      </div>
       <div className="chat-container">
         <div className="chat">
           {messages.map((value, index) => {
@@ -129,6 +169,6 @@ function Chat() {
       </div>
     </div>
   );
-}
+}  
 
 export default Chat;

@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional,List
+from typing import Optional,List,Dict
 from websocket import WebSocket
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
@@ -67,22 +67,18 @@ class PlantToCreate(BaseModel):
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: List[WebSocket] = []
-        self.connected_users: List[int] = []  # Liste des utilisateurs connectés
+        self.active_connections: Dict[int, WebSocket] = {}  # Dictionnaire d'utilisateurs connectés et leurs WebSockets
 
     async def connect(self, websocket: WebSocket, user_id: int):
         await websocket.accept()
-        self.active_connections.append(websocket)
-        self.connected_users.append(user_id)  # Ajouter l'utilisateur à la liste des utilisateurs connectés
+        self.active_connections[user_id] = websocket  # Enregistrer la websocket de l'utilisateur
 
     def disconnect(self, websocket: WebSocket, user_id: int):
-        self.active_connections.remove(websocket)
-        self.connected_users.remove(user_id)  # Retirer l'utilisateur de la liste des utilisateurs connectés
+        del self.active_connections[user_id]  # Supprimer la websocket de l'utilisateur
 
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
+    async def send_personal_message(self, message: str, receiver_id: int):  # Nouvelle méthode pour envoyer des messages privés
+        receiver_socket = self.active_connections.get(receiver_id)
+        if receiver_socket:
+            await receiver_socket.send_text(message)
 
-    async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
 
