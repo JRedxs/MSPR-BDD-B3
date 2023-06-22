@@ -66,22 +66,23 @@ class PlantToCreate(BaseModel):
         longitude : float 
 
 class ConnectionManager:
-    
-    def __init__(self) -> None:
+    def __init__(self):
         self.active_connections: List[WebSocket] = []
+        self.connected_users: List[int] = []  # Liste des utilisateurs connectés
 
-    async def connect(self,websocket:WebSocket):
+    async def connect(self, websocket: WebSocket, user_id: int):
         await websocket.accept()
         self.active_connections.append(websocket)
-    
-    def disconnect(self,websocket:WebSocket):
+        self.connected_users.append(user_id)  # Ajouter l'utilisateur à la liste des utilisateurs connectés
+
+    def disconnect(self, websocket: WebSocket, user_id: int):
         self.active_connections.remove(websocket)
-    
-    async def send_personal_message(self, message: str,websocket:WebSocket):
-         await websocket.send_text(message)
-        
-    async def broadcast(self,message:str):
+        self.connected_users.remove(user_id)  # Retirer l'utilisateur de la liste des utilisateurs connectés
+
+    async def send_personal_message(self, message: str, websocket: WebSocket):
+        await websocket.send_text(message)
+
+    async def broadcast(self, message: str):
         for connection in self.active_connections:
             await connection.send_text(message)
-
 
