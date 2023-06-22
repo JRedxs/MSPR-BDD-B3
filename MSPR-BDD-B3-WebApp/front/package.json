@@ -28,7 +28,7 @@
     "react-leaflet": "^4.2.0",
     "react-native": "^0.71.1",
     "react-native-image-base64": "^0.1.4",
-    "react-pdf": "^7.0.3",
+    "react-pdf": "^7.1.2",
     "react-router": "^6.8.0",
     "react-router-dom": "^6.8.0",
     "react-scripts": "5.0.1",

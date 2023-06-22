@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 function Chat() {
   const [clientId, setClientId] = useState(
@@ -7,18 +8,20 @@ function Chat() {
   );
 
   const decoded_token = jwt_decode(clientId);
-  console.log(decoded_token.user_id);
+  const userId = decoded_token.user_id;
+  console.log(userId);
 
   const [websckt, setWebsckt] = useState();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [connectedUsers, setConnectedUsers] = useState([]);
 
   const baseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const url =
       "ws://ec2-15-237-81-71.eu-west-3.compute.amazonaws.com:8005/ws/" +
-      decoded_token.user_id;
+      userId;
     const ws = new WebSocket(url);
 
     ws.onopen = (event) => {
@@ -41,19 +44,52 @@ function Chat() {
     setWebsckt(ws);
 
     return () => ws.close();
-  }, [decoded_token.user_id]);
+  }, [userId]);
 
-  const handleSendMessage = () => {
+  useEffect(() => {
+    fetchConnectedUsers(); // Appel initial pour récupérer la liste des utilisateurs connectés
+  }, []);
+
+  const fetchConnectedUsers = async () => {
+    try {
+      const response = await axios.get(baseUrl + "/connected-users");
+      setConnectedUsers(response.data.connected_users);
+    } catch (error) {
+      console.log("Error fetching connected users:", error);
+    }
+  };
+
+  const handleSendMessage = async () => {
     if (message.trim() !== "") {
-      websckt.send(message);
-      setMessage("");
+      try {
+        const response = await axios.post(baseUrl + "/send-message", {
+          message: message,
+          receiverId: userId,
+          senderId: userId,
+        });
+        const newMessage = {
+          time: response.data.time,
+          clientId: userId,
+          message: response.data.message,
+        };
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessage("");
+      } catch (error) {
+        console.log("Error sending message:", error);
+      }
     }
   };
 
   return (
     <div className="container">
       <h1>Chat</h1>
-      <h2>Your client ID: {decoded_token.user_id}</h2>
+      <h2>Your client ID: {userId}</h2>
+      <h3>Connected Users:</h3>
+      <ul>
+        {connectedUsers.map((user) => (
+          <li key={user}>{user}</li>
+        ))}
+      </ul>
       <div className="chat-container">
         <div className="chat">
           {messages.map((value, index) => {
@@ -61,7 +97,7 @@ function Chat() {
               return (
                 <div key={index} className="my-message-container">
                   <div className="my-message">
-                    <p className="client">Client ID: {decoded_token.user_id}</p>
+                    <p className="client">Client ID: {userId}</p>
                     <p className="message">{value.message}</p>
                   </div>
                 </div>
