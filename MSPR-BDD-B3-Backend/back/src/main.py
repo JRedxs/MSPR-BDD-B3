@@ -535,4 +535,6 @@ async def send_private_message(payload: dict):
 
 @app.get("/connected-users")
 async def get_connected_users():
-    return {"connected_users": manager.connected_users}
+    connected_users = manager.connected_users  # Access the connected_users property
+    return {"connected_users": connected_users}
+

@@ -3,44 +3,51 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 
 function Chat() {
-  const [clientId, setClientId] = useState(window.sessionStorage.getItem("access_token"));
+  const [clientId, setClientId] = useState(
+    window.sessionStorage.getItem("access_token")
+  );
+
   const decoded_token = jwt_decode(clientId);
   const userId = decoded_token.user_id;
-  
-  const [websckt, setWebsckt] = useState();
+
+  const [websckt, setWebsckt] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [connectedUsers, setConnectedUsers] = useState([]);
-  
+
   const baseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const url = "ws://ec2-35-180-137-238.eu-west-3.compute.amazonaws.com:8005/ws/" + userId;
+    const url =
+      "ws://ec2-35-180-137-238.eu-west-3.compute.amazonaws.com:8005/ws/" +
+      userId;
     const ws = new WebSocket(url);
 
-    ws.onopen = (event) => {
+    ws.onopen = () => {
       ws.send("Connect");
     };
 
-    ws.onmessage = (e) => {
-      const message = JSON.parse(e.data);
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
       setMessages((prevMessages) => [...prevMessages, message]);
     };
 
-    ws.onerror = (e) => {
-      console.log("WebSocket error:", e);
+    ws.onerror = (event) => {
+      console.log("WebSocket error:", event);
     };
 
-    ws.onclose = (e) => {
-      console.log("WebSocket closed:", e);
+    ws.onclose = (event) => {
+      console.log("WebSocket closed:", event);
     };
 
     setWebsckt(ws);
-    return () => ws.close();
+    return () => {
+      ws.close();
+    };
   }, [userId]);
 
   useEffect(() => {
-    fetchConnectedUsers(); 
+    fetchConnectedUsers();
   }, []);
 
   const fetchConnectedUsers = async () => {
@@ -59,7 +66,7 @@ function Chat() {
         clientId: userId,
         message: message,
       };
-      if (websckt.readyState === WebSocket.OPEN) {
+      if (websckt && websckt.readyState === WebSocket.OPEN) {
         websckt.send(JSON.stringify(newMessage));
       }
       setMessage("");
@@ -78,35 +85,29 @@ function Chat() {
       </ul>
       <div className="chat-container">
         <div className="chat">
-          {messages.map((value, index) => {
-            if (value.clientId === userId) {
-              return (
-                <div key={index} className="my-message-container">
-                  <div className="my-message">
-                    <p className="client">Client ID: {userId}</p>
-                    <p className="message">{value.message}</p>
-                  </div>
-                </div>
-              );
-            } else {
-              return (
-                <div key={index} className="another-message-container">
-                  <div className="another-message">
-                    <p className="client">Client ID: {value.clientId}</p>
-                    <p className="message">{value.message}</p>
-                  </div>
-                </div>
-              );
-            }
-          })}
+          {messages.map((value, index) => (
+            <div
+              key={index}
+              className={
+                value.clientId === userId
+                  ? "my-message-container"
+                  : "another-message-container"
+              }
+            >
+              <div className="message">
+                <p className="client">Client ID: {value.clientId}</p>
+                <p className="text">{value.message}</p>
+              </div>
+            </div>
+          ))}
         </div>
         <div className="input-chat-container">
           <input
             className="input-chat"
             type="text"
             placeholder="Chat message ..."
-            onChange={(e) => setMessage(e.target.value)}
             value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
           <button className="submit-chat" onClick={handleSendMessage}>
             Send
