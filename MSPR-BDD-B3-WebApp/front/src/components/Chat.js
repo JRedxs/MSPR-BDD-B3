@@ -21,7 +21,7 @@ function Chat() {
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    const url = "ws://localhost:8000/ws/" + decoded_token.user_id;
+    const url = "ws://ec2-15-237-62-48.eu-west-3.compute.amazonaws.com:8000/ws/" + decoded_token.user_id;
     const ws = new WebSocket(url);
 
     ws.onopen = (event) => {
