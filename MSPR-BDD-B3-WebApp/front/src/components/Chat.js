@@ -50,7 +50,7 @@ function Chat() {
 
   const fetchConnectedUsers = async () => {
     try {
-      const response = await fetch("http://localhost:8000/connected-users");
+      const response = await fetch("http://ec2-15-237-62-48.eu-west-3.compute.amazonaws.com:8005/connected-users");
       const data = await response.json();
       setConnectedUsers(data.connected_users);
     } catch (error) {
