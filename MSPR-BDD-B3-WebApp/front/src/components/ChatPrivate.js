@@ -75,6 +75,7 @@ function ChatPrivate() {
         const newMessage = {
           time: response.data.time,
           clientId: userId,
+          receiverId: selectedUser, // Store the receiver ID in the message
           message: response.data.message,
         };
         setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -90,18 +91,7 @@ function ChatPrivate() {
       <h1>Private Chat</h1>
       <h2>Your client ID: {userId}</h2>
       <h3>Connected Users:</h3>
-      <ul>
-        {connectedUsers.map((user) => (
-          <li key={user}>{user}</li>
-        ))}
-      </ul>
       <div>
-        <h4>Send message to:</h4>
-        <select onChange={handleSelectUser}>
-          {connectedUsers.map((user) => (
-            <option key={user} value={user}>{user}</option>
-          ))}
-        </select>
         <div className="input-chat-container">
           <input
             className="input-chat"
@@ -118,11 +108,11 @@ function ChatPrivate() {
       <div className="chat-container">
         <div className="chat">
           {messages.map((value, index) => {
-            if (value.clientId === clientId) {
+            if (value.clientId === userId) {
               return (
                 <div key={index} className="my-message-container">
                   <div className="my-message">
-                    <p className="client">Client ID: {userId}</p>
+                    <p className="client">Client ID: {value.receiverId}</p> // Display the receiver ID
                     <p className="message">{value.message}</p>
                   </div>
                 </div>
@@ -142,6 +132,6 @@ function ChatPrivate() {
       </div>
     </div>
   );
-}  
+}
 
 export default ChatPrivate;

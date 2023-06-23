@@ -80,7 +80,6 @@ function Chat() {
     <div className="container">
       <h1>Chat</h1>
       <h2>Votre ID : {decoded_token.user_id}</h2>
-      <div className="dropdown-menu">
         <h3>Connected Users:</h3>
         <select onChange={handleUserSelect} value={selectedUser}>
           <option value="">Sélectionnez un utilisateur</option>
@@ -91,7 +90,6 @@ function Chat() {
         <button className="start-chat" onClick={startPrivateChat}>
           Démarrer une conversation privée
         </button>
-      </div>
       <div className="chat-container" ref={chatContainerRef}>
         <div className="chat">
           {messages.map((value, index) => {
