@@ -40,7 +40,7 @@ function Map() {
       <div className="global-wrapper">
         <div className="title-wrapper">
           <h1 style={{ textAlign: 'center' }}>
-            <u>Trouvez une plante près de chez vous :</u>
+            <p>Trouvez une plante près de chez vous :</p>
           </h1>
         </div>
         <br />
