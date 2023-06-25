@@ -58,7 +58,7 @@ function Chat() {
     } else if (decoded_token.id_role === 3){
       return 'Hybride';
     }
-  };
+  }
 
   
 
@@ -73,7 +73,7 @@ function Chat() {
     } else {
       console.error('WebSocket connection is not open.');
     }
-  };
+  }
 
   return (
     <div className="container">
@@ -91,7 +91,7 @@ function Chat() {
                     <p className="message"> {currentUser.firstname} {currentUser.name} ({RoleName()}) : {value.message}</p>
                   </div>
                 </div>
-              );
+              )
             } else {
               return (
                 <div key={index} className="another-message-container">
@@ -99,7 +99,7 @@ function Chat() {
                     <p className="message"> {currentUser.firstname} {currentUser.name} ({RoleName()}): {value.message}</p>
                   </div>
                 </div>
-              );
+              )
             }
           })}
         </div>
@@ -116,7 +116,7 @@ function Chat() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Chat;
+export default Chat

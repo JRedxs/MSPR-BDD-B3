@@ -19,12 +19,15 @@ import Plante from './components/Plante';
 import SearchPlant from './components/SearchPlant';
 import Chat from './components/Chat';
 import ChatPrivate from './components/ChatPrivate';
+import { ChakraProvider } from "@chakra-ui/react";
+
 
 
 const App = () => {
   return (
       <div>
         <Header/>
+        <ChakraProvider>
           <Routes>
             <Route exact path="/" element={<Home/>}/>
             <Route path="/login" element={<LoginPage/>} />
@@ -45,6 +48,7 @@ const App = () => {
             <Route path='/ChatPrivate' element={<ChatPrivate/>} />
             <Route path="*" element={<NotFound/>}/>
         </Routes>
+        </ChakraProvider>
         <Footer/>
       </div>
   );

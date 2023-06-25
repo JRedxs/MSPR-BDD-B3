@@ -1,162 +1,213 @@
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import axios from 'axios';
-import '../styles/Register.css';
+import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+import React, { useState } from "react"
+import { useCustomToast } from '../libs/alert'
+import axios from 'axios'
+import '../styles/Register.css'
 
 
 const Register = () => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-    const [error, setError] = useState("");
-    const baseUrl = process.env.REACT_APP_API_URL;
-    console.log(baseUrl)
-    const NAVIGATE = useNavigate();
+		const showToast         = useCustomToast()
+		const passwordRegex     = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+
+		const baseUrl           = process.env.REACT_APP_API_URL
+		
+
+    const NAVIGATE = useNavigate()
 
     const [formData, setFormData] = useState({
-        name: "",
+        name     : "",
         firstname: "",
-        password: "",
-        email: "",
-        phone: "",
-    });
+        password : "",
+        email    : "",
+        phone    : "",
+    })
 
     const handleChange = (event) => {
         setFormData({
             ...formData,
             [event.target.name]: event.target.value,
-        });
-    };
+        })
+    }
 
-    
-    const handleSubmit = event => {
-        event.preventDefault();
-        if (!formData.name || !formData.firstname || !formData.phone || !formData.email || !formData.password) {
-            setError("Tous les champs sont requis.");
-            return;
-        }
-        if (!passwordRegex.test(formData.password)) {
-            setError("Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial");
-            return;
-        }
-        axios
-            .post(`${baseUrl}/register`, formData)
-            .then(res => {
-                console.log(res);
-                NAVIGATE('/login')
-            })
-            .catch(err => console.error(err));
-    };
+		const handleSubmit = event => {
+			event.preventDefault()
+	
+			for (let [key, value] of Object.entries(formData)) {
+					if (!value) {
+							showToast({
+									title: "Erreur",
+									description: `Le champ ${key} est obligatoire.`,
+									status: "error",
+							})
+							return
+					}
+			}
+			if (!formData.email) {
+        showToast({
+            title: "Erreur",
+            description: "Le champ email est obligatoire.",
+            status: "error",
+        })
+        return
+    }
 
-    const handlePhoneChange = event => {
-        const phone = event.target.value;
-        if (!/^\d+$/.test(phone)) {
-            setError("Le champ Téléphone ne peut contenir que des chiffres.");
-        } else {
-            setFormData({ ...formData, phone });
-            setError("");
-        }
-    };
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
+    if (!emailRegex.test(formData.email)) {
+        showToast({
+            title: "Erreur",
+            description: "L'adresse email n'est pas valide.",
+            status: "error",
+        })
+        return
+    }
+
+		const phoneRegex = /^\d{10}$/
+		if (!phoneRegex.test(formData.phone)) {
+			showToast({
+					title: "Erreur",
+					description: "Le champ Téléphone doit contenir exactement 10 chiffres.",
+					status: "error",
+			})
+			return
+	}
+	
+			if (formData.password !== formData.confirmPassword) {
+					showToast({
+							title: "Erreur",
+							description: "Les mots de passe ne correspondent pas.",
+							status: "error",
+					})
+					return
+			}
+	
+			if (!passwordRegex.test(formData.password)) {
+					showToast({
+							title: "Erreur",
+							description: "Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial",
+							status: "error",
+					})
+					return
+			}
+	
+			showToast({
+					title: "Succès",
+					description: "Tous les champs sont correctement remplis.",
+					status: "success",
+			})
+	
+			axios
+					.post(`${baseUrl}/token`, formData)
+					.then(res => {
+							console.log(res)
+							NAVIGATE('/login')
+					})
+					.catch(err => {
+							console.error(err)
+							showToast({
+									title: "Erreur",
+									description: "Une erreur s'est produite lors de l'envoi des données.",
+									status: "error",
+							})
+					})
+	}
 
     return (
-        <div className="body">
-            <section className="h-100 form-register">
-                <div className="card card-register card-registration d-flex justify-content-center my-4">
-                    <div className="card-body   text-black">
-                        <form onSubmit={handleSubmit}>
-                            <h3 className="mb-5 text-uppercase" style={{ display: 'flex', justifyContent: 'center' }}>Inscription</h3>
+        <div     className = "body">
+        <section className = "h-100 form-register">
+        <div     className = "card card-register card-registration d-flex justify-content-center my-4">
+        <div     className = "card-body   text-black">
+        <form    onSubmit  = {handleSubmit}>
+        <h3      className = "mb-5 text-uppercase" style = {{ display: 'flex', justifyContent: 'center' }}>Inscription</h3>
 
-                            <div className="row">
-                                <div className="col-md-6 mb-4">
-                                    <div className="form-outline">
+                            <div className = "row">
+                            <div className = "col-md-6 mb-4">
+                            <div className = "form-outline">
                                         <input
-                                            placeholder="Prénom"
-                                            className="form-control form-control-lg shadow"
-                                            htmlFor="name"
-                                            type="text"
-                                            id="name"
-                                            name="name"
-                                            onChange={handleChange}
-                                            value={formData.name}
+                                            placeholder = "Prénom"
+                                            className   = "form-control form-control-lg shadow"
+                                            htmlFor     = "name"
+                                            type        = "text"
+                                            id          = "name"
+                                            name        = "name"
+                                            onChange    = {handleChange}
+                                            value       = {formData.name}
                                         />
                                     </div>
                                 </div>
-                                <div className="col-md-6 mb-4">
-                                    <div className="form-outline">
+                                <div className = "col-md-6 mb-4">
+                                <div className = "form-outline">
                                         <input
-                                            placeholder="Nom"
-                                            className="form-control form-control-lg shadow"
-                                            type="text"
-                                            id="firstname"
-                                            name="firstname"
-                                            onChange={handleChange}
-                                            value={formData.firstname}
+                                            placeholder = "Nom"
+                                            className   = "form-control form-control-lg shadow"
+                                            type        = "text"
+                                            id          = "firstname"
+                                            name        = "firstname"
+                                            onChange    = {handleChange}
+                                            value       = {formData.firstname}
                                         />
                                     </div>
                                 </div>
 
                             </div>
                             <br />
-                            <div className="row">
-                                <div className="form-outline mb-4">
+                            <div className = "row">
+                            <div className = "form-outline mb-4">
                                     <input
-                                        placeholder="Numéro de téléphone"
-                                        className="form-control form-control-lg shadow"
-                                        type="tel"
-                                        id="phone"
-                                        name="phone"
-                                        onChange={handlePhoneChange}
-                                        value={formData.phone}
+                                        placeholder = "Numéro de téléphone"
+                                        className   = "form-control form-control-lg shadow"
+                                        id          = "phone"
+                                        name        = "phone"
+                                        onChange    = {handleChange}
+                                        value       = {formData.phone}
                                     />
                                 </div>
                             </div>
                             <br />
-                            <div className="row">
-                                <div className="form-outline mb-4">
+                            <div className = "row">
+                            <div className = "form-outline mb-4">
                                     <input
-                                        placeholder="Adresse Email"
-                                        className="form-control form-control-lg shadow"
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        onChange={handleChange}
-                                        value={formData.email}
+                                        placeholder = "Adresse Email"
+                                        className   = "form-control form-control-lg shadow"
+                                        id          = "email"
+                                        name        = "email"
+                                        onChange    = {handleChange}
+                                        value       = {formData.email}
+                                    />
+                                </div>			
+                            </div>
+                            <br />
+                            <div className = "row">
+                            <div className = "form-outline mb-4">
+                                    <input
+                                        placeholder = "Password"
+                                        className   = "form-control form-control-lg shadow"
+                                        type        = "password"
+                                        id          = "password"
+                                        name        = "password"
+                                        onChange    = {handleChange}
+                                        value       = {formData.password}
                                     />
                                 </div>
                             </div>
                             <br />
-                            <div className="row">
-                                <div className="form-outline mb-4">
+                            <div className = "row">
+                            <div className = "form-outline mb-4">
                                     <input
-                                        placeholder="Password"
-                                        className="form-control form-control-lg shadow"
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        onChange={handleChange}
-                                        value={formData.password}
+                                        placeholder = "Confirmer votre password"
+                                        className   = "form-control form-control-lg shadow"
+                                        type        = "password"
+                                        id          = "confirmPassword"
+                                        name        = "confirmPassword"
+                                        onChange = {handleChange}
+                                        value    = {formData.confirmPassword}
                                     />
                                 </div>
                             </div>
-                            <br />
-                            <div className="row">
-                                <div className="form-outline mb-4">
-                                    <input
-                                        placeholder="Confirmer votre password"
-                                        className="form-control form-control-lg shadow"
-                                        type="password"
-                                        id="confirmPassword"
-                                        name="confirmPassword"
-                                        required
-                                        onChange={handleChange}
-                                        value={formData.confirmPassword}
-                                    />
-                                </div>
+                            <div    className = "d-flex justify-content-center pt-3">
+                            <Link   className = "btn btn-warning btn-lg ms-2" type = "button" style                      = {{ backgroundColor: '#8E685A ', color: 'white' }} to = "/Login">Retour</Link>
+                            <button type      = "submit" className                 = "btn btn-warning btn-lg ms-2" style = {{ backgroundColor: '#8E685A', color: 'white' }}>Valider</button>
                             </div>
-                            <div className="d-flex justify-content-center pt-3">
-                                <Link className="btn btn-warning btn-lg ms-2" type="button" style={{ backgroundColor: '#8E685A ', color: 'white' }} to="/Login">Retour</Link>
-                                <button type="submit" className="btn btn-warning btn-lg ms-2" style={{ backgroundColor: '#8E685A', color: 'white' }}>Valider</button>
-                            </div>
-                            {error && <p>{error}</p>}
                         </form>
                     </div>
                 </div>
@@ -164,4 +215,5 @@ const Register = () => {
         </div>
     )
 }
-export default Register;
+export default Register
+
