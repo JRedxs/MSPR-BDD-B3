@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 const RegisterPhoto = () => {
   const [isCameraActive, setIsCameraActive] = useState(false);
-  const videoRef = useRef(null);
-  const [imageSrc, setImageSrc] = useState(null);
+  const videoRef                            = useRef(null);
+  const [imageSrc, setImageSrc]             = useState(null);
 
-  const baseUrl = process.env.REACT_APP_API_URL;
+  const baseUrl                 = process.env.REACT_APP_API_URL;
   const [idPlante, setIdPlante] = useState( Number(sessionStorage.getItem('plante') ) );
 
   const navigate = useNavigate();
@@ -29,13 +29,13 @@ const RegisterPhoto = () => {
   };
 
   const handleTakePhoto = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = videoRef.current.videoWidth;
-    canvas.height = videoRef.current.videoHeight;
+    const canvas        = document.createElement('canvas');
+          canvas.width  = videoRef.current.videoWidth;
+          canvas.height = videoRef.current.videoHeight;
     canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
     
-    const image = new Image();
-    image.src = canvas.toDataURL();
+    const image     = new Image();
+          image.src = canvas.toDataURL();
     handleStopCamera();
     setImageSrc(image.src);
   };
@@ -43,7 +43,7 @@ const RegisterPhoto = () => {
   const handleUploadPhoto = () => {
     async function postPhoto(){
       await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc})
-      // need to become a real error managment
+          // need to become a real error managment
         .then(() => {
           setImageSrc(null);
           navigate(`/Plante/${idPlante}`)
@@ -60,22 +60,22 @@ const RegisterPhoto = () => {
   };
 
   return (
-    <div className='body'>
+    <div className = 'body'>
 
     
     <div>
       {
         isCameraActive && (
-          <div className="d-flex justify-content-center margin-login-card" style={{margin:"5em"}}>
-            <div className="card">
-              <video ref={videoRef} autoPlay />
-              <div className="card-body">
-                <div className="d-flex justify-content-center align-items-center">
-                  <b><p className="card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
+          <div   className = "d-flex justify-content-center margin-login-card" style = {{margin:"5em"}}>
+          <div   className = "card">
+          <video ref       = {videoRef} autoPlay />
+          <div   className = "card-body">
+          <div   className = "d-flex justify-content-center align-items-center">
+          <b><p  className = "card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
                 </div>
-                <div className="d-flex justify-content-center align-items-center">
-                  <button className='btn btn-success' style={{margin:"1em"}} onClick={handleTakePhoto}>Prendre une Photo</button>
-                  <button className='btn btn-success' style={{margin:"1em"}} onClick={handleStopCamera}>Arreter la Camera</button>
+                <div    className = "d-flex justify-content-center align-items-center">
+                <button className = 'btn btn-success' style = {{margin:"1em"}} onClick = {handleTakePhoto}>Prendre une Photo</button>
+                <button className = 'btn btn-success' style = {{margin:"1em"}} onClick = {handleStopCamera}>Arreter la Camera</button>
                 </div>
               </div>
             </div> 
@@ -84,14 +84,14 @@ const RegisterPhoto = () => {
       }
       {
         !isCameraActive && !imageSrc && (
-          <div className="d-flex justify-content-center align-items-center" style={{margin:"5em"}}>
-            <div className="card  d-flex justify-content-center align-items-center">
-            <img src={Logo} className="card-img-top" alt="logo"/>
-              <div className="card-body ">
-                <b><p className="card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
+          <div  className = "d-flex justify-content-center align-items-center" style = {{margin:"5em"}}>
+          <div  className = "card  d-flex justify-content-center align-items-center">
+          <img  src       = {Logo} className                                         = "card-img-top" alt = "logo"/>
+          <div  className = "card-body ">
+          <b><p className = "card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
               </div>
-                <div className="d-flex justify-content-center">
-                  <button className='btn btn-success' style={{margin:"2em"}} onClick={handleStartCamera}>Lancer la Camera</button>
+                <div    className = "d-flex justify-content-center">
+                <button className = 'btn btn-success' style = {{margin:"2em"}} onClick = {handleStartCamera}>Lancer la Camera</button>
                 </div>
               </div>
             </div> 
@@ -99,13 +99,13 @@ const RegisterPhoto = () => {
       }
       {
         imageSrc && (
-          <div className="d-flex justify-content-center align-items-center"  >
-            <div className="card" style={{margin:"5em"}}>
-              <img src={imageSrc} alt="" />
-              <div className="card-body">
-                <div className="d-flex justify-content-center align-items-center"> 
-                  <button className='btn btn-success' style={{margin:"1em"}} onClick={handleUploadPhoto}>Enregister la Photo</button>
-                  <button className='btn btn-success' style={{margin:"1em"}} onClick={handleTakeNewPhoto}>Prendre une nouvelle Photo</button>
+          <div    className = "d-flex justify-content-center align-items-center"  >
+          <div    className = "card" style            = {{margin:"5em"}}>
+          <img    src       = {imageSrc} alt          = "" />
+          <div    className = "card-body">
+          <div    className = "d-flex justify-content-center align-items-center">
+          <button className = 'btn btn-success' style = {{margin:"1em"}} onClick = {handleUploadPhoto}>Enregister la Photo</button>
+          <button className = 'btn btn-success' style = {{margin:"1em"}} onClick = {handleTakeNewPhoto}>Prendre une nouvelle Photo</button>
                 </div>
               </div>
             </div> 
