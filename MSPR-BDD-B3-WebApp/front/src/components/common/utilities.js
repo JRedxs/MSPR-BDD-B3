@@ -1,4 +1,3 @@
-
 export const cleanSession = () => {
     window.sessionStorage.removeItem("name");
     window.sessionStorage.removeItem("number");
