@@ -1,16 +1,15 @@
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 import React, { useState } from "react"
-import { useCustomToast } from '../libs/alert'
+import { useCustomToast } from '../libs/Alert'
+import { GenericButton} from '../libs/Button'
 import axios from 'axios'
 import '../styles/Register.css'
 
 
 const Register = () => {
-		const showToast         = useCustomToast()
-		const passwordRegex     = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
-
-		const baseUrl           = process.env.REACT_APP_API_URL
+		const showToast = useCustomToast()
+		const baseUrl   = process.env.REACT_APP_API_URL
 		
 
     const NAVIGATE = useNavigate()
@@ -36,18 +35,18 @@ const Register = () => {
 			for (let [key, value] of Object.entries(formData)) {
 					if (!value) {
 							showToast({
-									title: "Erreur",
+									title      : "Erreur",
 									description: `Le champ ${key} est obligatoire.`,
-									status: "error",
+									status     : "error",
 							})
 							return
 					}
 			}
 			if (!formData.email) {
         showToast({
-            title: "Erreur",
+            title      : "Erreur",
             description: "Le champ email est obligatoire.",
-            status: "error",
+            status     : "error",
         })
         return
     }
@@ -55,9 +54,9 @@ const Register = () => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
     if (!emailRegex.test(formData.email)) {
         showToast({
-            title: "Erreur",
+            title      : "Erreur",
             description: "L'adresse email n'est pas valide.",
-            status: "error",
+            status     : "error",
         })
         return
     }
@@ -65,35 +64,35 @@ const Register = () => {
 		const phoneRegex = /^\d{10}$/
 		if (!phoneRegex.test(formData.phone)) {
 			showToast({
-					title: "Erreur",
+					title      : "Erreur",
 					description: "Le champ Téléphone doit contenir exactement 10 chiffres.",
-					status: "error",
+					status     : "error",
 			})
 			return
 	}
 	
 			if (formData.password !== formData.confirmPassword) {
 					showToast({
-							title: "Erreur",
+							title      : "Erreur",
 							description: "Les mots de passe ne correspondent pas.",
-							status: "error",
+							status     : "error",
 					})
 					return
 			}
-	
+            const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
 			if (!passwordRegex.test(formData.password)) {
 					showToast({
-							title: "Erreur",
+							title      : "Erreur",
 							description: "Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial",
-							status: "error",
+							status     : "error",
 					})
 					return
 			}
 	
 			showToast({
-					title: "Succès",
+					title      : "Succès",
 					description: "Tous les champs sont correctement remplis.",
-					status: "success",
+					status     : "success",
 			})
 	
 			axios
@@ -105,9 +104,9 @@ const Register = () => {
 					.catch(err => {
 							console.error(err)
 							showToast({
-									title: "Erreur",
+									title      : "Erreur",
 									description: "Une erreur s'est produite lors de l'envoi des données.",
-									status: "error",
+									status     : "error",
 							})
 					})
 	}
@@ -199,8 +198,8 @@ const Register = () => {
                                         type        = "password"
                                         id          = "confirmPassword"
                                         name        = "confirmPassword"
-                                        onChange = {handleChange}
-                                        value    = {formData.confirmPassword}
+                                        onChange    = {handleChange}
+                                        value       = {formData.confirmPassword}
                                     />
                                 </div>
                             </div>
@@ -208,6 +207,22 @@ const Register = () => {
                             <Link   className = "btn btn-warning btn-lg ms-2" type = "button" style                      = {{ backgroundColor: '#8E685A ', color: 'white' }} to = "/Login">Retour</Link>
                             <button type      = "submit" className                 = "btn btn-warning btn-lg ms-2" style = {{ backgroundColor: '#8E685A', color: 'white' }}>Valider</button>
                             </div>
+                            <div className="d-flex justify-content-center pt-3">
+        <Link
+          className="btn btn-warning btn-lg ms-2"
+          type="button"
+          style={{ backgroundColor: '#8E685A ', color: 'white' }}
+          to="/Login"
+        >
+          Retour
+        </Link>
+        <GenericButton
+          loadingText="Envoie en cours"
+          label="Valider"
+          colorScheme="blue"
+
+        />
+      </div>
                         </form>
                     </div>
                 </div>
