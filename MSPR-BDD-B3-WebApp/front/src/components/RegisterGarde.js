@@ -1,5 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from 'axios';
 import '../styles/RegisterGarde.css';
 

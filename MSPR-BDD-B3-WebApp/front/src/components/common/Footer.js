@@ -1,6 +1,4 @@
-import React from "react";
 import '../../styles/Footer.css';
-import { Document, Page } from 'react-pdf';
 
 
 const Footer = () => {

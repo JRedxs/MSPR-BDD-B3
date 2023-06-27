@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import Logo from '../assets/images/logo.png'
 import { useNavigate } from "react-router-dom";
 import '../styles/RegisterFirstPhoto.css'; // import de la feuille de style CSS
