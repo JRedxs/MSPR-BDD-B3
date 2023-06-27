@@ -6,6 +6,7 @@ export function useCustomToast() {
   const showToast = ({ title, description, status }) => {
     toast({
       title      : title,
+      position   : "top",
       description: description,
       status     : status,
       duration   : 5000,
