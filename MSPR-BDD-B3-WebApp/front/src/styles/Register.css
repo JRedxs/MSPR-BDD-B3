@@ -1,20 +1,8 @@
-
-.card-register {
-
-        height: 70%;
-        width: "33%";
-        border-radius: "50px";
-        border: "1px solid black";
-        background-color :#a4bb64 !important;
-        margin: 5em;
-}
-
-.form-button{
-    margin: 1em;
-}
-
-.form-register{
-    background: rgba(236,237,232, 0.5) !important; 
-    
-
-}
+.body {
+    background-image: url('../styles/image.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 120vh;
+    padding-top: 100px;
+  }
+  

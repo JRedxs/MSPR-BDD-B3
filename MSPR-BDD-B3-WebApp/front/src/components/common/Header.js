@@ -1,20 +1,19 @@
-import { useState } from 'react'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
-import { Avatar, Box, Button, Flex, Heading, Menu, MenuButton, MenuItem, MenuList, useDisclosure, Stack } from '@chakra-ui/react'
-import { ChevronDownIcon } from '@chakra-ui/icons'
-import { FaUser } from 'react-icons/fa'
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Avatar, Box, Button, Flex, Heading, Menu, MenuButton, MenuItem, MenuList, useDisclosure, Stack } from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { FaUser } from 'react-icons/fa';
 
 const Header = () => {
-    const navigate = useNavigate()
-    const { isOpen, onToggle } = useDisclosure()
+    const navigate = useNavigate();
+    const { isOpen, onToggle } = useDisclosure();
 
     const handleLogout = () => {
-        window.sessionStorage.removeItem('access_token')
-        onToggle() // Close the menu if it's open
-        navigate('/login') // Redirect to the login page
-    }
+        window.sessionStorage.removeItem('access_token');
+        onToggle(); // Close the menu if it's open
+        navigate('/login'); // Redirect to the login page
+    };
 
-    const isLoggedIn = !!window.sessionStorage.getItem('access_token')
+    const isLoggedIn = !!window.sessionStorage.getItem('access_token');
 
     return (
         <Box as="header" p={4} bg="green" color="white">
@@ -22,6 +21,7 @@ const Header = () => {
                 <RouterLink to="/">
                     <Heading>Arosa-Je</Heading>
                 </RouterLink>
+
 
                 <Flex>
                     {isLoggedIn ? (
@@ -49,25 +49,23 @@ const Header = () => {
                     ) : (
                         <>
                             <Stack direction="row">
-                                <Button as={RouterLink} to="/login" colorScheme="green" variant="outline" mr={2}>
+                                <Button as={RouterLink} to="/login" colorScheme="blue" variant="solid" mr={2}>
                                     Se connecter
                                 </Button>
-                                <Button as={RouterLink} to="/Register" colorScheme="green" variant="outline" mr={2}>
+																<Button as={RouterLink} to="/Register" colorScheme="blue" variant="solid" mr={2}>
                                     S'inscrire
                                 </Button>
                             </Stack>
-                            <Avatar  src='https://bit.ly/broken-link' size="2xs" ml={4} />
+                            <Avatar size="md" boxSize="3rem" src='https://bit.ly/broken-link' ml={4} />
                         </>
                     )}
                 </Flex>
             </Flex>
         </Box>
-    )
-}
+    );
+};
 
-export default Header
-
-
+export default Header;
 
 
 
