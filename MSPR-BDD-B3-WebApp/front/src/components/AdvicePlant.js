@@ -26,8 +26,13 @@ const AdvicePlant = () => {
     // récupérer les infos depuis le sessionStorage
     const fetchData = async () => {
       try {
-        const response_user = await axios.get(`${baseUrl}/plantandgallery/${id_plante}`);
-        const userData = response_user.data.Plante;
+        const accessToken = window.sessionStorage.getItem("access_token");
+        const response_user = await axios.get(`${baseUrl}/plantandgallery/${id_plante}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const userData = response_user.data[0].Plante;
         setUser(userData);
         console.log(userData);
         sessionStorage.setItem("user_plante", JSON.stringify(userData));
@@ -42,7 +47,12 @@ const AdvicePlant = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.put(process.env.REACT_APP_API_URL + `/advices`, advice)
+      const accessToken = window.sessionStorage.getItem("access_token");
+      const response = await axios.put(process.env.REACT_APP_API_URL + `/advices`, advice, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
         .then(() => {
           navigate(`/Plante/${id_plante}`);
         });

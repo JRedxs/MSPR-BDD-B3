@@ -260,9 +260,9 @@ def send_image(id=Depends(BearerAuth())):
     return image
 
 
-@app.put("/advices", summary="Modification d'un titre conseil")
-def create_advice(advice: dict = Depends(BearerAuth())):
-
+@app.put("/advices" , summary="Modification d'un titre conseil")
+def create_advice(advice: dict, token: Tuple[str, str] = Depends(BearerAuth())):
+    
     with connection.cursor() as cursor:
         try:
             sql = "Update Photo set advice_title=%s, advice=%s where id_photo=%s"
@@ -509,9 +509,8 @@ def get_all_gardes(token: Tuple[str, str] = Depends(BearerAuth())):
             return {"Error message": str(error)}
 
 
-@app.get("/plantandgallery/{id_plante}", summary="Récupération des photos de plantes en fonction de leur id")
-def get_plant_photos_by_id(id_plante: int, token: Tuple[str, str] = Depends(BearerAuth())):
-    if token[1] != 2 and token[1] != 3:
+def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(BearerAuth())):
+    if token[1] != 2 and token[1] != 3 and token[1] != 1:
         raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
         try:
