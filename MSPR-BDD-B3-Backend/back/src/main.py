@@ -516,14 +516,14 @@ def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(Beare
         except:
             cursor.close()
             raise HTTPException(status_code=404, detail="Plante inexistante")
-
-messages = []
+        
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
         data = await websocket.receive_text()
+<<<<<<< HEAD
         message = {
             "username": "Unknown",
             "text": data
@@ -558,3 +558,6 @@ async def send_private_message(payload: dict):
 async def get_connected_users():
     connected_users = manager.connected_users  # Access the connected_users property
     return {"connected_users": connected_users}
+=======
+        await websocket.send_text(f"{data}")
+>>>>>>> 5decf7a (fix: chat commun entre les users)

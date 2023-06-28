@@ -18,7 +18,7 @@ COPY . .
 
 # Addition of the local environment
 RUN echo "REACT_APP_API_URL=http://localhost:8005" > .env.local
-RUN echo "REACT_APP_API_URL_EC2=http://ec2-35-180-25-193.eu-west-3.compute.amazonaws.com:8005" > .env.local
+RUN echo "REACT_APP_API_URL_EC2=http://ec2-35-180-26-255.eu-west-3.compute.amazonaws.com:8005" > .env.local
 
 # Expose port 3000 for the Node server
 EXPOSE ${PORT}
