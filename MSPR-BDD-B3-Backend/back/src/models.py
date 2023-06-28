@@ -12,6 +12,7 @@ class Person(BaseModel):
         password: str
         email: str
         phone: str
+        last_login: Optional[datetime] = None
         id_role: int = 2
 
 class Image(BaseModel):
