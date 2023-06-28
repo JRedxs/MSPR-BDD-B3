@@ -1,21 +1,24 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import React, { useState } from "react"
 import { useCustomToast } from "../libs/Alert"
 import { GenericButton } from "../libs/Button"
 import axios from 'axios'
-import '../styles/Register.css'
+import { Box, VStack,Flex, Heading, HStack, Input, FormControl } from "@chakra-ui/react"
+import backgroundImage from '../styles/image.png';
+
+
 
 const Register = () => {
   const showToast = useCustomToast()
-  const baseUrl = process.env.REACT_APP_API_URL
-  const navigate = useNavigate()
+  const baseUrl   = process.env.REACT_APP_API_URL
+  const navigate  = useNavigate()
 
   const [formData, setFormData] = useState({
-    name: "",
+    name     : "",
     firstname: "",
-    password: "",
-    email: "",
-    phone: "",
+    password : "",
+    email    : "",
+    phone    : "",
   })
 
   const handleChange = (event) => {
@@ -27,15 +30,15 @@ const Register = () => {
 
   const handleSubmit = (event) => {
     if (event) {
-        event.preventDefault();
+        event.preventDefault()
     }
 
     for (let [key, value] of Object.entries(formData)) {
       if (!value) {
         showToast({
-          title: "Erreur",
+          title      : "Erreur",
           description: `Le champ ${key} est obligatoire.`,
-          status: "error",
+          status     : "error",
         })
         return
       }
@@ -43,9 +46,9 @@ const Register = () => {
 
     if (!formData.email) {
       showToast({
-        title: "Erreur",
+        title      : "Erreur",
         description: "Le champ email est obligatoire.",
-        status: "error",
+        status     : "error",
       })
       return
     }
@@ -53,9 +56,9 @@ const Register = () => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
     if (!emailRegex.test(formData.email)) {
       showToast({
-        title: "Erreur",
+        title      : "Erreur",
         description: "L'adresse email n'est pas valide.",
-        status: "error",
+        status     : "error",
       })
       return
     }
@@ -63,18 +66,18 @@ const Register = () => {
     const phoneRegex = /^\d{10}$/
     if (!phoneRegex.test(formData.phone)) {
       showToast({
-        title: "Erreur",
+        title      : "Erreur",
         description: "Le champ Téléphone doit contenir exactement 10 chiffres.",
-        status: "error",
+        status     : "error",
       })
       return
     }
 
     if (formData.password !== formData.confirmPassword) {
       showToast({
-        title: "Erreur",
+        title      : "Erreur",
         description: "Les mots de passe ne correspondent pas.",
-        status: "error",
+        status     : "error",
       })
       return
     }
@@ -82,8 +85,8 @@ const Register = () => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
     if (!passwordRegex.test(formData.password)) {
       showToast({
-        title: "Erreur",
-        description:
+        title      : "Erreur",
+        description: 
           "Le mot de passe ne respecte pas les critères requis, il doit être composé au minimum de 8 caractères dont 1 Majuscule, 1 Chiffre et 1 caractère spécial",
         status: "error",
       })
@@ -92,9 +95,9 @@ const Register = () => {
     }
 
     showToast({
-      title: "Succès",
+      title      : "Succès",
       description: "Tous les champs sont correctement remplis.",
-      status: "success",
+      status     : "success",
     })
     
     axios
@@ -106,145 +109,120 @@ const Register = () => {
       .catch((err) => {
         console.error(err)
         showToast({
-          title: "Erreur",
+          title      : "Erreur",
           description: "Une erreur s'est produite lors de l'envoi des données.",
-          status: "error",
+          status     : "error",
         })
       })
       navigate("/Login")
   }
 
   return (
-    <div className="body">
-      <section className="h-100 form-register">
-        <div className="card card-register card-registration d-flex justify-content-center my-4">
-          <div className="card-body text-black">
-            <form onSubmit={handleSubmit}>
-              <h3 className="mb-5 text-uppercase" style={{ display: 'flex', justifyContent: 'center' }}>
-                Inscription
-              </h3>
-              <div className="row">
-                <div className="col-md-6 mb-4">
-                  <div className="form-outline">
-                    <input
-                      placeholder="Prénom"
-                      className="form-control form-control-lg shadow"
-                      htmlFor="name"
-                      type="text"
-                      id="name"
-                      name="name"
-                      onChange={handleChange}
-                      value={formData.name}
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6 mb-4">
-                  <div className="form-outline">
-                    <input
-                      placeholder="Nom"
-                      className="form-control form-control-lg shadow"
-                      type="text"
-                      id="firstname"
-                      name="firstname"
-                      onChange={handleChange}
-                      value={formData.firstname}
-                    />
-                  </div>
-                </div>
-              </div>
-              <br />
-              <div className="row">
-                <div className="form-outline mb-4">
-                  <input
-                    placeholder="Numéro de téléphone"
-                    className="form-control form-control-lg shadow"
-                    id="phone"
-                    name="phone"
-                    onChange={handleChange}
-                    value={formData.phone}
-                  />
-                </div>
-              </div>
-              <br />
-              <div className="row">
-                <div className="form-outline mb-4">
-                  <input
-                    placeholder="Adresse Email"
-                    className="form-control form-control-lg shadow"
-                    id="email"
-                    name="email"
-                    onChange={handleChange}
-                    value={formData.email}
-                  />
-                </div>
-              </div>
-              <br />
-              <div className="row">
-                <div className="form-outline mb-4">
-                  <input
-                    placeholder="Password"
-                    className="form-control form-control-lg shadow"
-                    type="password"
-                    id="password"
-                    name="password"
-                    onChange={handleChange}
-                    value={formData.password}
-                  />
-                </div>
-              </div>
-              <br />
-              <div className="row">
-                <div className="form-outline mb-4">
-                  <input
-                    placeholder="Confirmer votre password"
-                    className="form-control form-control-lg shadow"
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    onChange={handleChange}
-                    value={formData.confirmPassword}
-                  />
-                </div>
-              </div>
-              <div className="d-flex justify-content-center pt-3">
-                {/* <Link
-                  className="btn btn-warning btn-lg ms-2"
-                  type="button"
-                  style={{ backgroundColor: '#8E685A ', color: 'white' }}
-                  to="/Login"
-                >
-                  Retour
-                </Link> */}
-                {/* <button
-                  type="submit"
-                  className="btn btn-warning btn-lg ms-2"
-                  style={{ backgroundColor: '#8E685A', color: 'white' }}
-                >
-                  Valider
-                </button> */}
-              </div>
-              <div className="d-flex justify-content-center pt-3">
-                <Link
-                  className="btn btn-warning btn-lg ms-2"
-                  type="button"
-                  style={{ backgroundColor: '#8E685A ', color: 'white' }}
-                  to="/Login"
-                >
-                  Retour
-                </Link>
-                <GenericButton
-                  loadingText="Envoie en cours"
-                  label="Valider"
-                  colorScheme="blue"
-                  onClick={handleSubmit}
-                />
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
-    </div>
+    <Box
+      bgImage={`url(${backgroundImage})`}
+      bgRepeat="no-repeat"
+      bgSize="cover"
+      minH="120vh"
+      pt="100px"
+      w="100%"    
+    >
+    <Flex    w = "100%"  h= "100%" p = {5} alignItems = "center" justifyContent = "center">
+    <Box     w= "100%" p = {5} shadow="2xl" borderWidth= "2px" borderRadius = "md" maxW = "1000px" bg="rgba(255, 255, 255, 0.85)">
+    <VStack  spacing   = {4} align   = "stretch">
+    <Heading textAlign = "center" mb = {5}>Inscription</Heading>
+    <HStack  spacing   = {4} >
+            <FormControl>
+              <Input
+                borderColor="green.900"
+                focusBorderColor =" green"
+                placeholder = "Prénom"
+                id          = "name"
+                name        = "name"
+                onChange    = {handleChange}
+                value       = {formData.name}
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+              borderColor="green.900"
+              focusBorderColor =" green"
+                placeholder = "Nom"
+                id          = "firstname"
+                name        = "firstname"
+                onChange    = {handleChange}
+                value       = {formData.firstname}
+              />
+            </FormControl>
+          </HStack>
+          <FormControl>
+            <Input
+            borderColor="green.900"
+            focusBorderColor =" green"
+              placeholder = "Numéro de téléphone"
+              id          = "phone"
+              name        = "phone"
+              onChange    = {handleChange}
+              value       = {formData.phone}
+            />
+          </FormControl>
+          <FormControl>
+            <Input
+            borderColor="green.900"
+            focusBorderColor =" green"
+              placeholder = "Adresse Email"
+              id          = "email"
+              name        = "email"
+              onChange    = {handleChange}
+              value       = {formData.email}
+            />
+          </FormControl>
+          <FormControl>
+            <Input
+            borderColor="green.900"
+            focusBorderColor =" green"
+              placeholder = "Password"
+              type        = "password"
+              id          = "password"
+              name        = "password"
+              onChange    = {handleChange}
+              value       = {formData.password}
+            />
+          </FormControl>
+          <FormControl>
+            <Input
+            borderColor="green.900"
+            focusBorderColor =" green"
+              placeholder = "Confirmer votre password"
+              type        = "password"
+              id          = "confirmPassword"
+              name        = "confirmPassword"
+              onChange    = {handleChange}
+              value       = {formData.confirmPassword}
+            />
+          </FormControl>
+          <HStack justify = "center">
+          <GenericButton
+            loadingText = "Envoie en cours"
+            label       = "Retour"
+            to          = "/Login"
+            colorScheme = "green"
+            />
+            <GenericButton
+            loadingText = "Envoie en cours"
+            label       = "Valider"
+            colorScheme = "green"
+            onClick     = {handleSubmit}
+          />
+          </HStack>
+        </VStack>
+      </Box>
+    </Flex>
+  </Box>
   )
-}
-
+  }
 export default Register
+
+
+
+
+
