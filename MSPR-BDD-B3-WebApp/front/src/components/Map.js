@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';  // import de react-leaflet pour afficher la carte
 import axios from "axios";                                               // import de axios pour faire des appels API

@@ -8,12 +8,9 @@ import '../styles/Register.css'
 
 
 const Register = () => {
-		const showToast = useCustomToast()
-		const baseUrl   = process.env.REACT_APP_API_URL
-		
-
+	const showToast = useCustomToast()
+	const baseUrl   = process.env.REACT_APP_API_URL
     const NAVIGATE = useNavigate()
-
     const [formData, setFormData] = useState({
         name     : "",
         firstname: "",
@@ -21,7 +18,6 @@ const Register = () => {
         email    : "",
         phone    : "",
     })
-
     const handleChange = (event) => {
         setFormData({
             ...formData,
@@ -147,7 +143,6 @@ const Register = () => {
                                         />
                                     </div>
                                 </div>
-
                             </div>
                             <br />
                             <div className = "row">
@@ -207,27 +202,26 @@ const Register = () => {
                             <Link   className = "btn btn-warning btn-lg ms-2" type = "button" style                      = {{ backgroundColor: '#8E685A ', color: 'white' }} to = "/Login">Retour</Link>
                             <button type      = "submit" className                 = "btn btn-warning btn-lg ms-2" style = {{ backgroundColor: '#8E685A', color: 'white' }}>Valider</button>
                             </div>
-                            <div className="d-flex justify-content-center pt-3">
+                            <div className = "d-flex justify-content-center pt-3">
         <Link
-          className="btn btn-warning btn-lg ms-2"
-          type="button"
-          style={{ backgroundColor: '#8E685A ', color: 'white' }}
-          to="/Login"
+          className = "btn btn-warning btn-lg ms-2"
+          type      = "button"
+          style     = {{ backgroundColor: '#8E685A ', color: 'white' }}
+          to        = "/Login"
         >
           Retour
         </Link>
         <GenericButton
-          loadingText="Envoie en cours"
-          label="Valider"
-          colorScheme="blue"
-
+          loadingText = "Envoie en cours"
+          label       = "Valider"
+          colorScheme = "blue"
         />
       </div>
-                        </form>
-                    </div>
+                    </form>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
+    </div>
     )
 }
 export default Register
