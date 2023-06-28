@@ -75,12 +75,12 @@ async def delete_inactive_users():
 @app.post("/register", summary="Création de personnes et ajout d'un accès token")
 def login(person: Person):
     hashed_password = pwd_context.hash(person.password)
-    encrypted_phone = encryption.encrypt(person.phone)
 
+    encrypted_phone = encryption.encrypt(person.phone)
+    
     with connection.cursor() as cursor:
-        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone, id_role, last_login) VALUES (%s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
-        cursor.execute(insert_query, (person.name, person.firstname,
-                       hashed_password, person.email, person.phone, person.id_role))
+        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role) VALUES (%s, %s, %s, %s,%s,%s)"
+        cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone,person.id_role))
         connection.commit()
 
         # Get inserted person's ID
@@ -88,6 +88,7 @@ def login(person: Person):
         person_id = cursor.fetchone()[0]
 
     return "Ajout avec succès"
+
 
 
 @app.post("/token_log")
@@ -100,23 +101,13 @@ def login_token(email: str, password: str):
             user_id = result[0]
             hashed_password = result[3]
             if pwd_context.verify(password.encode("utf-8"), hashed_password):
-                # Mise à jour de last_log avec la date et heure
-                current_time = datetime.now()
-                update_query = "UPDATE Person SET last_login=%s WHERE id_person=%s"
-                cursor.execute(update_query, (current_time, user_id))
-                connection.commit()
-
-                access_token_expires = timedelta(
-                    minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-                access_token = create_access_token(user_id=user_id, data={
-                                                   'id_role': result[8]}, expires_delta=access_token_expires)
+                access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+                access_token = create_access_token(user_id=user_id, data={'id_role':result[8]}, expires_delta=access_token_expires)
                 return {"access_token": access_token, "token_type": "bearer"}
             else:
-                raise HTTPException(
-                    status_code=400, detail="Incorrect email or password")
+                raise HTTPException(status_code=400, detail="Incorrect email or password")
         else:
-            raise HTTPException(
-                status_code=400, detail="Incorrect email or password")
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
 
 
 @app.get("/users", summary="Récupération des personnes en fonction de leur email & mot de passe")
@@ -515,43 +506,26 @@ def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(Beare
             cursor.close()
             raise HTTPException(status_code=404, detail="Plante inexistante")
 
+messages = []
 
-@app.websocket("/ws/{user_id}")
-async def websocket_endpoint(websocket: WebSocket, user_id: int):
-    await manager.connect(websocket, user_id)
-    try:
-        while True:
-            data = await websocket.receive_text()
-            message = {"time": datetime.now().strftime(
-                "%H:%M"), "client_id": user_id, "message": data}
-            await manager.broadcast(json.dumps(message))
-    except WebSocketDisconnect:
-        manager.disconnect(websocket, user_id)
-        message = {"time": datetime.now().strftime(
-            "%H:%M"), "client_id": user_id, "message": "Offline"}
-        await manager.broadcast(json.dumps(message))
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        message = {
+            "username": "Unknown",
+            "text": data
+        }
+        messages.append(message)
+        await websocket.send_text(data)
 
+@app.get("/")
+async def get():
+    return {"message": "WebSocket endpoint is ready"}
 
-@app.post("/send-private-message")
-async def send_private_message(payload: dict):
-    message = payload.get('message')
-    sender_id = payload.get('senderId')
-    receiver_id = payload.get('receiverId')
-
-    # Vérifier que le sender_id et le receiver_id sont valides
-
-    now = datetime.now()
-    currency_time = now.strftime("%H:%M")
-    message_payload = {"time": currency_time,
-                       "client_id": sender_id, "message": message}
-    await manager.send_personal_message(json.dumps(message_payload), receiver_id)
-
-    # Stocker le message en base de données
-
-    return {"time": currency_time, "message": message}
-
-
-@app.get("/connected-users")
-async def get_connected_users():
-    connected_users = manager.connected_users  # Access the connected_users property
-    return {"connected_users": connected_users}
+@app.post("/send_message")
+async def send_message(message):
+    for connection in app.websocket_connections:
+        await connection.send_text(message)
+    return {"message": "Message sent"}
