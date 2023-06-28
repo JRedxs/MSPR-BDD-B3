@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import '../styles/Plantes.css';
+import axios from "axios";
 
 
 function Plante(props) {
@@ -27,8 +28,13 @@ function Plante(props) {
     }
 
     useEffect(() => {
-        fetch(url)
-            .then((response) => response.json())
+        const accessToken = window.sessionStorage.getItem("access_token");
+        axios.get(url, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+            .then((response) => response.data)
             .then((data) => {
                 setPlante(data.Plante);
                 window.sessionStorage.setItem('plante', JSON.stringify(Number(id_plante)));

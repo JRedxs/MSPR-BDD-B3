@@ -67,14 +67,14 @@ function RegisterPlante(){
                 const coordinates = apiAdresseResponse.data.features[0].geometry.coordinates;
                 await axios.post(`${baseUrl}/plante`, {id_person: person, name: name, number: number, road_first: road, road_second: complement, town: town, postal_code: code, latitude: coordinates[1], longitude: coordinates[0]}, {
                     headers: {
-                        'Access-Control-Allow-Origin': '*',
+                        //'Access-Control-Allow-Origin': '*',
                         Authorization: `Bearer ${accessToken}`,
                     }
                 })
                     .then( async (planteResponse) => {
                         await axios.post(`${baseUrl}/image`, {id_plante: planteResponse.data.id_plante, data: photo}, {
                             headers: {
-                                'Access-Control-Allow-Origin': '*',
+                                //'Access-Control-Allow-Origin': '*',
                                 Authorization: `Bearer ${accessToken}`,
                             }
                         })

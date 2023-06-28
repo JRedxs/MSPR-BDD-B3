@@ -224,10 +224,10 @@ async def register_image(image: NewImage, token: Tuple[str, str] = Depends(Beare
             request_select = "SELECT id_plante FROM Plante WHERE id_plante = %s LIMIT 1;"
             request_insert = "INSERT INTO Photo (image_data, id_plante) VALUES (%s, %s);"
 
-            cursor.execute(request_select, (image.id_plante,))
+            cursor.execute(request_select, (image.id_plante))
             if cursor.fetchone() is None:
-                raise HTTPException(
-                    status_code=404, detail="Photo pour une plante inexistante")
+                raise HTTPException(status_code=404, detail="Photo pour une plante inexistante") 
+            """
             encoded_data = image.data.encode()
             my_img = Image(encoded_data)
             try:
@@ -237,6 +237,7 @@ async def register_image(image: NewImage, token: Tuple[str, str] = Depends(Beare
                     print('pas de métadata')
             except Exception as e:
                 print(e)
+            """
             cursor.execute(request_insert, (image.data, image.id_plante))
             connection.commit()
             cursor.close()
@@ -326,14 +327,11 @@ def get_plants(current_user: Tuple[str, str] = Depends(BearerAuth())):
                 """
             cursor.execute(sql)
             results = cursor.fetchall()
-
             plants = []
 
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                plants.append(
-                    {"id_plante": row[0], "name": row[1], "image_data": row[2]})
-
+                plants.append({"id_plante": row[0], "name": row[1], "image_data": row[2]})
             cursor.close()
             if plants:
                 return {"Plants": plants}
@@ -441,31 +439,30 @@ async def register_plante(plante: PlantToCreate, token: Tuple[str, str] = Depend
         raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
         try:
-            encrypted_plante_location_number = encryption.encrypt(
-                str(plante.number))
-            encrypted_plante_location_road_first = encryption.encrypt(
-                plante.road_first)
-            encrypted_plante_location_road_second = encryption.encrypt(
-                plante.road_second)
+            print("Start try")
+            encrypted_plante_location_number = encryption.encrypt(str(plante.number))
+            encrypted_plante_location_road_first = encryption.encrypt(plante.road_first)
+            encrypted_plante_location_road_second = encryption.encrypt(plante.road_second)
             encrypted_plante_location_town = encryption.encrypt(plante.town)
-            encrypted_plante_location_postal_code = encryption.encrypt(
-                str(plante.postal_code))
-            encrypted_plante_location_latitude = encryption.encrypt(
-                str(plante.latitude))
-            encrypted_plante_location_longitude = encryption.encrypt(
-                str(plante.longitude))
+            encrypted_plante_location_postal_code = encryption.encrypt(str(plante.postal_code))
+            encrypted_plante_location_latitude = encryption.encrypt(str(plante.latitude))
+            encrypted_plante_location_longitude = encryption.encrypt(str(plante.longitude))
+            print("encryption correct")
             sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-            val = (plante.id_person, plante.name, encrypted_plante_location_number, encrypted_plante_location_road_first,
-                   encrypted_plante_location_road_second, encrypted_plante_location_town, encrypted_plante_location_postal_code,
-                   encrypted_plante_location_latitude, encrypted_plante_location_longitude)
+            val = (plante.id_person, plante.name, plante.number, plante.road_first, 
+                    plante.road_second, plante.town, plante.postal_code,
+                    plante.latitude, plante.longitude)
+            print(sql, val)
             cursor.execute(sql, val)
-
+            print("Insertion correct")
             sql = "select id_plante from Plante order by 1 Desc limit 1;"
             cursor.execute(sql)
+            print("Selection correct")
             result = cursor.fetchone()
 
             connection.commit()
             cursor.close()
+            print("Commit correct")
             return {"message": "Plante enregistrée", "id_plante": result[0]}
         except:
             cursor.close()
@@ -554,10 +551,10 @@ def get_plant_photos_by_id(id_plante: int, token: Tuple[str, str] = Depends(Bear
                 plants.append(
                     {"id_photo": row[5], "image_data": row[2], "advice_title": row[3], "advice": row[4]})
             cursor.close()
-            return {"Plante": plants}
+            return {"Plante": plants}, 200
         except:
             cursor.close()
-            return {"Plante inexistante"}
+            return {"Plante inexistante"}, 404
 
 
 @app.websocket("/ws/{user_id}")
