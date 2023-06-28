@@ -523,41 +523,6 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
         data = await websocket.receive_text()
-<<<<<<< HEAD
-        message = {
-            "username": "Unknown",
-            "text": data
-        }
-        messages.append(message)
-        await websocket.send_text(data)
-
-@app.get("/")
-async def get():
-    return {"message": "WebSocket endpoint is ready"}
-
-@app.post("/send-private-message")
-async def send_private_message(payload: dict):
-    message = payload.get('message')
-    sender_id = payload.get('senderId')
-    receiver_id = payload.get('receiverId')
-
-    # Vérifier que le sender_id et le receiver_id sont valides
-
-    now = datetime.now()
-    currency_time = now.strftime("%H:%M")
-    message_payload = {"time": currency_time,
-                       "client_id": sender_id, "message": message}
-    await manager.send_personal_message(json.dumps(message_payload), receiver_id)
-
-    # Stocker le message en base de données
-
-    return {"time": currency_time, "message": message}
-
-
-@app.get("/connected-users")
-async def get_connected_users():
-    connected_users = manager.connected_users  # Access the connected_users property
-    return {"connected_users": connected_users}
-=======
         await websocket.send_text(f"{data}")
->>>>>>> 5decf7a (fix: chat commun entre les users)
+
+
