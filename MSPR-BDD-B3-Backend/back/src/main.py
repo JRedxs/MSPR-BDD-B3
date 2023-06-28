@@ -92,9 +92,6 @@ def login(person: Person):
     return "Ajout avec succès"
 
 
-
-
-
 @app.post("/token_log")
 def login_token(email: str, password: str):
     with connection.cursor() as cursor:
