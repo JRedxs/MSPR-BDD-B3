@@ -53,7 +53,6 @@ function Plante(props) {
                 continue;
             }
             if (plante[photo].advice == null || plante[photo].advice_title == null) {
-                console.log("photo seule", plante[photo].id_photo);
                 jsx.push(
                     <div className="d-flex justify-content-center">
                         <img className="m-1" key={plante[photo].id_photo} src={plante[photo].image_data} onClick={() => { openAdvice(plante[photo].id_photo) }} />
@@ -61,7 +60,6 @@ function Plante(props) {
                 );
             }
             else {
-                console.log("photo avec conseil", plante[photo].id_photo);
                 jsx.push(
                     <div className="d-flex justify-content-center" key={plante[photo].id_photo}>
                         <img  className="justify-content-center m-3" key={plante[photo].id_photo} src={plante[photo].image_data} />

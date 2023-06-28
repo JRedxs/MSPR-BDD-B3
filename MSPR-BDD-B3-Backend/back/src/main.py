@@ -384,25 +384,6 @@ def get_info_plants(token: Tuple[str, str] = Depends(BearerAuth())):
             raise HTTPException(
                 status_code=500, detail="Database connection error !")
 
-#########################  ADD TOKEN ON : /plants_garde #############################
-
-# @app.post("/plants_garde" , summary="Insertion des gardes")
-# def add_garde(garde: Garde = Depends(BearerAuth())):
-
-#     with connection.cursor() as cursor:
-#         try:
-#             print(garde)
-#             sql = "INSERT INTO Garde (begining,finish,id_plante) VALUES(%s,%s,%s)"
-#             cursor.execute(sql, (garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
-#             print(garde)
-#             connection.commit()
-#             print(garde)
-#             cursor.close()
-#             return "Garde enregistrée"
-#         except Exception :
-#             cursor.close()
-#             raise HTTPException(status_code=500, detail="Error !")
-
 
 @app.post("/plants_garde", summary="Insertion des gardes")
 def add_garde(garde: Garde, token: Tuple[str, str] = Depends(BearerAuth())):
@@ -410,17 +391,19 @@ def add_garde(garde: Garde, token: Tuple[str, str] = Depends(BearerAuth())):
         raise HTTPException(status_code=401, detail="User is not a client")
 
     try:
+        datetime_begining = datetime.strptime(garde.begining, "%Y-%m-%dT%H:%M:%S.%fZ")
+        begining = datetime_begining.strftime("%Y-%m-%d %H:%M:%S")
+        
+        datetime_finish = datetime.strptime(garde.finish, "%Y-%m-%dT%H:%M:%S.%fZ")
+        finish = datetime_finish.strftime("%Y-%m-%d %H:%M:%S")
+
         with connection.cursor() as cursor:
             sql = "INSERT INTO Garde (begining,finish,id_plante) VALUES(%s,%s,%s)"
-            cursor.execute(sql, (garde.begining.strftime(
-                "%Y-%m-%d %H:%m:%S"), garde.finish.strftime("%Y-%m-%d %H:%m:%S"), garde.id_plante))
+            cursor.execute(sql, (begining, finish, garde.id_plante))
             connection.commit()
-            cursor.close()
         return "Garde enregistrée"
     except Exception:
         raise HTTPException(status_code=500, detail="Error !")
-
-######################### END ADD TOKEN ON : /plants_garde #############################
 
 
 @app.post("/plante", summary="Insertion des plantes")

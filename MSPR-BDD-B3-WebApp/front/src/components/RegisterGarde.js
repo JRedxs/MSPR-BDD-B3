@@ -20,21 +20,24 @@ const RegisterGarde = () => {
       [name]: value,
     }));
   };
-  console.log(garde.begining)
 
   const handleOnClick = (event) => {
     try {
       const gardeData = {
         id_plante: garde.id_plante,
         begining: garde.begining + ':00.000Z',
-        finish: garde.finish + '00:000Z'
+        finish: garde.finish + ':00.000Z'
       }
       event.preventDefault();
+      const accessToken = window.sessionStorage.getItem("access_token");
       axios
-        .post(`${baseUrl}/plants_garde`, gardeData)
-        .then(res => console.log(res))
+        .post(`${baseUrl}/plants_garde`, gardeData, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then(res => navigate(`/Plante/${garde.id_plante}`))
         .catch(err => console.error(err));
-      navigate(`/Plante/${garde.id_plante}`);
     } catch (error) {
       console.error(error);
     }

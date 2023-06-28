@@ -53,8 +53,8 @@ class Plant(BaseModel):
 
 class Garde(BaseModel):
    id_plante: int
-   begining: datetime
-   finish: datetime
+   begining: str
+   finish: str
 
 class PlantToCreate(BaseModel):
         id_person : int
