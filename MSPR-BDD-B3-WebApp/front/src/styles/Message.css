@@ -1,0 +1,33 @@
+.chatbox {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 500px;
+    border: 1px solid #ccc;
+    background-color: white;
+    overflow: auto;
+    z-index: 9999;
+    pointer-events: auto;
+    opacity: 1;
+  }
+  
+  .chatbox.minimized {
+    height: 20px;
+  }
+  
+  .chatbox .header {
+    height: 40px;
+    background-color: #3f8623f7;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .chatbox .content {
+    padding: 10px;
+  }
+  
+  .chatbox .content input {
+    width: 100%;
+  }
+  

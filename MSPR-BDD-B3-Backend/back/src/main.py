@@ -610,3 +610,30 @@ async def websocket_endpoint(websocket: WebSocket):
 
     except WebSocketDisconnect:
         connected_users.remove(websocket) 
+@app.post("/send_message")
+async def send_message(message):
+    for connection in app.websocket_connections:
+        await connection.send_text(message)
+    return {"message": "Message sent"}
+
+
+
+
+
+@app.post("/conversation")
+async def conversation(message: Message, token: Tuple[str, str] = Depends(BearerAuth())):
+    with connection.cursor() as cursor:
+        try:
+            sql = "SELECT name, id_person, image_data, advice_title, advice, id_photo FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
+            val = ()
+            cursor.execute(sql, (val))
+            connection.commit()
+            cursor.close()
+            return {"Message Sent"}, 200
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Message unprocessable")
+
+@app.get("/conversation")
+async def conversation():
+    pass

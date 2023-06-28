@@ -4,6 +4,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { FaUser } from 'react-icons/fa';
 import jwt_decode from "jwt-decode";
 
+import Message from '../Message';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -90,6 +91,7 @@ const Header = () => {
                     )}
                 </Flex>
             </Flex>
+            <Message/>
         </Box>
     );
 };

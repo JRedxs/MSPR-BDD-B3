@@ -60,19 +60,11 @@ CREATE TABLE Photo(
    FOREIGN KEY(id_plante) REFERENCES Plante(id_plante)
 );
 
-CREATE TABLE Chat(
-   id_message INT NOT NULL AUTO_INCREMENT,
-   date_message DATETIME,
-   message VARCHAR(550),
-   id_person INT NOT NULL,
-   PRIMARY KEY(id_message),
-   FOREIGN KEY (id_person) REFERENCES Person(id_person)
-);
-
 CREATE TABLE Message(
    id_message INT NOT NULL AUTO_INCREMENT,
    date_message DATETIME,
    message VARCHAR(550),
+   read TINYINT,
    id_emetteur INT NOT NULL,
    id_receveur INT NOT NULL,
    PRIMARY KEY(id_message),
