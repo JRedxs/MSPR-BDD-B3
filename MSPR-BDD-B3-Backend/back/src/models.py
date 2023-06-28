@@ -67,21 +67,20 @@ class Message(BaseModel):
     text: str
     
 class ConnectionManager:
-    def __init__(self):
-        self.active_connections: Dict[int, WebSocket] = {}
+    
+    def __init__(self) -> None:
+        self.active_connections: List[WebSocket] = []
 
-    async def connect(self, websocket: WebSocket, user_id: int):
+    async def connect(self,websocket:WebSocket):
         await websocket.accept()
-        self.active_connections[user_id] = websocket
-
-    def disconnect(self, websocket: WebSocket, user_id: int):
-        del self.active_connections[user_id]
-
-    async def send_personal_message(self, message: str, receiver_id: int):
-        receiver_socket = self.active_connections.get(receiver_id)
-        if receiver_socket:
-            await receiver_socket.send_text(message)
-
-    async def broadcast(self, data: str):
-        for connection, user_id in self.active_connections.items():
-            await connection.send_text(data)
+        self.active_connections.append(websocket)
+    
+    def disconnect(self,websocket:WebSocket):
+        self.active_connections.remove(websocket)
+    
+    async def send_personal_message(self, message: str,websocket:WebSocket):
+         await websocket.send_text(message)
+        
+    async def broadcast(self,message:str):
+        for connection in self.active_connections:
+            await connection.send_text(message)
