@@ -16,7 +16,7 @@ RUN pip install -r requirements.txt
 # Copy the rest of the project files to the container
 COPY ./back/src/. .
 
-# Expose port 8000 in the container
+# Expose port 8005 in the container
 EXPOSE 8005
 
 # Specify the command to run the app when the container is started
