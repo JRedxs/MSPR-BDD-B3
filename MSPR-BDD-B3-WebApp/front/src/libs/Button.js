@@ -1,12 +1,24 @@
-import { Button} from "@chakra-ui/react"
+import { Button } from "@chakra-ui/react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-export function useGenericButton({ label, colorScheme, loadingText }) {
+export function GenericButton({ label, colorScheme, loadingText, onClick, to }) {
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleClick = () => {
     setIsLoading(true)
-    // Effectuez ici vos actions lors du clic sur le bouton
+
+    if (onClick) {
+      
+      onClick()
+    }
+
+    if (to) {
+      navigate(to)
+    }
+
+    setIsLoading(false)
   }
 
   return (
