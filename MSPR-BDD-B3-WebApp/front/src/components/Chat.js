@@ -9,7 +9,7 @@ const Chat = () => {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    socketRef.current = new WebSocket('ws://ec2-35-180-26-255.eu-west-3.compute.amazonaws.com:8000/ws');
+    socketRef.current = new WebSocket('ws://ec2-35-180-26-255.eu-west-3.compute.amazonaws.com:8005/ws');
 
     socketRef.current.onopen = () => {
       console.log('WebSocket connection established.');
