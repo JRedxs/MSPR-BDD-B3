@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from fastapi import FastAPI, HTTPException, Response
+from fastapi import FastAPI, HTTPException, Response,BackgroundTasks
 from models import *
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,7 +7,7 @@ from security import *
 from exif import Image
 from cryptography.fernet import Fernet
 from crypto import *
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 
 # Connexion à la base de données
@@ -45,6 +45,30 @@ def takeLatinTupleGetUtf8List(theTuple):
             newList.append(theTuple[n])
     return newList
 
+def has_not_logged_in_one_year(last_login):
+    one_year_ago = datetime.now() - timedelta(days=365)
+    return last_login < one_year_ago
+
+def delete_inactive_users_background(background_tasks: BackgroundTasks):
+    background_tasks.add_task(delete_inactive_users)
+
+
+async def delete_inactive_users():
+    with connection.cursor() as cursor:
+        select_query = "SELECT id_person, last_login FROM Person"
+        cursor.execute(select_query)
+        results = cursor.fetchall()
+
+        for result in results:
+            person_id = result[0]
+            last_login = result[1]
+
+            if has_not_logged_in_one_year(last_login):
+                delete_query = "DELETE FROM Person WHERE id_person = %s"
+                cursor.execute(delete_query, (person_id,))
+
+        connection.commit()
+
 
 @app.post("/token", summary="Création de personnes et ajout d'un accès token")
 def login(person: Person):
@@ -53,8 +77,8 @@ def login(person: Person):
     encrypted_phone = encryption.encrypt(person.phone)
     
     with connection.cursor() as cursor:
-        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role) VALUES (%s, %s, %s, %s,%s,%s)"
-        cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone,person.id_role))
+        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role, last_login) VALUES (%s, %s, %s, %s,%s,%s,%s)"
+        cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone,person.id_role, person.last_login))
         connection.commit()
 
         # Get inserted person's ID
@@ -78,6 +102,12 @@ def login_token(email: str, password: str):
             user_id = result[0]
             hashed_password = result[3]
             if pwd_context.verify(password.encode("utf-8"), hashed_password):
+                #Mise à jour de last_log avec la date et heure 
+                current_time = datetime.now()
+                update_query = "UPDATE Person SET last_login=%s WHERE id_person=%s"
+                cursor.execute(update_query, (current_time, user_id))
+                connection.commit()
+
                 access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
                 access_token = create_access_token(user_id=user_id, data={'id_role':result[8]}, expires_delta=access_token_expires)
                 return {"access_token": access_token, "token_type": "bearer"}
@@ -140,8 +170,9 @@ async def get_current_user(current_user: Tuple[str, str] = Depends(BearerAuth())
         else:
             raise HTTPException(status_code=404, detail="User not found")
         
-@app.get("/users_all" ,summary="Récupération de toutes les utilisateurs")
-def get_user():
+@app.get("/users_all", summary="Récupération de toutes les utilisateurs")
+def get_user(background_tasks: BackgroundTasks):
+    background_tasks.add_task(delete_inactive_users)
     with connection.cursor() as cursor:
         try:
             sql = "SELECT * FROM Person"
@@ -150,14 +181,16 @@ def get_user():
             users = []
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8]})
+                users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8], "last_login": row[9]})
             if users:
                 return {"User": users}
             else:
-                raise HTTPException(status_code=400, detail="Incorrect email or password")
+                return {"message": "No users in the database"}
         except:
             cursor.close()
             raise HTTPException(status_code=500, detail="Database connection error !")
+
+
 
 
 @app.get("/users/{user_id}", summary="Récupération en fonction de l'id utilisateur" )
