@@ -1,63 +1,89 @@
-import React, { useEffect, useRef, useState } from 'react';
-import jwt_decode from 'jwt-decode';
+import React, { useState,useEffect } from "react";
+import jwt_decode from "jwt-decode";
 
-const Chat = () => {
+function Chat() {
+ // add random cliend id by date time
+ const [clientId, setClientId] = useState(
+    window.sessionStorage.getItem('access_token')
+  );
+
+  const decoded_token = jwt_decode(clientId)
+  console.log(decoded_token.user_id)
+  const [websckt, setWebsckt] = useState();
+  const [message, setMessage] = useState([]);
   const [messages, setMessages] = useState([]);
-  const [messageText, setMessageText] = useState('');
-  const tokenUser = sessionStorage.getItem('access_token');
-  const decodedToken = jwt_decode(tokenUser);
-  const socketRef = useRef(null);
-
+  const baseUrl = process.env.REACT_APP_API_URL
   useEffect(() => {
-    socketRef.current = new WebSocket(`ws://ec2-35-180-26-255.eu-west-3.compute.amazonaws.com:8005/ws/${decodedToken.user_id}`);
+    const url = "ws://ec2-35-180-26-255.eu-west-3.compute.amazonaws.com/:8005/ws/" + decoded_token.user_id;
+    const ws = new WebSocket(url);
 
-    socketRef.current.onopen = () => {
-      console.log('WebSocket connection established.');
+    ws.onopen = (event) => {
+      ws.send("Connect");
     };
 
-    socketRef.current.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, message]);
+    // recieve message every start page
+    ws.onmessage = (e) => {
+      const message = JSON.parse(e.data);
+      setMessages([...messages, message]);
     };
 
-    return () => {
-      socketRef.current.close();
+    setWebsckt(ws);
+    //clean up function when we close page
+    return () => ws.close();
+  }, []);
+
+  const sendMessage = () => {
+    websckt.send(message);
+    // recieve message every send message
+    websckt.onmessage = (e) => {
+      const message = JSON.parse(e.data);
+      setMessages([...messages, message]);
     };
-  }, [decodedToken.user_id]);
-
-  const handleSendMessage = (event) => {
-    event.preventDefault();
-
-    if (socketRef.current.readyState === WebSocket.OPEN) {
-      const message = {
-        user_id: decodedToken.user_id,
-        text: messageText,
-      };
-      socketRef.current.send(JSON.stringify(message));
-      setMessageText('');
-    } else {
-      console.error('WebSocket connection is not open.');
-    }
+    setMessage([]);
   };
 
   return (
-    <div>
-      <h1>Chat App</h1>
-      <div>
-        {messages.map((message, index) => (
-          <div key={index}>ID {message.client_id} : {message.message}</div>
-        ))}
-      </div>
-      <form onSubmit={handleSendMessage}>
+    <div className="container">
+      <h1>Chat</h1>
+      <h2>your client id: {decoded_token.user_id} </h2>
+      <div className="chat-container">
+        <div className="chat">
+          {messages.map((value, index) => {
+            if (value.clientId === clientId) {
+              return (
+                <div key={index} className="my-message-container">
+                <div className="my-message">
+                  <p className="client">ID : {decoded_token.user_id}</p>
+                  <p className="message">{value.message}</p>
+                </div>
+              </div>
+              );
+            } else {
+              return (
+                <div key={index} className="another-message-container">
+                  <div className="another-message">
+                    <p className="client">ID : {decoded_token.user_id}</p>
+                    <p className="message">{value.message}</p>
+                  </div>
+                </div>
+              );
+            }
+          })}
+        </div>
+        <div className="input-chat-container">
         <input
-          type="text"
-          value={messageText}
-          onChange={(event) => setMessageText(event.target.value)}
-        />
-        <button type="submit">Send</button>
-      </form>
+            className="input-chat"
+            type="text"
+            placeholder="Chat message ..."
+            onChange={(e) => setMessage(e.target.value)}
+            value={message}
+          ></input>
+          <button className="submit-chat" onClick={sendMessage}>
+            Send
+          </button>
+        </div>
+      </div>
     </div>
   );
-};
-
+}
 export default Chat;
