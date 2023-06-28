@@ -36,7 +36,7 @@ function Plante(props) {
           })
             .then((response) => response.data)
             .then((data) => {
-                setPlante(data.Plante);
+                setPlante(data[0].Plante);
                 window.sessionStorage.setItem('plante', JSON.stringify(Number(id_plante)));
                 window.sessionStorage.removeItem('photo');
             })

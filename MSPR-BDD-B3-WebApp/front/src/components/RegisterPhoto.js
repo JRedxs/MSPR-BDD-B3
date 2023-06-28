@@ -42,7 +42,12 @@ const RegisterPhoto = () => {
 
   const handleUploadPhoto = () => {
     async function postPhoto(){
-      await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc})
+      const accessToken = window.sessionStorage.getItem("access_token");
+      await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc}, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        }
+      })
       // need to become a real error managment
         .then(() => {
           setImageSrc(null);
