@@ -6,11 +6,6 @@ from typing import Optional,List,Dict
 from websocket import WebSocket
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
-
-
-
-
-
 class Person(BaseModel):
         name: str
         firstname: str

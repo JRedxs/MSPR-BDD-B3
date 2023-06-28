@@ -78,9 +78,11 @@ def login(person: Person):
 
     encrypted_phone = encryption.encrypt(person.phone)
     
+    current_time = datetime.now()  # Obtenir la date et l'heure actuelles
+    
     with connection.cursor() as cursor:
-        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role) VALUES (%s, %s, %s, %s,%s,%s)"
-        cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone,person.id_role))
+        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone, last_login, id_role) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone, current_time.strftime("%Y-%m-%dT%H:%M:%S"), person.id_role))
         connection.commit()
 
         # Get inserted person's ID
@@ -88,6 +90,8 @@ def login(person: Person):
         person_id = cursor.fetchone()[0]
 
     return "Ajout avec succès"
+
+
 
 
 
@@ -103,11 +107,21 @@ def login_token(email: str, password: str):
             if pwd_context.verify(password.encode("utf-8"), hashed_password):
                 access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
                 access_token = create_access_token(user_id=user_id, data={'id_role':result[8]}, expires_delta=access_token_expires)
+                
+                # Mettre à jour la date et l'heure de la dernière connexion de l'utilisateur
+                current_time = datetime.now()
+                update_query = "UPDATE Person SET last_login = %s WHERE id_person = %s"
+                cursor.execute(update_query, (current_time.strftime("%Y-%m-%dT%H:%M:%S"), user_id))
+                connection.commit()
+
                 return {"access_token": access_token, "token_type": "bearer"}
             else:
                 raise HTTPException(status_code=400, detail="Incorrect email or password")
+                raise HTTPException(status_code=400, detail="Incorrect email or password")
         else:
             raise HTTPException(status_code=400, detail="Incorrect email or password")
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+
 
 
 @app.get("/users", summary="Récupération des personnes en fonction de leur email & mot de passe")
@@ -524,8 +538,26 @@ async def websocket_endpoint(websocket: WebSocket):
 async def get():
     return {"message": "WebSocket endpoint is ready"}
 
-@app.post("/send_message")
-async def send_message(message):
-    for connection in app.websocket_connections:
-        await connection.send_text(message)
-    return {"message": "Message sent"}
+@app.post("/send-private-message")
+async def send_private_message(payload: dict):
+    message = payload.get('message')
+    sender_id = payload.get('senderId')
+    receiver_id = payload.get('receiverId')
+
+    # Vérifier que le sender_id et le receiver_id sont valides
+
+    now = datetime.now()
+    currency_time = now.strftime("%H:%M")
+    message_payload = {"time": currency_time,
+                       "client_id": sender_id, "message": message}
+    await manager.send_personal_message(json.dumps(message_payload), receiver_id)
+
+    # Stocker le message en base de données
+
+    return {"time": currency_time, "message": message}
+
+
+@app.get("/connected-users")
+async def get_connected_users():
+    connected_users = manager.connected_users  # Access the connected_users property
+    return {"connected_users": connected_users}
