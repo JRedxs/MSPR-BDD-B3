@@ -1,134 +1,116 @@
-import React, { useState, useEffect, useRef } from "react";
-import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
-
-function Chat() {
-  const [clientId, setClientId] = useState(
-    window.sessionStorage.getItem("access_token")
-  );
-
-  const NAVIGATE = useNavigate()
-
-
-  const decoded_token = jwt_decode(clientId);
-  const [websckt, setWebsckt] = useState();
-  const [message, setMessage] = useState("");
+const Chat = () => {
   const [messages, setMessages] = useState([]);
-  const [connectedUsers, setConnectedUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState("");
+  const [messageText, setMessageText] = useState('');
+  const [privateUserId, setPrivateUserId] = useState('');
+  const [isPrivateChat, setIsPrivateChat] = useState(false);
+  const [users, setUsers] = useState([]);
 
-  const chatContainerRef = useRef(null);
+  const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const url = "ws://ec2-15-237-62-48.eu-west-3.compute.amazonaws.com:8000/ws/" + decoded_token.user_id;
-    const ws = new WebSocket(url);
+    socketRef.current = new WebSocket('ws://localhost:8000/ws');
 
-    ws.onopen = (event) => {
-      ws.send("");
-    };
-
-    ws.onmessage = (e) => {
-      const message = JSON.parse(e.data);
+    socketRef.current.onmessage = (event) => {
+      const message = JSON.parse(event.data);
       setMessages((prevMessages) => [...prevMessages, message]);
     };
 
-    setWebsckt(ws);
-
-    // Fetch connected users
-    fetchConnectedUsers();
-
-    return () => ws.close();
+    return () => {
+      socketRef.current.close();
+    };
   }, []);
 
   useEffect(() => {
-    const chatContainer = chatContainerRef.current;
-    if (chatContainer) {
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
+    scrollToBottom();
   }, [messages]);
 
-  const fetchConnectedUsers = async () => {
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const getUsers = async () => {
     try {
-      const response = await fetch("http://ec2-15-237-62-48.eu-west-3.compute.amazonaws.com:8005/connected-users");
-      const data = await response.json();
-      setConnectedUsers(data.connected_users);
+      const response = await axios.get('http://localhost:8000/users');
+      setUsers(response.data.users);
     } catch (error) {
-      console.log("Error fetching connected users:", error);
+      console.error('Error fetching users:', error);
     }
   };
 
-  const sendMessage = () => {
-    if (message.trim() !== "") {
-      websckt.send(message);
-      setMessage("");
-    }
+  const handleSendMessage = async (event) => {
+    event.preventDefault();
+
+    const clientId = window.sessionStorage.getItem('access_token');
+    const decodeToken = jwt_decode(clientId);
+
+    const message = {
+      user_id: decodeToken.user_id,
+      text: messageText,
+      private_user_id: isPrivateChat ? privateUserId : null,
+    };
+
+    socketRef.current.send(JSON.stringify(message));
+    setMessageText('');
   };
 
-  const handleUserSelect = (e) => {
-    setSelectedUser(e.target.value);
+  const handlePrivateChatToggle = () => {
+    setIsPrivateChat(!isPrivateChat);
   };
 
-  const startPrivateChat = () => {
-    if (selectedUser) {
-      console.log("Conversation privée avec", selectedUser);
-      NAVIGATE("/ChatPrivate");
-    }
+  const handlePrivateUserIdChange = (event) => {
+    setPrivateUserId(event.target.value);
   };
 
   return (
-    <div className="container">
-      <h1>Chat</h1>
-      <h2>Votre ID : {decoded_token.user_id}</h2>
-        <h3>Connected Users:</h3>
-        <select onChange={handleUserSelect} value={selectedUser}>
-          <option value="">Sélectionnez un utilisateur</option>
-          {connectedUsers.map((user) => (
-            <option key={user}>{user}</option>
+    <div className="chat-container">
+      <div className="users-list">
+        <h2>Users</h2>
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>{user.name}</li>
           ))}
-        </select>
-        <button className="start-chat" onClick={startPrivateChat}>
-          Démarrer une conversation privée
-        </button>
-      <div className="chat-container" ref={chatContainerRef}>
-        <div className="chat">
-          {messages.map((value, index) => {
-            if (value.client_id === decoded_token.user_id) {
-              return (
-                <div key={index} className="my-message-container">
-                  <div className="my-message">
-                    <p className="client">Message de : {value.client_id}</p>
-                    <p className="message">{value.message}</p>
-                  </div>
-                </div>
-              );
-            } else {
-              return (
-                <div key={index} className="another-message-container">
-                  <div className="another-message">
-                    <p className="client">Message de : {value.client_id}</p>
-                    <p className="message">&nbsp; {value.message}</p>
-                  </div>
-                </div>
-              );
-            }
-          })}
-        </div>
+        </ul>
       </div>
-      <div className="input-chat-container">
+      <div className="messages-container">
+        {messages.map((message, index) => (
+          <div className="message" key={index}>
+            <span className="username">{message.user_id}:</span>&nbsp;
+            <span className="text">{message.text}</span>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+      <form className="input-container" onSubmit={handleSendMessage}>
+        {isPrivateChat && (
+          <input
+            type="text"
+            placeholder="Private User ID"
+            value={privateUserId}
+            onChange={handlePrivateUserIdChange}
+          />
+        )}
         <input
-          className="input-chat"
           type="text"
-          placeholder="Chat message ..."
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
+          placeholder="Message"
+          value={messageText}
+          onChange={(event) => setMessageText(event.target.value)}
         />
-        <button className="submit-chat" onClick={sendMessage}>
-          Send
+        <button type="submit">Send</button>
+        <button type="button" onClick={handlePrivateChatToggle}>
+          {isPrivateChat ? 'Disable Private Chat' : 'Enable Private Chat'}
         </button>
-      </div>
+      </form>
     </div>
   );
-}
+};
 
 export default Chat;

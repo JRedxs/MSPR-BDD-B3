@@ -20,9 +20,7 @@ function ChatPrivate() {
   const baseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const url =
-      "ws://ec2-35-180-137-238.eu-west-3.compute.amazonaws.com:8005/ws/" +
-      userId;
+    const url = `ws://127.0.0.1:8000/ws/${userId}`;
     const ws = new WebSocket(url);
 
     ws.onopen = (event) => {
@@ -53,7 +51,7 @@ function ChatPrivate() {
 
   const fetchConnectedUsers = async () => {
     try {
-      const response = await axios.get(baseUrl + "/connected-users");
+      const response = await axios.get(`${baseUrl}/connected-users`);
       setConnectedUsers(response.data.connected_users);
     } catch (error) {
       console.log("Error fetching connected users:", error);
@@ -67,7 +65,7 @@ function ChatPrivate() {
   const handleSendMessage = async () => {
     if (message.trim() !== "") {
       try {
-        const response = await axios.post(baseUrl + "/send-private-message", {
+        const response = await axios.post(`${baseUrl}/send-private-message`, {
           message: message,
           receiverId: selectedUser, // Message is sent to the selected user
           senderId: userId,
