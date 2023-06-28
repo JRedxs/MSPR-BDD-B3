@@ -18,6 +18,7 @@ class Person(BaseModel):
         email: str
         phone: str
         id_role: int = 2
+        last_login: datetime
 
 class Image(BaseModel):
         data: str
@@ -47,6 +48,7 @@ class Plant(BaseModel):
    latitude:float
    longitude:float
    id_person:int
+   
    
 
 class Garde(BaseModel):
