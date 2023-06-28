@@ -530,7 +530,7 @@ def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(Beare
             return {"Plante": plants}, 200
         except:
             cursor.close()
-            return {"Plante inexistante"}, 404
+            raise HTTPException(status_code=404, detail="Plante inexistante")
 
 
 @app.websocket("/ws/{user_id}")
