@@ -207,21 +207,21 @@ const Register = () => {
                 </div>
               </div>
               <div className="d-flex justify-content-center pt-3">
-                <Link
+                {/* <Link
                   className="btn btn-warning btn-lg ms-2"
                   type="button"
                   style={{ backgroundColor: '#8E685A ', color: 'white' }}
                   to="/Login"
                 >
                   Retour
-                </Link>
-                <button
+                </Link> */}
+                {/* <button
                   type="submit"
                   className="btn btn-warning btn-lg ms-2"
                   style={{ backgroundColor: '#8E685A', color: 'white' }}
                 >
                   Valider
-                </button>
+                </button> */}
               </div>
               <div className="d-flex justify-content-center pt-3">
                 <Link
