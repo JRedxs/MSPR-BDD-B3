@@ -46,6 +46,7 @@ def takeLatinTupleGetUtf8List(theTuple):
     return newList
 
 
+
 @app.post("/register", summary="Création de personnes et ajout d'un accès token")
 def login(person: Person):
     hashed_password = pwd_context.hash(person.password)

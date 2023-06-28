@@ -27,6 +27,7 @@ const Register = () => {
         });
     };
 
+    
     const handleSubmit = event => {
         event.preventDefault();
         if (!formData.name || !formData.firstname || !formData.phone || !formData.email || !formData.password) {
