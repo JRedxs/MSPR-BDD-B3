@@ -1,112 +1,46 @@
-import '../../styles/Footer.css';
+import { Box, Text, Link, Flex, VStack, HStack, IconButton } from '@chakra-ui/react'
+import { FaFacebook, FaTwitter, FaGoogle, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'
 
 const Footer = () => {
 	return (
-		<footer
-			className = "text-center text-lg-start text-white position-relative"
-			style     = {{ backgroundColor: "#956657", clear: "both", marginBottom: "0", bottom: "0", position: 'absolute', width: '100%' }}
-		>
-			<div     className = "container p-4 pb-0">
-			<section className = "">
-			<div     className = "row">
-			<div     className = "col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-			<h6      className = "text-uppercase mb-4 font-weight-bold">
-								Company name
-							</h6>
-							<p>
-								MSPR BDD DEV B3
-							</p>
-						</div>
-						<hr  className = "w-100 clearfix d-md-none" />
-						<div className = "col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-						<h6  className = "text-uppercase mb-4 font-weight-bold">Products</h6>
-							<p>
-								<a className = "text-white">MDBootstrap</a>
-							</p>
-							<p>
-								<a className = "text-white">MDWordPress</a>
-							</p>
-							<p>
-								<a className = "text-white">BrandFlow</a>
-							</p>
-							<p>
-								<a className = "text-white">Bootstrap Angular</a>
-							</p>
-						</div>
-
-						<div className = "col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-						<h6  className = "text-uppercase mb-4 font-weight-bold">RGPD</h6>
-
-							<p>
-								<a className = "text-white" href = '/rgpd/NoticeTraitementsDesDonnées.pdf' target = "_blank" rel = "noopener noreferrer">Notice du traitement</a>
-							</p>
-
-						</div>
-						<hr   className = "w-100 clearfix d-md-none" />
-						<hr   className = "w-100 clearfix d-md-none" />
-						<div  className = "col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-						<h6   className = "text-uppercase mb-4 font-weight-bold">Contact</h6>
-						<p><i className = "fas fa-home mr-3"></i> New York, NY 10012, US</p>
-						<p><i className = "fas fa-envelope mr-3"></i> info@gmail.com</p>
-						<p><i className = "fas fa-phone mr-3"></i> + 01 234 567 88</p>
-						<p><i className = "fas fa-print mr-3"></i> + 01 234 567 89</p>
-						</div>
-						<div className = "col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-						<h6  className = "text-uppercase mb-4 font-weight-bold">Follow us</h6>
-							<a
-								className = "btn btn-primary btn-floating m-1"
-								style     = {{ backgroundColor: "#3b5998" }}
-								href      = "#!"
-								role      = "button"
-							>
-								<i className = "fab fa-facebook-f"></i>
-							</a>
-							<a
-								className = "btn btn-primary btn-floating m-1"
-								style     = {{ backgroundColor: "#55acee" }}
-								role      = "button"
-							>
-								<i className = "fab fa-twitter"></i>
-							</a>
-							<a
-								className = "btn btn-primary btn-floating m-1"
-								style     = {{ backgroundColor: "#dd4b39" }}
-								role      = "button"
-							>
-								<i className = "fab fa-google"></i>
-							</a>
-							<a
-								className = "btn btn-primary btn-floating m-1"
-								style     = {{ backgroundColor: "#ac2bac" }}
-								role      = "button"
-							>
-								<i className = "fab fa-instagram"></i>
-							</a>
-							<a
-								className = "btn btn-primary btn-floating m-1"
-								style     = {{ backgroundColor: "#0082ca" }}
-								role      = "button"
-							>
-								<i className = "fab fa-linkedin-in"></i>
-							</a>
-							<a
-								className = "btn btn-primary btn-floating m-1"
-								style     = {{ backgroundColor: "#333333" }}
-								role      = "button"
-							>
-								<i className = "fab fa-github"></i>
-							</a>
-						</div>
-					</div>
-				</section>
-			</div>
-			<div className = "text-center p-3" style = {{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}>
-				<b>© 2020 Copyright: 
-					<a className = "text-white"> MDBootstrap.com</a>
-				</b>
-			</div>
-		</footer>
+		<Box bg="#956657" color="white" as="footer" position="absolute" w="100%" bottom="0">
+			<Flex
+				direction={["column", "row"]}
+				justify="space-between"
+				p="4"
+				px={["4", "16"]}
+				pb="0"
+				align="flex-start"
+				wrap="wrap"
+			>
+				<VStack align="start" mb="4" spacing={4}>
+					<Text fontWeight="bold" textTransform="uppercase">RGPD</Text>
+					<Link href='/rgpd/NoticeTraitementsDesDonnées.pdf' isExternal>Notice du traitement</Link>
+				</VStack>
+				<VStack align="start" mb="4" spacing={4}>
+					<Text fontWeight="bold" textTransform="uppercase">Contact</Text>
+					<Text><i className="fas fa-home mr-3"></i> EPSI Lille, 2 rue Alphonse Colas, Pl. du Concert, 59800 Lille</Text>
+					<Text><i className="fas fa-envelope mr-3"></i> info@lille-epsi.fr</Text>
+					<Text><i className="fas fa-phone mr-3"></i> 03 20 34 35 36</Text>
+				</VStack>
+				<VStack align="start" mb="4" spacing={4}>
+					<Text fontWeight="bold" textTransform="uppercase">Follow us</Text>
+					<HStack>
+						<IconButton aria-label="Facebook" icon={<FaFacebook />} colorScheme="facebook" variant="ghost"/>
+						<IconButton aria-label="Twitter" icon={<FaTwitter />} colorScheme="twitter" variant="ghost"/>
+						<IconButton aria-label="Google" icon={<FaGoogle />} variant="ghost" color="red.500"/>
+						<IconButton aria-label="Instagram" icon={<FaInstagram />} variant="ghost" color="pink.500"/>
+						<IconButton aria-label="LinkedIn" icon={<FaLinkedin />} colorScheme="linkedin" variant="ghost"/>
+						<IconButton aria-label="GitHub" icon={<FaGithub />} variant="ghost" color="gray.800"/>
+					</HStack>
+				</VStack>
+			</Flex>
+				<Box bg="rgba(0, 0, 0, 0.2)" p="3" textAlign="center">
+					<Text as="b">EPSI Bachelor : Concepteur Developpeur d'Application : option fullstack 
+					</Text>
+				</Box>
+		</Box>
 	)
 }
 
-export default Footer;
+export default Footer
