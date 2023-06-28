@@ -12,7 +12,7 @@ function Chat() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const baseUrl = process.env.REACT_APP_API_URL;
-  
+
   useEffect(() => {
     const url = `ws://ec2-35-180-26-255.eu-west-3.compute.amazonaws.com:8005/ws/${decoded_token.user_id}`;
     const ws = new WebSocket(url);
@@ -56,7 +56,7 @@ function Chat() {
       <div className="chat-container">
         <div className="chat">
           {messages.map((value, index) => {
-            if (value.clientId === decoded_token.user_id) {
+            if (value.client_id === decoded_token.user_id) {
               return (
                 <div key={index} className="my-message-container">
                   <div className="my-message">
@@ -69,7 +69,7 @@ function Chat() {
               return (
                 <div key={index} className="another-message-container">
                   <div className="another-message">
-                    <p className="client">ID: {decoded_token.user_id}</p>
+                    <p className="client">ID: {value.client_id}</p>
                     <p className="message">{value.message}</p>
                   </div>
                 </div>
