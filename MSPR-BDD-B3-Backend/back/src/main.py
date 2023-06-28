@@ -46,7 +46,7 @@ def takeLatinTupleGetUtf8List(theTuple):
     return newList
 
 
-@app.post("/token", summary="Création de personnes et ajout d'un accès token")
+@app.post("/register", summary="Création de personnes et ajout d'un accès token")
 def login(person: Person):
     hashed_password = pwd_context.hash(person.password)
 
@@ -61,11 +61,7 @@ def login(person: Person):
         cursor.execute("SELECT LAST_INSERT_ID()")
         person_id = cursor.fetchone()[0]
 
-    # Generate JWT payload
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(user_id=str(person_id), expires_delta=access_token_expires)
-
-    return {"Ajout": "Avec succès", "access_token": access_token, "token_type": "bearer"}
+    return "Ajout avec succès"
 
 
 @app.post("/token_log")
@@ -302,6 +298,7 @@ def get_plants(current_user: Tuple[str, str] = Depends(BearerAuth())):
 #maybe broken
 @app.get("/plants" , summary="Récupération des garde de plantes")
 def get_info_plants(token: Tuple[str, str] = Depends(BearerAuth())):
+   
     if token[1] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
@@ -371,7 +368,7 @@ def get_info_plants(token: Tuple[str, str] = Depends(BearerAuth())):
 def add_garde(garde: Garde, token: Tuple[str, str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
-    
+
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO Garde (begining,finish,id_plante) VALUES(%s,%s,%s)"
@@ -389,7 +386,6 @@ def add_garde(garde: Garde, token: Tuple[str, str] = Depends(BearerAuth())):
 async def register_plante(plante : PlantToCreate, token: Tuple[str, str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
-
     with connection.cursor() as cursor:
         try:
             encrypted_plante_location_number = encryption.encrypt(str(plante.number))
@@ -436,7 +432,7 @@ def get_plant_by_id(id_plante: int , token: Tuple[str,str] = Depends(BearerAuth(
     
 @app.get("/garde/{id_garde}" , summary="Récupération des gardes en fonction de son id")
 def put_garde_by_id(id_garde: int, token: Tuple[str, str] = Depends(BearerAuth())):
-    if token[1] != 2 and token[1] != 3:
+    if token[2] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
         # Recherche du garde existant dans la base de données
