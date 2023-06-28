@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from fastapi import FastAPI, HTTPException, Response,BackgroundTasks
+from fastapi import FastAPI, HTTPException, Response, BackgroundTasks
 from models import *
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
@@ -35,7 +35,6 @@ app.add_middleware(
 )
 
 
-
 def takeLatinTupleGetUtf8List(theTuple):
     newList = []
     for n in range(len(theTuple)):
@@ -45,9 +44,11 @@ def takeLatinTupleGetUtf8List(theTuple):
             newList.append(theTuple[n])
     return newList
 
+
 def has_not_logged_in_one_year(last_login):
     one_year_ago = datetime.now() - timedelta(days=365)
     return last_login < one_year_ago
+
 
 def delete_inactive_users_background(background_tasks: BackgroundTasks):
     background_tasks.add_task(delete_inactive_users)
@@ -74,12 +75,12 @@ async def delete_inactive_users():
 @app.post("/register", summary="Création de personnes et ajout d'un accès token")
 def login(person: Person):
     hashed_password = pwd_context.hash(person.password)
-
     encrypted_phone = encryption.encrypt(person.phone)
-    
+
     with connection.cursor() as cursor:
-        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone,id_role, last_login) VALUES (%s, %s, %s, %s,%s,%s,%s)"
-        cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone,person.id_role, person.last_login))
+        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone, id_role, last_login) VALUES (%s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
+        cursor.execute(insert_query, (person.name, person.firstname,
+                       hashed_password, person.email, person.phone, person.id_role))
         connection.commit()
 
         # Get inserted person's ID
@@ -99,23 +100,24 @@ def login_token(email: str, password: str):
             user_id = result[0]
             hashed_password = result[3]
             if pwd_context.verify(password.encode("utf-8"), hashed_password):
-                #Mise à jour de last_log avec la date et heure 
+                # Mise à jour de last_log avec la date et heure
                 current_time = datetime.now()
                 update_query = "UPDATE Person SET last_login=%s WHERE id_person=%s"
                 cursor.execute(update_query, (current_time, user_id))
                 connection.commit()
 
-                access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-                access_token = create_access_token(user_id=user_id, data={'id_role':result[8]}, expires_delta=access_token_expires)
+                access_token_expires = timedelta(
+                    minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+                access_token = create_access_token(user_id=user_id, data={
+                                                   'id_role': result[8]}, expires_delta=access_token_expires)
                 return {"access_token": access_token, "token_type": "bearer"}
             else:
-                raise HTTPException(status_code=400, detail="Incorrect email or password")
+                raise HTTPException(
+                    status_code=400, detail="Incorrect email or password")
         else:
-            raise HTTPException(status_code=400, detail="Incorrect email or password")
+            raise HTTPException(
+                status_code=400, detail="Incorrect email or password")
 
-
-
-        
 
 @app.get("/users", summary="Récupération des personnes en fonction de leur email & mot de passe")
 def get_user(email: str, password: str):
@@ -126,7 +128,7 @@ def get_user(email: str, password: str):
             result = cursor.fetchone()
             if result:
                 row = takeLatinTupleGetUtf8List(result)
-                hashed_password = row[3].encode("utf-8") 
+                hashed_password = row[3].encode("utf-8")
                 if pwd_context.verify(password.encode("utf-8"), hashed_password):
                     user = {
                         "id_person": row[0],
@@ -139,14 +141,17 @@ def get_user(email: str, password: str):
                         "longitude": row[7],
                         "id_role": row[8]
                     }
-                    return {"User": user }
+                    return {"User": user}
                 else:
-                    raise HTTPException(status_code=400, detail="Incorrect email or password")
+                    raise HTTPException(
+                        status_code=400, detail="Incorrect email or password")
             else:
-                raise HTTPException(status_code=400, detail="Incorrect email or password")
+                raise HTTPException(
+                    status_code=400, detail="Incorrect email or password")
         except:
             cursor.close()
-            raise HTTPException(status_code=500, detail="Database connection error!")
+            raise HTTPException(
+                status_code=500, detail="Database connection error!")
 
 
 @app.get("/user/me")
@@ -157,7 +162,7 @@ async def get_current_user(current_user: Tuple[str, str] = Depends(BearerAuth())
         result = cursor.fetchone()
         if result:
             user = {
-                "user_id" : result[0],
+                "user_id": result[0],
                 "name": result[1],
                 "firstname": result[2],
                 "email": result[4],
@@ -166,7 +171,8 @@ async def get_current_user(current_user: Tuple[str, str] = Depends(BearerAuth())
             return {"user": user}
         else:
             raise HTTPException(status_code=404, detail="User not found")
-        
+
+
 @app.get("/users_all", summary="Récupération de toutes les utilisateurs")
 def get_user(background_tasks: BackgroundTasks):
     background_tasks.add_task(delete_inactive_users)
@@ -178,29 +184,30 @@ def get_user(background_tasks: BackgroundTasks):
             users = []
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8], "last_login": row[9]})
+                users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4],
+                             "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8], "last_login": row[9]})
             if users:
                 return {"User": users}
             else:
                 return {"message": "No users in the database"}
         except:
             cursor.close()
-            raise HTTPException(status_code=500, detail="Database connection error !")
+            raise HTTPException(
+                status_code=500, detail="Database connection error !")
 
 
-
-
-@app.get("/users/{user_id}", summary="Récupération en fonction de l'id utilisateur" )
-def get_user_by_id(user_id: int ):
+@app.get("/users/{user_id}", summary="Récupération en fonction de l'id utilisateur")
+def get_user_by_id(user_id: int):
     with connection.cursor() as cursor:
-        try :
+        try:
             sql = "SELECT * FROM Person WHERE id_person=%s"
             cursor.execute(sql, (user_id,))
             result = cursor.fetchall()
             users = []
             row = takeLatinTupleGetUtf8List(result[0])
-            
-            users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3], "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8]})
+
+            users.append({"id_person": row[0], "name": row[1], "firstname": row[2], "pwd": row[3],
+                         "email": row[4], "phone": row[5], "latitude": row[6], "longitude": row[7], "id_role": row[8]})
 
             return {"Person": users}
         except:
@@ -219,13 +226,14 @@ async def register_image(image: NewImage, token: Tuple[str, str] = Depends(Beare
 
             cursor.execute(request_select, (image.id_plante,))
             if cursor.fetchone() is None:
-                raise HTTPException(status_code=404, detail="Photo pour une plante inexistante") 
+                raise HTTPException(
+                    status_code=404, detail="Photo pour une plante inexistante")
             encoded_data = image.data.encode()
             my_img = Image(encoded_data)
             try:
                 if 'GPSInfo' in my_img:
                     del my_img['GPSInfo']
-                else: 
+                else:
                     print('pas de métadata')
             except Exception as e:
                 print(e)
@@ -233,26 +241,27 @@ async def register_image(image: NewImage, token: Tuple[str, str] = Depends(Beare
             connection.commit()
             cursor.close()
             return {"message": "Photo enregistrée"}
-    
+
         except:
             cursor.close()
-            raise HTTPException(status_code=500, detail="Database connection error !")
+            raise HTTPException(
+                status_code=500, detail="Database connection error !")
 
 
-
-    
-@app.get("/image/{id}", response_model=DBImage, summary="Récupération d'une image en fonction de l'id" )
-def send_image(id = Depends(BearerAuth())):
+@app.get("/image/{id}", response_model=DBImage, summary="Récupération d'une image en fonction de l'id")
+def send_image(id=Depends(BearerAuth())):
     request_select = "select id_photo, id_plante, image_data, advice_title, advice from Photo where id_photo = %s limit 1;"
     cursor = connection.cursor()
     cursor.execute(request_select, (id))
     rowImage = cursor.fetchone()
     if rowImage is None:
         raise HTTPException(status_code=404, detail="Photo inexistante")
-    
+
     rowImage = takeLatinTupleGetUtf8List(rowImage)
-    
-    image = DBImage(id_photo = rowImage[0], id_plante = rowImage[1], data = rowImage[2],advice="", advice_title="")#, advice_title = rowImage[3], advice = rowImage[4]
+
+    # , advice_title = rowImage[3], advice = rowImage[4]
+    image = DBImage(id_photo=rowImage[0], id_plante=rowImage[1],
+                    data=rowImage[2], advice="", advice_title="")
     if not rowImage[3] is None and not rowImage[4] is None:
         image.advice = rowImage[3]
         image.advice_title = rowImage[4]
@@ -261,23 +270,24 @@ def send_image(id = Depends(BearerAuth())):
     return image
 
 
-@app.put("/advices" , summary="Modification d'un titre conseil")
+@app.put("/advices", summary="Modification d'un titre conseil")
 def create_advice(advice: dict = Depends(BearerAuth())):
-    
+
     with connection.cursor() as cursor:
         try:
             sql = "Update Photo set advice_title=%s, advice=%s where id_photo=%s"
-            cursor.execute(sql, (advice["advice_title"], advice["advice"], advice["id_photo"]))
+            cursor.execute(
+                sql, (advice["advice_title"], advice["advice"], advice["id_photo"]))
             connection.commit()
             cursor.close()
             return {"message": "Conseil enregistrée"}
         except:
             cursor.close()
-            raise HTTPException(status_code=500, detail="Database connection error !")
-        
+            raise HTTPException(
+                status_code=500, detail="Database connection error !")
 
 
-@app.get("/advices" , summary="Récupération des photos")
+@app.get("/advices", summary="Récupération des photos")
 def get_advices():
     with connection.cursor() as cursor:
         try:
@@ -287,7 +297,8 @@ def get_advices():
             photo = []
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                photo.append({"id_photo": row[0], "advice_title": row[1], "advice": row[2], "id_plante": row[3]})
+                photo.append(
+                    {"id_photo": row[0], "advice_title": row[1], "advice": row[2], "id_plante": row[3]})
             cursor.close()
             if photo:
                 return {"Photo": photo}
@@ -295,10 +306,11 @@ def get_advices():
                 raise HTTPException(status_code=400, detail="Erreur : ")
         except:
             cursor.close()
-            raise HTTPException(status_code=500, detail="Database connection error !")
-    
+            raise HTTPException(
+                status_code=500, detail="Database connection error !")
 
-@app.get("/plant" , summary="Récupération des plantes")
+
+@app.get("/plant", summary="Récupération des plantes")
 def get_plants(current_user: Tuple[str, str] = Depends(BearerAuth())):
     with connection.cursor() as cursor:
         try:
@@ -319,18 +331,23 @@ def get_plants(current_user: Tuple[str, str] = Depends(BearerAuth())):
 
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                plants.append({"id_plante": row[0], "name": row[1], "image_data": row[2]})
-            
+                plants.append(
+                    {"id_plante": row[0], "name": row[1], "image_data": row[2]})
+
             cursor.close()
             if plants:
                 return {"Plants": plants}
             else:
-                raise HTTPException(status_code=400, detail="Incorrect email or password")
+                raise HTTPException(
+                    status_code=400, detail="Incorrect email or password")
         except:
-            raise HTTPException(status_code=500, detail="Database connection error !")
+            raise HTTPException(
+                status_code=500, detail="Database connection error !")
 
-#maybe broken
-@app.get("/plants" , summary="Récupération des garde de plantes")
+# maybe broken
+
+
+@app.get("/plants", summary="Récupération des garde de plantes")
 def get_info_plants(token: Tuple[str, str] = Depends(BearerAuth())):
    
     if token[1] != 2 and token[1] != 3:
@@ -376,13 +393,14 @@ def get_info_plants(token: Tuple[str, str] = Depends(BearerAuth())):
         except Exception as e:
             print(e)
             cursor.close()
-            raise HTTPException(status_code=500, detail="Database connection error !")
+            raise HTTPException(
+                status_code=500, detail="Database connection error !")
 
 #########################  ADD TOKEN ON : /plants_garde #############################
 
 # @app.post("/plants_garde" , summary="Insertion des gardes")
 # def add_garde(garde: Garde = Depends(BearerAuth())):
-    
+
 #     with connection.cursor() as cursor:
 #         try:
 #             print(garde)
@@ -398,7 +416,7 @@ def get_info_plants(token: Tuple[str, str] = Depends(BearerAuth())):
 #             raise HTTPException(status_code=500, detail="Error !")
 
 
-@app.post("/plants_garde" , summary="Insertion des gardes")
+@app.post("/plants_garde", summary="Insertion des gardes")
 def add_garde(garde: Garde, token: Tuple[str, str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
@@ -406,33 +424,40 @@ def add_garde(garde: Garde, token: Tuple[str, str] = Depends(BearerAuth())):
     try:
         with connection.cursor() as cursor:
             sql = "INSERT INTO Garde (begining,finish,id_plante) VALUES(%s,%s,%s)"
-            cursor.execute(sql, (garde.begining.strftime("%Y-%m-%d %H:%m:%S"),garde.finish.strftime("%Y-%m-%d %H:%m:%S"),garde.id_plante))
+            cursor.execute(sql, (garde.begining.strftime(
+                "%Y-%m-%d %H:%m:%S"), garde.finish.strftime("%Y-%m-%d %H:%m:%S"), garde.id_plante))
             connection.commit()
             cursor.close()
         return "Garde enregistrée"
-    except Exception :
-        raise HTTPException(status_code=500, detail="Error !")        
+    except Exception:
+        raise HTTPException(status_code=500, detail="Error !")
 
 ######################### END ADD TOKEN ON : /plants_garde #############################
 
 
-@app.post("/plante" , summary="Insertion des plantes")
-async def register_plante(plante : PlantToCreate, token: Tuple[str, str] = Depends(BearerAuth())):
+@app.post("/plante", summary="Insertion des plantes")
+async def register_plante(plante: PlantToCreate, token: Tuple[str, str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
         try:
-            encrypted_plante_location_number = encryption.encrypt(str(plante.number))
-            encrypted_plante_location_road_first = encryption.encrypt(plante.road_first)
-            encrypted_plante_location_road_second = encryption.encrypt(plante.road_second)
+            encrypted_plante_location_number = encryption.encrypt(
+                str(plante.number))
+            encrypted_plante_location_road_first = encryption.encrypt(
+                plante.road_first)
+            encrypted_plante_location_road_second = encryption.encrypt(
+                plante.road_second)
             encrypted_plante_location_town = encryption.encrypt(plante.town)
-            encrypted_plante_location_postal_code = encryption.encrypt(str(plante.postal_code))
-            encrypted_plante_location_latitude = encryption.encrypt(str(plante.latitude))
-            encrypted_plante_location_longitude = encryption.encrypt(str(plante.longitude))
+            encrypted_plante_location_postal_code = encryption.encrypt(
+                str(plante.postal_code))
+            encrypted_plante_location_latitude = encryption.encrypt(
+                str(plante.latitude))
+            encrypted_plante_location_longitude = encryption.encrypt(
+                str(plante.longitude))
             sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-            val = (plante.id_person, plante.name, encrypted_plante_location_number, encrypted_plante_location_road_first, 
-                encrypted_plante_location_road_second, encrypted_plante_location_town, encrypted_plante_location_postal_code,
-                    encrypted_plante_location_latitude, encrypted_plante_location_longitude)
+            val = (plante.id_person, plante.name, encrypted_plante_location_number, encrypted_plante_location_road_first,
+                   encrypted_plante_location_road_second, encrypted_plante_location_town, encrypted_plante_location_postal_code,
+                   encrypted_plante_location_latitude, encrypted_plante_location_longitude)
             cursor.execute(sql, val)
 
             sql = "select id_plante from Plante order by 1 Desc limit 1;"
@@ -444,27 +469,30 @@ async def register_plante(plante : PlantToCreate, token: Tuple[str, str] = Depen
             return {"message": "Plante enregistrée", "id_plante": result[0]}
         except:
             cursor.close()
-            raise HTTPException(status_code=500, detail="Durant l'enregistrement de la plante !")
+            raise HTTPException(
+                status_code=500, detail="Durant l'enregistrement de la plante !")
 
 
-@app.get("/plant/{id_plante}" , summary="Récupération des plantes en fonction de son id")
-def get_plant_by_id(id_plante: int , token: Tuple[str,str] = Depends(BearerAuth())):
+@app.get("/plant/{id_plante}", summary="Récupération des plantes en fonction de son id")
+def get_plant_by_id(id_plante: int, token: Tuple[str, str] = Depends(BearerAuth())):
     with connection.cursor() as cursor:
-        try :
+        try:
             sql = "SELECT * FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
             cursor.execute(sql, (id_plante,))
             results = cursor.fetchall()
             plants = []
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5], "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9], "advice_title":row[11], "advice":row[12]})
+                plants.append({"id_plante": row[0], "name": row[1], "number": row[2], "road_first": row[3], "road_second": row[4], "town": row[5],
+                              "postal_code": row[6], "latitude": row[7], "longitude": row[8], "id_person": row[9], "advice_title": row[11], "advice": row[12]})
             cursor.close()
             return {"Plante": plants}
         except:
             cursor.close()
             return {"Plante inexistante"}
-    
-@app.get("/garde/{id_garde}" , summary="Récupération des gardes en fonction de son id")
+
+
+@app.get("/garde/{id_garde}", summary="Récupération des gardes en fonction de son id")
 def put_garde_by_id(id_garde: int, token: Tuple[str, str] = Depends(BearerAuth())):
     if token[2] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
@@ -487,8 +515,8 @@ def put_garde_by_id(id_garde: int, token: Tuple[str, str] = Depends(BearerAuth()
         return "Garde mis à jour", 200
 
 
-@app.get("/all_gardes" , summary="Récupération des gardes")
-def get_all_gardes(token : Tuple[str,str] = Depends(BearerAuth())):
+@app.get("/all_gardes", summary="Récupération des gardes")
+def get_all_gardes(token: Tuple[str, str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
@@ -499,20 +527,20 @@ def get_all_gardes(token : Tuple[str,str] = Depends(BearerAuth())):
             garde = []
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                garde.append({"id_garde": row[0],"begining": row[1],"finish": row[2],"id_person": row[3],"id_plante": row[4]})
+                garde.append({"id_garde": row[0], "begining": row[1],
+                             "finish": row[2], "id_person": row[3], "id_plante": row[4]})
             return {"Garde": garde}
         except mysql.connector.Error as error:
             cursor.close()
             return {"Error message": str(error)}
-    
 
-@app.get("/plantandgallery/{id_plante}" , summary="Récupération des photos de plantes en fonction de leur id")
 
-def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(BearerAuth())):
+@app.get("/plantandgallery/{id_plante}", summary="Récupération des photos de plantes en fonction de leur id")
+def get_plant_photos_by_id(id_plante: int, token: Tuple[str, str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3:
         raise HTTPException(status_code=401, detail="User is not a client")
     with connection.cursor() as cursor:
-        try :
+        try:
             sql = "SELECT name, id_person, image_data, advice_title, advice, id_photo FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
             cursor.execute(sql, (id_plante,))
             results = cursor.fetchall()
@@ -523,13 +551,13 @@ def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(Beare
                 if firstLoop:
                     plants.append({"name": row[0], "id_person": row[1]})
                     firstLoop = False
-                plants.append({"id_photo":row[5],"image_data": row[2], "advice_title": row[3], "advice": row[4]})
+                plants.append(
+                    {"id_photo": row[5], "image_data": row[2], "advice_title": row[3], "advice": row[4]})
             cursor.close()
             return {"Plante": plants}
         except:
             cursor.close()
             return {"Plante inexistante"}
-
 
 
 @app.websocket("/ws/{user_id}")
@@ -538,26 +566,30 @@ async def websocket_endpoint(websocket: WebSocket, user_id: int):
     try:
         while True:
             data = await websocket.receive_text()
-            message = {"time": datetime.now().strftime("%H:%M"), "client_id": user_id, "message": data}
+            message = {"time": datetime.now().strftime(
+                "%H:%M"), "client_id": user_id, "message": data}
             await manager.broadcast(json.dumps(message))
     except WebSocketDisconnect:
         manager.disconnect(websocket, user_id)
-        message = {"time": datetime.now().strftime("%H:%M"), "client_id": user_id, "message": "Offline"}
+        message = {"time": datetime.now().strftime(
+            "%H:%M"), "client_id": user_id, "message": "Offline"}
         await manager.broadcast(json.dumps(message))
-        
+
+
 @app.post("/send-private-message")
 async def send_private_message(payload: dict):
     message = payload.get('message')
     sender_id = payload.get('senderId')
     receiver_id = payload.get('receiverId')
-    
+
     # Vérifier que le sender_id et le receiver_id sont valides
-    
+
     now = datetime.now()
     currency_time = now.strftime("%H:%M")
-    message_payload = {"time": currency_time, "client_id": sender_id, "message": message}
+    message_payload = {"time": currency_time,
+                       "client_id": sender_id, "message": message}
     await manager.send_personal_message(json.dumps(message_payload), receiver_id)
-    
+
     # Stocker le message en base de données
 
     return {"time": currency_time, "message": message}
@@ -567,4 +599,3 @@ async def send_private_message(payload: dict):
 async def get_connected_users():
     connected_users = manager.connected_users  # Access the connected_users property
     return {"connected_users": connected_users}
-
