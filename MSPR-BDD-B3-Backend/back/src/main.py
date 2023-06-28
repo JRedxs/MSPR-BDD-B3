@@ -76,11 +76,12 @@ async def delete_inactive_users():
 def login(person: Person):
     hashed_password = pwd_context.hash(person.password)
     encrypted_phone = encryption.encrypt(person.phone)
-
+    
+    current_time = datetime.now()  # Obtenir la date et l'heure actuelles
+    
     with connection.cursor() as cursor:
-        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone, id_role, last_login) VALUES (%s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
-        cursor.execute(insert_query, (person.name, person.firstname,
-                       hashed_password, person.email, person.phone, person.id_role))
+        insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone, last_login, id_role) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone, current_time.strftime("%Y-%m-%dT%H:%M:%S"), person.id_role))
         connection.commit()
 
         # Get inserted person's ID
@@ -88,6 +89,9 @@ def login(person: Person):
         person_id = cursor.fetchone()[0]
 
     return "Ajout avec succès"
+
+
+
 
 
 @app.post("/token_log")
@@ -100,23 +104,21 @@ def login_token(email: str, password: str):
             user_id = result[0]
             hashed_password = result[3]
             if pwd_context.verify(password.encode("utf-8"), hashed_password):
-                # Mise à jour de last_log avec la date et heure
+                access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+                access_token = create_access_token(user_id=user_id, data={'id_role':result[8]}, expires_delta=access_token_expires)
+                
+                # Mettre à jour la date et l'heure de la dernière connexion de l'utilisateur
                 current_time = datetime.now()
-                update_query = "UPDATE Person SET last_login=%s WHERE id_person=%s"
-                cursor.execute(update_query, (current_time, user_id))
+                update_query = "UPDATE Person SET last_login = %s WHERE id_person = %s"
+                cursor.execute(update_query, (current_time.strftime("%Y-%m-%dT%H:%M:%S"), user_id))
                 connection.commit()
 
-                access_token_expires = timedelta(
-                    minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-                access_token = create_access_token(user_id=user_id, data={
-                                                   'id_role': result[8]}, expires_delta=access_token_expires)
                 return {"access_token": access_token, "token_type": "bearer"}
             else:
-                raise HTTPException(
-                    status_code=400, detail="Incorrect email or password")
+                raise HTTPException(status_code=400, detail="Incorrect email or password")
         else:
-            raise HTTPException(
-                status_code=400, detail="Incorrect email or password")
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+
 
 
 @app.get("/users", summary="Récupération des personnes en fonction de leur email & mot de passe")

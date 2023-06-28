@@ -6,19 +6,14 @@ from typing import Optional,List,Dict
 from websocket import WebSocket
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
-
-
-
-
-
 class Person(BaseModel):
         name: str
         firstname: str
         password: str
         email: str
         phone: str
+        last_login: Optional[datetime] = None
         id_role: int = 2
-        last_login: datetime
 
 class Image(BaseModel):
         data: str
