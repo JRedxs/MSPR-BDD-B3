@@ -18,6 +18,7 @@ CREATE TABLE Person(
    latitude DOUBLE,
    longitude DOUBLE,
    id_role INT NOT NULL,
+   last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
    PRIMARY KEY(id_person),
    UNIQUE(email),
    FOREIGN KEY(id_role) REFERENCES Role(id_role)
