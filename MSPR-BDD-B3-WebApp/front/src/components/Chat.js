@@ -11,10 +11,10 @@ function Chat() {
   const [websckt, setWebsckt] = useState();
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const baseUrl = process.env.REACT_APP_API_URL;
+  const baseUrl = process.env.REACT_APP_API_URL_EC2;
 
   useEffect(() => {
-    const url = `ws://ec2-35-180-26-255.eu-west-3.compute.amazonaws.com:8005/ws/${decoded_token.user_id}`;
+    const url = `ws://${baseUrl}/ws/${decoded_token.user_id}`;
     const ws = new WebSocket(url);
 
     ws.onopen = (event) => {
@@ -35,14 +35,9 @@ function Chat() {
 
   const handleSendMessage = (event) => {
     event.preventDefault();
-
+  
     if (websckt.readyState === WebSocket.OPEN) {
-      const messageObject = {
-        clientId: decoded_token.user_id,
-        message: message
-      };
-
-      websckt.send(JSON.stringify(messageObject));
+      websckt.send(message); // Envoyer directement le contenu du message sans JSON.stringify
       setMessage('');
     } else {
       console.error('WebSocket connection is not open.');
@@ -60,8 +55,8 @@ function Chat() {
               return (
                 <div key={index} className="my-message-container">
                   <div className="my-message">
-                    <p className="client">ID: {decoded_token.user_id}</p>
-                    <p className="message">{value.message}</p>
+                    <p className="client">ID : {decoded_token.user_id}</p>
+                    <p className="message">Message de {decoded_token.user_id} : {value.message}</p>
                   </div>
                 </div>
               );
@@ -69,8 +64,8 @@ function Chat() {
               return (
                 <div key={index} className="another-message-container">
                   <div className="another-message">
-                    <p className="client">ID: {value.client_id}</p>
-                    <p className="message">{value.message}</p>
+                    <p className="client">ID : {value.client_id}</p>
+                    <p className="message">Message de {decoded_token.user_id} : {value.message}</p>
                   </div>
                 </div>
               );
