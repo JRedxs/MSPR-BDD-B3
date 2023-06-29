@@ -1,75 +1,105 @@
 import { useState } from "react";
-import '../styles/Login.css';
-import {  useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import logo from '../styles/arosaje.png'
-
+import { Box, VStack, Flex, Heading, Input, FormControl, Image, Text } from "@chakra-ui/react";
+import backgroundImage from '../styles/image.png';
+import logo from '../styles/arosaje.png';
+import { GenericButton } from "../libs/Button"
 
 const LoginPage = () => {
-
-    const baseUrl = process.env.REACT_APP_API_URL
+    const baseUrl = process.env.REACT_APP_API_URL;
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    const handleSubmit = async (event) => {
-        event.preventDefault(); 
-        try {
-          const response = await axios.post(`${baseUrl}/token_log?email=${email}&password=${password}`,);
-          const access_token = response.data.access_token;
-          if (access_token) {
-            window.sessionStorage.setItem('access_token', access_token);
-            navigate(`/SearchPlant`);
-          } else {
-            console.log("Incorrect email or password");
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
 
-    
+    const handleSubmit = async (event) => {
+        if (event){
+            event.preventDefault();
+        }
+        
+        try {
+            const response = await axios.post(`${baseUrl}/token_log?email=${email}&password=${password}`);
+            const access_token = response.data.access_token;
+            if (access_token) {
+                window.sessionStorage.setItem('access_token', access_token);
+                navigate(`/SearchPlant`);
+            } else {
+                console.log("Incorrect email or password");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
-        <>
-        <div className='body'>
-            <section className="vh-100">
-                <div className="container py-5 h-100">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="col col-xl-10">
-                            <div className="card login" style={{ borderRadius: "1rem" }}>
-                                <div className="row g-0 d-flex justify-content-center align-items-center">
-                                    <div className="col-md-6 col-lg-7 d-flex align-items-center">
-                                        <div className="card-body p-4 p-lg-5 text-black">
-                                            <form onSubmit={handleSubmit}>
-                                                <div className="d-flex justify-content-center align-items-center mb-3 pb-1">
-                                                    <img src={logo} style={{width: '25em', marginTop: '15px'}}></img>
-                                                </div>
-                                                <h5 className="fw-normal mb-3 pb-3" style={{ letterSpacing: "1px" }}>Connectez vous à votre compte</h5>
-                                                <div className="form-outline mb-4">
-                                                    <input type="email" id="form2Example17" className="form-control form-control-lg" onChange={(e) => setEmail(e.target.value)} value={email} aria-describedby="emailHelp" placeholder="Enter email" />
-                                                    <label className="form-label" htmlFor="form2Example17">Email address</label>
-                                                </div>
-                                                <div className="form-outline mb-4">
-                                                    <input type="password" id="form2Example27" className="form-control form-control-lg" onChange={(e) => setPassword(e.target.value)} value={password} placeholder="Password"/>
-                                                    <label className="form-label" htmlFor="form2Example27">Password</label>
-                                                </div>
-                                                <div className="d-flex justify-content-center pt-1 mb-4">
-                                                    <button className="btn btn-success btn-lg btn-block m-1" style={{ backgroundColor: '#8E685A ', color: 'white' }} type="submit" to="/RegisterPlante">Login</button>
-                                                    {/* <button className="btn btn-success btn-lg btn-block m-1"  style={{ backgroundColor: '#8E685A ', color: 'white' }} to="/changePass">Forgot password?</button> */}
-                                                </div>
-                                                
-                                                <p className="mb-5 pb-lg-2" style={{ color: "#393f81" }}>Pas encore de compte ? <a href="/Register" style={{ color: "#393f81" }}>Inscrivez vous ici</a></p>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        </>
-    )
-}
+        <Box
+            bgImage={`url(${backgroundImage})`}
+            bgRepeat="no-repeat"
+            bgSize="cover"
+            minH="120vh"
+            pt="100px"
+            w="100%"
+        >
+            <Flex w="100%" h="100%" p={5} alignItems="center" justifyContent="center">
+                <Box w="100%" p={5} shadow="2xl" borderWidth="2px" borderRadius="md" maxW="1000px" bg="rgba(255, 255, 255, 0.85)">
+                    <VStack spacing={4} align="stretch">
+                        <Flex alignItems="center" justifyContent="center">
+                            <Image src={logo} alt="Logo" w={["50%", "40%", "30%", "20%"]} />
+                        </Flex>
+                        <Heading textAlign="center" mb={5}>Connectez-vous</Heading>
+                        <FormControl>
+                            <Input
+                                borderColor="green.900"
+                                focusBorderColor="green"
+                                placeholder="Enter email"
+                                id="email"
+                                name="email"
+                                onChange={(event) => setEmail(event.target.value)}
+                                value={email}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <Input
+                                borderColor="green.900"
+                                focusBorderColor="green"
+                                placeholder="Enter password"
+                                id="password"
+                                name="password"
+                                onChange={(event) => setPassword(event.target.value)}
+                                value={password}
+                            />
+                        </FormControl>
+                    </VStack>
+
+                    <Flex justifyContent="center" mt={4}>
+                        <GenericButton
+                            loadingText="Envoi en cours"
+                            label="Retour"
+                            to="/Login"
+                            colorScheme="green"
+                            mr={4} // Adds a small right margin
+                        />
+                        <GenericButton
+                            loadingText="Envoi en cours"
+                            label="Valider"
+                            colorScheme="green"
+                            onClick={(event) => handleSubmit(event)}
+                            ml={4} // Adds a small left margin
+                        />
+
+                    </Flex>
+
+                    <Text mt={4} textAlign="center">
+                        Pas encore de code ? Inscrivez-vous
+                        <Link to="/Register" color="green.500">
+                            <Text as="span" fontWeight="bold"> ici</Text>
+                        </Link>
+
+                    </Text>
+                </Box>
+            </Flex>
+        </Box>
+    );
+};
+
 export default LoginPage;
