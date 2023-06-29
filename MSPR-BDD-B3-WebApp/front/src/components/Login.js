@@ -63,6 +63,7 @@ const LoginPage = () => {
                                 borderColor="green.900"
                                 focusBorderColor="green"
                                 placeholder="Enter password"
+                                type        = "password"
                                 id="password"
                                 name="password"
                                 onChange={(event) => setPassword(event.target.value)}
