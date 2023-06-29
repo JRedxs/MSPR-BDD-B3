@@ -3,15 +3,15 @@ import { FaFacebook, FaTwitter, FaGoogle, FaInstagram, FaLinkedin, FaGithub } fr
 
 const Footer = () => {
 	return (
-		<Box bg="#956657" color="white" as="footer" position="absolute" w="100%" bottom="0">
+		<Box bg="#956657" color="white" as="footer" py="4">
 			<Flex
 				direction={["column", "row"]}
 				justify="space-between"
-				p="4"
-				px={["4", "16"]}
-				pb="0"
 				align="flex-start"
 				wrap="wrap"
+				maxW="1200px"
+				mx="auto"
+				px={["4", "16"]}
 			>
 				<VStack align="start" mb="4" spacing={4}>
 					<Text fontWeight="bold" textTransform="uppercase">RGPD</Text>
@@ -35,10 +35,10 @@ const Footer = () => {
 					</HStack>
 				</VStack>
 			</Flex>
-				<Box bg="rgba(0, 0, 0, 0.2)" p="3" textAlign="center">
-					<Text as="b">EPSI Bachelor : Concepteur Developpeur d'Application : option fullstack 
-					</Text>
-				</Box>
+			<Box bg="rgba(0, 0, 0, 0.2)" p="3" textAlign="center">
+				<Text as="b">EPSI Bachelor : Concepteur Developpeur d'Application : option fullstack 
+				</Text>
+			</Box>
 		</Box>
 	)
 }
