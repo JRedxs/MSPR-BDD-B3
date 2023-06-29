@@ -651,6 +651,11 @@ async def conversation(id_contact: int, token: Tuple[str, str] = Depends(BearerA
             val = (token[0], id_contact, id_contact, token[0])
             cursor.execute(sql, (val))
             results = cursor.fetchall()
+
+            sql = "update Message set was_read = 1 where id_receveur = %s AND id_emetteur= %s;"
+            val = (token[0], id_contact)
+            cursor.execute(sql, (val))
+            
             messages=[]
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
@@ -660,3 +665,31 @@ async def conversation(id_contact: int, token: Tuple[str, str] = Depends(BearerA
         except:
             cursor.close()
             raise HTTPException(status_code=404, detail="Conversation not found")
+        
+@app.get("/conversations")
+async def conversations(token: Tuple[str, str] = Depends(BearerAuth())):
+     with connection.cursor() as cursor:
+        try:
+            sql = """
+                select id_emetteur, was_read from Message
+                where id_receveur = %s;
+            """
+            val = (token[0])
+            cursor.execute(sql, (val))
+            results = cursor.fetchall()
+            conversations=[]
+            for result in results:
+                row = takeLatinTupleGetUtf8List(result)
+                print(row)
+                unknow = True
+                for conversation in conversations:
+                    if conversation[0] == row[0]:
+                        conversation[1] += row[1]
+                        unknow = False
+                if unknow:
+                    conversations.append([row[0], row[1]])
+            cursor.close()
+            return conversations, 200
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Error while looking for Conversation")
