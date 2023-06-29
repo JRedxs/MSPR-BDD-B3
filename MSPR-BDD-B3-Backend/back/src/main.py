@@ -98,6 +98,7 @@ def login_token(email: str, password: str):
         query = "SELECT * FROM Person WHERE email=%s"
         cursor.execute(query, (email,))
         result = cursor.fetchone()
+        print(result)
         if result:
             user_id = result[0]
             hashed_password = result[3]
@@ -624,8 +625,12 @@ async def send_message(message):
 async def conversation(message: Message, token: Tuple[str, str] = Depends(BearerAuth())):
     with connection.cursor() as cursor:
         try:
-            sql = "SELECT name, id_person, image_data, advice_title, advice, id_photo FROM Plante INNER JOIN Photo ON Plante.id_plante = Photo.id_plante WHERE Plante.id_plante=%s"
-            val = ()
+            sql = """
+                insert into Message(was_read, date_message, message, id_emetteur, id_receveur) 
+                values (0, %s, %s, %s, %s);
+            """
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            val = (now, message.message, message.id_emetteur, message.id_receveur)
             cursor.execute(sql, (val))
             connection.commit()
             cursor.close()
@@ -635,5 +640,23 @@ async def conversation(message: Message, token: Tuple[str, str] = Depends(Bearer
             raise HTTPException(status_code=500, detail="Message unprocessable")
 
 @app.get("/conversation")
-async def conversation():
-    pass
+async def conversation(id_contact: int, token: Tuple[str, str] = Depends(BearerAuth())):
+    with connection.cursor() as cursor:
+        try:
+            sql = """
+                select date_message, message, was_read, id_emetteur, id_receveur from Message
+                where (id_emetteur = %s AND id_receveur = %s) OR (id_emetteur = %s AND id_receveur = %s)
+                order by date_message;
+            """
+            val = (token[0], id_contact, id_contact, token[0])
+            cursor.execute(sql, (val))
+            results = cursor.fetchall()
+            messages=[]
+            for result in results:
+                row = takeLatinTupleGetUtf8List(result)
+                messages.append({"date_message": row[0], "message": row[1], "was_read": row[2], "id_emetteur": row[3], "id_receveur": row[4]})
+            cursor.close()
+            return messages, 200
+        except:
+            cursor.close()
+            raise HTTPException(status_code=404, detail="Conversation not found")

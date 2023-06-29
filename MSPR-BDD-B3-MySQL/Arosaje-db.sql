@@ -64,7 +64,7 @@ CREATE TABLE Message(
    id_message INT NOT NULL AUTO_INCREMENT,
    date_message DATETIME,
    message VARCHAR(550),
-   read TINYINT,
+   was_read TINYINT,
    id_emetteur INT NOT NULL,
    id_receveur INT NOT NULL,
    PRIMARY KEY(id_message),
