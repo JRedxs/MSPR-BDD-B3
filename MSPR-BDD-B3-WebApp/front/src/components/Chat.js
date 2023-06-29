@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
+import axios from 'axios';
 
 function Chat() {
   const [clientId, setClientId] = useState(
@@ -7,37 +8,70 @@ function Chat() {
   );
 
   const decoded_token = jwt_decode(clientId);
-  console.log(decoded_token.user_id);
   const [websckt, setWebsckt] = useState();
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const baseUrl = process.env.REACT_APP_API_URL_EC2;
+  const [currentUser, setCurrentUser] = useState({name:"",firstname:""});
+  const baseUrl = process.env.REACT_APP_API_URL;
+  
 
   useEffect(() => {
-    const url = `ws://${baseUrl}/ws/${decoded_token.user_id}`;
+    const url = `ws://ec2-13-38-31-231.eu-west-3.compute.amazonaws.com:8005/ws/${decoded_token.user_id}`;
+    console.log(process.env.TEST);
     const ws = new WebSocket(url);
-
-    ws.onopen = (event) => {
+    ws.onopen = () => {
       ws.send("Connect");
     };
-
+  
     ws.onmessage = (e) => {
       const message = JSON.parse(e.data);
       setMessages((prevMessages) => [...prevMessages, message]);
     };
-
+  
     setWebsckt(ws);
+  
+    const fetchCurrentUser = async () => {
+      try {
+        const accessToken = window.sessionStorage.getItem("access_token");
+        const response = await axios.get(`${baseUrl}/user/me`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }).catch(error => {
+          console.log(error);
+        });
+        setCurrentUser(response.data.user);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    fetchCurrentUser();
 
     return () => {
       ws.close();
     };
   }, []);
 
+  const RoleName = () => {
+    if (decoded_token.id_role === 2) {
+      return 'User';
+    } else if (decoded_token.id_role === 1) {
+      return 'Botaniste';
+    } else if (decoded_token.id_role === 3){
+      return 'Hybride';
+    }
+  };
+
+  
+
+
+
   const handleSendMessage = (event) => {
     event.preventDefault();
-  
+
     if (websckt.readyState === WebSocket.OPEN) {
-      websckt.send(message); // Envoyer directement le contenu du message sans JSON.stringify
+      websckt.send(message);
       setMessage('');
     } else {
       console.error('WebSocket connection is not open.');
@@ -46,8 +80,10 @@ function Chat() {
 
   return (
     <div className="container">
+      <br/>
       <h1>Chat</h1>
-      <h2>Your client ID: {decoded_token.user_id}</h2>
+      <h2>Bienvenue {currentUser.name} {currentUser.firstname} sur le Chat !  </h2>
+      <h2>Votre Rôle : {RoleName()}</h2>
       <div className="chat-container">
         <div className="chat">
           {messages.map((value, index) => {
@@ -55,8 +91,7 @@ function Chat() {
               return (
                 <div key={index} className="my-message-container">
                   <div className="my-message">
-                    <p className="client">ID : {decoded_token.user_id}</p>
-                    <p className="message">Message de {decoded_token.user_id} : {value.message}</p>
+                    <p className="message"> {currentUser.firstname} {currentUser.name} ({RoleName()}) : {value.message}</p>
                   </div>
                 </div>
               );
@@ -64,8 +99,7 @@ function Chat() {
               return (
                 <div key={index} className="another-message-container">
                   <div className="another-message">
-                    <p className="client">ID : {value.client_id}</p>
-                    <p className="message">Message de {decoded_token.user_id} : {value.message}</p>
+                    <p className="message"> {currentUser.firstname} {currentUser.name} ({RoleName()}): {value.message}</p>
                   </div>
                 </div>
               );

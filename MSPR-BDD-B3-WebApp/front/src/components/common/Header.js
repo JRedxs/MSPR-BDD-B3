@@ -100,7 +100,7 @@ const Header = () => {
                                         </Link>
                                     )}
                                 </div>
-                                <br />
+
                                 <div>
                                     {!isLoggedIn && (
                                         <Link
@@ -113,7 +113,7 @@ const Header = () => {
                                         </Link>
                                     )}
                                 </div>
-                                <br />
+
                                 <div style={{ marginTop: 'auto', marginBottom: '10px' }}>
                                     {isLoggedIn && (
                                         <Link
@@ -126,7 +126,18 @@ const Header = () => {
                                         </Link>
                                     )}
                                 </div>
-                                <br />
+                                <div style={{ marginTop: 'auto', marginBottom: '10px' }}>
+                                    {isLoggedIn && (
+                                        <Link
+                                            to="/Chat"
+                                            className="btn btn-primary w-100"
+                                            role="button"
+                                            style={{ backgroundColor: '#8E685A', color: 'white', border: 'none' }}
+                                        >
+                                            Chat
+                                        </Link>
+                                    )}
+                                </div>
                                 <div>
                                     {isLoggedIn && (
                                         <Link
