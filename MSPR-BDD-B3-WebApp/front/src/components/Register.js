@@ -8,7 +8,7 @@ import '../styles/Register.css';
 const Register = () => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const [error, setError] = useState("");
-    const baseUrl = process.env.REACT_APP_API_URL_EC2;
+    const baseUrl = process.env.REACT_APP_API_URL;
     console.log(baseUrl)
     const NAVIGATE = useNavigate();
 
