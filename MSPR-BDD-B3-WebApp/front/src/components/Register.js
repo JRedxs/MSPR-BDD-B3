@@ -39,7 +39,7 @@ const Register = () => {
             return;
         }
         axios
-            .post(`${baseUrl}/register`, formData)
+            .post(`http://ec2-13-38-31-231.eu-west-3.compute.amazonaws.com:8005/register`, formData)
             .then(res => {
                 console.log(res);
                 NAVIGATE('/login')
