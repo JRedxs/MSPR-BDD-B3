@@ -48,9 +48,6 @@ function Chat() {
   
     fetchCurrentUser();
 
-    return () => {
-      ws.close();
-    };
   }, []);
 
   const RoleName = () => {
