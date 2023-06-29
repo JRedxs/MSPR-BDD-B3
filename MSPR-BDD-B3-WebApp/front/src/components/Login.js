@@ -14,7 +14,7 @@ const LoginPage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault(); 
         try {
-          const response = await axios.post(`http://ec2-13-38-31-231.eu-west-3.compute.amazonaws.com:8005/token_log?email=${email}&password=${password}`,);
+          const response = await axios.post(`${baseUrl}/token_log?email=${email}&password=${password}`,);
           const access_token = response.data.access_token;
           if (access_token) {
             window.sessionStorage.setItem('access_token', access_token);
