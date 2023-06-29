@@ -7,7 +7,6 @@ import { Box, VStack,Flex, Heading, HStack, Input, FormControl } from "@chakra-u
 import backgroundImage from '../styles/image.png';
 
 
-
 const Register = () => {
 	const showToast = useCustomToast()
 	const baseUrl   = process.env.REACT_APP_API_URL
