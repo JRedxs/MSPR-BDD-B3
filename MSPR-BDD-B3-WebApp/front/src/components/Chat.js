@@ -16,11 +16,10 @@ function Chat() {
   
 
   useEffect(() => {
-    const url = `ws://ec2-13-38-31-231.eu-west-3.compute.amazonaws.com:8005/ws/${decoded_token.user_id}`;
-    console.log(process.env.TEST);
+    const url = `ws://${baseUrl}/ws/${decoded_token.user_id}`;
     const ws = new WebSocket(url);
     ws.onopen = () => {
-      ws.send("Connect");
+      ws.send("is Connect");
     };
   
     ws.onmessage = (e) => {
