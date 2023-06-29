@@ -19,6 +19,7 @@ CREATE TABLE Person(
    longitude DOUBLE,
    id_role INT NOT NULL,
    last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
+   is_connected BOOLEAN DEFAULT FALSE,
    PRIMARY KEY(id_person),
    UNIQUE(email),
    FOREIGN KEY(id_role) REFERENCES Role(id_role)

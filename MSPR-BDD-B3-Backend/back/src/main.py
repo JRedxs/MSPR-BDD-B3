@@ -107,19 +107,71 @@ def login_token(email: str, password: str):
                 
                 # Mettre à jour la date et l'heure de la dernière connexion de l'utilisateur
                 current_time = datetime.now()
-                update_query = "UPDATE Person SET last_login = %s WHERE id_person = %s"
+                update_query = "UPDATE Person SET last_login = %s, is_connected = TRUE WHERE id_person = %s"
                 cursor.execute(update_query, (current_time.strftime("%Y-%m-%dT%H:%M:%S"), user_id))
                 connection.commit()
 
                 return {"access_token": access_token, "token_type": "bearer"}
             else:
                 raise HTTPException(status_code=400, detail="Incorrect email or password")
-                raise HTTPException(status_code=400, detail="Incorrect email or password")
         else:
             raise HTTPException(status_code=400, detail="Incorrect email or password")
-            raise HTTPException(status_code=400, detail="Incorrect email or password")
+        
+        
+
+@app.put("/disconnect_user/{user_id}")
+def disconnect_user(user_id: int):
+    with connection.cursor() as cursor:
+        # Sélectionne l'état de connexion actuel de l'utilisateur
+        select_query = "SELECT * FROM Person WHERE id_person = %s and is_connected = TRUE"
+        cursor.execute(select_query, (user_id,))
+        result = cursor.fetchone()
+        is_connected = result[0] if result else None
+
+        # Met à jour l'état de connexion à FALSE si l'utilisateur est connecté
+        if is_connected:
+            update_query = "UPDATE Person SET is_connected = FALSE WHERE id_person = %s"
+            cursor.execute(update_query, (user_id,))
+            connection.commit()
+            return {"message": "Utilisateur déconnecté avec succès"}
+        else:
+            return {"message": "L'utilisateur n'est pas connecté"}
 
 
+
+@app.get("/get_all_users_connected", summary="Récupération de tous les utilisateurs connectés")
+def get_all_users_connected():
+    with connection.cursor() as cursor:
+        try:
+            select_query = "SELECT * FROM Person WHERE is_connected = TRUE"
+            cursor.execute(select_query)
+            result = cursor.fetchall()
+            users = []
+            for user in result:
+                row = takeLatinTupleGetUtf8List(user)
+                users.append({
+                    "id_person": row[0],
+                    "name": row[1],
+                    "firstname": row[2],
+                    "pwd": row[3],
+                    "email": row[4],
+                    "phone": row[5],
+                    "latitude": row[6],
+                    "longitude": row[7],
+                    "id_role": row[8]
+                })
+            if len(users) == 0:
+                return "Aucun utilisateur en ligne"
+            else:
+                return {"User Connected": users}
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Erreur lors de la connexion à la base de données!")
+
+
+        
+        
+        
 
 @app.get("/users", summary="Récupération des personnes en fonction de leur email & mot de passe")
 def get_user(email: str, password: str):
@@ -173,6 +225,9 @@ async def get_current_user(current_user: Tuple[str, str] = Depends(BearerAuth())
             return {"user": user}
         else:
             raise HTTPException(status_code=404, detail="User not found")
+        
+        
+        
 
 
 @app.get("/users_all", summary="Récupération de toutes les utilisateurs")
@@ -196,7 +251,7 @@ def get_user(background_tasks: BackgroundTasks):
             cursor.close()
             raise HTTPException(
                 status_code=500, detail="Database connection error !")
-
+            
 
 @app.get("/users/{user_id}", summary="Récupération en fonction de l'id utilisateur")
 def get_user_by_id(user_id: int):
@@ -535,3 +590,23 @@ async def websocket_endpoint(websocket: WebSocket, user_id: int):
 
 
 
+connected_users: List[WebSocket] = []
+
+# Route pour gérer les connexions WebSocket
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    connected_users.append(websocket)  # Ajouter la connexion à la liste des utilisateurs connectés
+
+    try:
+        while True:
+            # Attendre les messages entrants (ou des événements particuliers)
+            data = await websocket.receive_text()
+            # Traiter les données reçues ou effectuer des opérations spécifiques
+
+            # Exemple: Répondre à tous les utilisateurs connectés
+            for user in connected_users:
+                await user.send_text("Nouveau message: " + data)
+
+    except WebSocketDisconnect:
+        connected_users.remove(websocket) 
