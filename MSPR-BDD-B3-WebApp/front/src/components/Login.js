@@ -13,10 +13,10 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
-        if (event){
+        if (event) {
             event.preventDefault();
         }
-        
+
         try {
             const response = await axios.post(`${baseUrl}/token_log?email=${email}&password=${password}`);
             const access_token = response.data.access_token;
@@ -63,7 +63,7 @@ const LoginPage = () => {
                                 borderColor="green.900"
                                 focusBorderColor="green"
                                 placeholder="Enter password"
-                                type        = "password"
+                                type="password"
                                 id="password"
                                 name="password"
                                 onChange={(event) => setPassword(event.target.value)}
@@ -73,22 +73,24 @@ const LoginPage = () => {
                     </VStack>
 
                     <Flex justifyContent="center" mt={4}>
-                        <GenericButton
-                            loadingText="Envoi en cours"
-                            label="Retour"
-                            to="/Login"
-                            colorScheme="green"
-                            mr={4} // Adds a small right margin
-                        />
-                        <GenericButton
-                            loadingText="Envoi en cours"
-                            label="Valider"
-                            colorScheme="green"
-                            onClick={(event) => handleSubmit(event)}
-                            ml={4} // Adds a small left margin
-                        />
-
+                        <Box mr={4}>
+                            <GenericButton
+                                loadingText="Envoi en cours"
+                                label="Retour"
+                                to="/Login"
+                                colorScheme="green"
+                            />
+                        </Box>
+                        <Box ml={4}>
+                            <GenericButton
+                                loadingText="Envoi en cours"
+                                label="Valider"
+                                colorScheme="green"
+                                onClick={(event) => handleSubmit(event)}
+                            />
+                        </Box>
                     </Flex>
+
 
                     <Text mt={4} textAlign="center">
                         Pas encore de code ? Inscrivez-vous
