@@ -10,6 +10,7 @@ import backgroundImage from '../styles/image.png';
 const Register = () => {
 	const showToast = useCustomToast()
 	const baseUrl   = process.env.REACT_APP_API_URL
+  
     const NAVIGATE = useNavigate()
     const [formData, setFormData] = useState({
         name     : "",
