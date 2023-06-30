@@ -4,18 +4,15 @@ import axios from "axios";
 //import '../styles/Advice.css'
 
 const AdvicePlant = () => {
-
-
   const id_plante = Number(sessionStorage.getItem('plante'));
-
   const id_photo = Number(sessionStorage.getItem('photo'));
-
   const baseUrl = process.env.REACT_APP_API_URL;
 
   const [advice, setAdvice] = useState({ advice_title: "", advice: "", id_photo: id_photo });
   const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
+  const [reloadPlante, setReloadPlante] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -23,7 +20,6 @@ const AdvicePlant = () => {
   };
 
   useEffect(() => {
-    // récupérer les infos depuis le sessionStorage
     const fetchData = async () => {
       try {
         const accessToken = window.sessionStorage.getItem("access_token");
@@ -36,9 +32,17 @@ const AdvicePlant = () => {
         setUser(userData);
         console.log(userData);
         sessionStorage.setItem("user_plante", JSON.stringify(userData));
-      
+
+        // Mettre à jour les conseils dans l'état advice
+        if (userData && userData[id_photo]) {
+          setAdvice({
+            ...advice,
+            advice_title: userData[id_photo].advice_title || "",
+            advice: userData[id_photo].advice || "",
+          });
+        }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     };
     fetchData();
@@ -48,15 +52,16 @@ const AdvicePlant = () => {
     event.preventDefault();
     try {
       const accessToken = window.sessionStorage.getItem("access_token");
-      const response = await axios.put(process.env.REACT_APP_API_URL + `/advices`, advice, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/advices`, advice, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      })
-        .then(() => {
-          navigate(`/Plante/${id_plante}`);
-        });
+      });
       console.log(response.data);
+
+      setReloadPlante((prevReload) => !prevReload); // Mettre à jour l'état reloadPlante pour recharger les données de la plante
+
+      navigate(`/Plante/${id_plante}`);
     } catch (error) {
       console.error(error);
     }
@@ -97,13 +102,8 @@ const AdvicePlant = () => {
           </div>
         </div>
       </div>
-
-
-
     </>
   );
 };
 
 export default AdvicePlant;
-
-
