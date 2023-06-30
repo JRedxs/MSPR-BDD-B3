@@ -6,9 +6,15 @@ import jwt_decode from "jwt-decode";
 
 import Message from '../Message';
 
+
 const Header = () => {
     const navigate = useNavigate();
+<<<<<<< HEAD
     const { isOpen, setIsOpen } = useDisclosure();
+=======
+    const { isOpen, onClose } = useDisclosure();
+
+>>>>>>> feat/front
 
 
     const handleLogout = () => {
@@ -39,7 +45,11 @@ const Header = () => {
         });
 
         window.sessionStorage.removeItem('access_token');
+<<<<<<< HEAD
         setIsOpen();  // Ferme le menu si ouvert
+=======
+        onClose();  // Ferme le menu si ouvert
+>>>>>>> feat/front
         navigate('/login');  // Redirige vers la page de connexion
     };
     

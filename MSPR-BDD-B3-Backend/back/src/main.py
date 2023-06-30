@@ -75,7 +75,6 @@ async def delete_inactive_users():
 @app.post("/register", summary="Création de personnes et ajout d'un accès token")
 def login(person: Person):
     hashed_password = pwd_context.hash(person.password)
-
     encrypted_phone = encryption.encrypt(person.phone)
     
     current_time = datetime.now()  # Obtenir la date et l'heure actuelles
@@ -530,6 +529,7 @@ def put_garde_by_id(id_garde: int, token: Tuple[str, str] = Depends(BearerAuth()
         return "Garde mis à jour", 200
 
 
+
 @app.get("/all_gardes", summary="Récupération des gardes")
 def get_all_gardes(token: Tuple[str, str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3:
@@ -549,7 +549,7 @@ def get_all_gardes(token: Tuple[str, str] = Depends(BearerAuth())):
             cursor.close()
             return {"Error message": str(error)}
 
-
+@app.get("/plantandgallery/{id_plante}", summary="Récupération des photos de plantes en fonction de leur id")
 def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3 and token[1] != 1:
         raise HTTPException(status_code=401, detail="User is not a client")
