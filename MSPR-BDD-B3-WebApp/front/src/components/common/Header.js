@@ -37,6 +37,7 @@ const Header = () => {
 
     const isLoggedIn = !!window.sessionStorage.getItem('access_token')
     return (
+        <>
         <Box as="header" p={12} bg="green" color="white">
             <Flex justifyContent="space-between" alignItems="center">
                 <RouterLink to="/">
@@ -84,6 +85,8 @@ const Header = () => {
             </Flex>
             
         </Box>
+        <Message id_contact={1}/>
+        </>
     )
 }
 export default Header
