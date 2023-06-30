@@ -8,7 +8,7 @@ import Message from '../Message';
 
 const Header = () => {
     const navigate = useNavigate();
-    const { isOpen, onToggle } = useDisclosure();
+    const { isOpen, setIsOpen } = useDisclosure();
 
 
     const handleLogout = () => {
@@ -39,7 +39,7 @@ const Header = () => {
         });
 
         window.sessionStorage.removeItem('access_token');
-        setIsOpen(false);  // Ferme le menu si ouvert
+        setIsOpen();  // Ferme le menu si ouvert
         navigate('/login');  // Redirige vers la page de connexion
     };
     
