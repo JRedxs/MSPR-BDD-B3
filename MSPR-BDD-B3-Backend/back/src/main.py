@@ -548,8 +548,9 @@ def get_all_gardes(token: Tuple[str, str] = Depends(BearerAuth())):
         except mysql.connector.Error as error:
             cursor.close()
             return {"Error message": str(error)}
+        
 
-@app.get("/plantandgallery/{id_plante}", summary="Récupération des photos de plantes en fonction de leur id")
+@app.get("/plantandgallery/{id_plante}", summary="Récupération des photos de plantes en fonction de leur id") 
 def get_plant_photos_by_id(id_plante: int, token: Tuple[str,str] = Depends(BearerAuth())):
     if token[1] != 2 and token[1] != 3 and token[1] != 1:
         raise HTTPException(status_code=401, detail="User is not a client")
