@@ -653,7 +653,7 @@ async def conversation(id_contact: int, token: Tuple[str, str] = Depends(BearerA
     with connection.cursor() as cursor:
         try:
             sql = """
-                select date_message, message, Emetteur.id_person, Emetteur.firstname, Emetteur.name, Receveur.id_person
+                select date_message, message, Emetteur.id_person, Emetteur.firstname, Receveur.id_person
                 from Message
                 inner join Person as Emetteur on id_emetteur = Emetteur.id_person
                 inner join Person as Receveur on id_receveur = Receveur.id_person
@@ -674,8 +674,8 @@ async def conversation(id_contact: int, token: Tuple[str, str] = Depends(BearerA
                 date = str(row[0])
                 date = date.replace("-", "/")
                 messages.append({"date_message": date, "message": row[1], "id_emetteur": row[2],
-                                "prenom_emetteur": row[3], "nom_emetteur": row[4],
-                                "id_receveur": row[5]})
+                                "prenom_emetteur": row[3],
+                                "id_receveur": row[4]})
             cursor.close()
             return messages, 200
         except:

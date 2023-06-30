@@ -67,7 +67,13 @@ class Message extends React.Component {
     const messagesList = []
     for(let index = 0; index < conversation.length; index++)
     {
-      const message = conversation[index].date_message + ' - ' + conversation[index].prenom_emetteur + ' ' + conversation[index].nom_emetteur + ' : ' + conversation[index].message
+      let message = conversation[index].date_message + ' - ' + conversation[index].prenom_emetteur + ' : ' + conversation[index].message
+      if (conversation[index].id_emetteur == this.state.id_contact){
+        message = ">>> " + message;
+      }
+      else {
+        message = "<<< " + message;
+      }
       messagesList.push(message) // date - Prenom Nom : message
     }
     this.setState({
