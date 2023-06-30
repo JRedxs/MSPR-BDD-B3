@@ -630,7 +630,7 @@ async def conversation(message: Message, token: Tuple[str, str] = Depends(Bearer
                 values (0, %s, %s, %s, %s);
             """
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            val = (now, message.message, message.id_emetteur, message.id_receveur)
+            val = (now, message.message, token[0], message.id_receveur)
             cursor.execute(sql, (val))
             connection.commit()
             cursor.close()
@@ -644,7 +644,10 @@ async def conversation(id_contact: int, token: Tuple[str, str] = Depends(BearerA
     with connection.cursor() as cursor:
         try:
             sql = """
-                select date_message, message, was_read, id_emetteur, id_receveur from Message
+                select date_message, message, Emetteur.id_person, Emetteur.firstname, Emetteur.name, Receveur.id_person
+                from Message
+                inner join Person as Emetteur on id_emetteur = Emetteur.id_person
+                inner join Person as Receveur on id_receveur = Receveur.id_person
                 where (id_emetteur = %s AND id_receveur = %s) OR (id_emetteur = %s AND id_receveur = %s)
                 order by date_message;
             """
@@ -655,11 +658,15 @@ async def conversation(id_contact: int, token: Tuple[str, str] = Depends(BearerA
             sql = "update Message set was_read = 1 where id_receveur = %s AND id_emetteur= %s;"
             val = (token[0], id_contact)
             cursor.execute(sql, (val))
-            
+
             messages=[]
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                messages.append({"date_message": row[0], "message": row[1], "was_read": row[2], "id_emetteur": row[3], "id_receveur": row[4]})
+                date = str(row[0])
+                date = date.replace("-", "/")
+                messages.append({"date_message": date, "message": row[1], "id_emetteur": row[2],
+                                "prenom_emetteur": row[3], "nom_emetteur": row[4],
+                                "id_receveur": row[5]})
             cursor.close()
             return messages, 200
         except:

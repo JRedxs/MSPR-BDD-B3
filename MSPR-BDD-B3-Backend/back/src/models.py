@@ -86,6 +86,5 @@ class ConnectionManager:
             await connection.send_text(message)
 
 class Message(BaseModel):
-    id_emetteur: int
     id_receveur: int
     message: str

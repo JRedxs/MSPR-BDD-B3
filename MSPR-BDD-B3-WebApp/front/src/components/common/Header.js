@@ -91,7 +91,6 @@ const Header = () => {
                     )}
                 </Flex>
             </Flex>
-            <Message/>
         </Box>
     );
 };
