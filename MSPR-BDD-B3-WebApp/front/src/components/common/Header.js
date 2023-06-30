@@ -21,7 +21,6 @@ const Header = () => {
         const decoded_token = jwt_decode(clientId);
         const userId = decoded_token.user_id;
     
-        console.log('YOUPI', userId)
         // Envoie la requête de déconnexion
         fetch(`/disconnect_user/${userId}`, {
             method: 'PUT',
@@ -59,11 +58,11 @@ const Header = () => {
                         <>
                             <Button as={RouterLink} to="/Map" colorScheme="green" variant="outline" mr={2}>
                                 Garder une plante
-                            </Button>
+                            </Button>&nbsp;
 
                             <Button as={RouterLink} to="/SearchPlant" colorScheme="green" variant="outline" mr={2}>
                                 Rechercher une plante
-                            </Button>
+                            </Button>&nbsp;
 
                             <Menu>
                                 <MenuButton as={Button} colorScheme="green" rightIcon={<ChevronDownIcon />}>

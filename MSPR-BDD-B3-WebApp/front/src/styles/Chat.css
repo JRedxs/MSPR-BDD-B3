@@ -1,0 +1,25 @@
+.connected-users-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  max-height: 200px;
+  overflow-y: scroll;
+  width: 200px; /* Adjust the width as needed */
+}
+
+.user-list {
+  text-align: right;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.user-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-list li {
+  padding: 5px;
+  text-align: left;
+}
