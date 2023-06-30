@@ -1,124 +1,91 @@
-import { useState, useRef } from 'react';
-import Logo from '../assets/images/logo.png'
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import axios from 'axios';
+import '../styles/RegisterGarde.css';
 
-
-const RegisterPhoto = () => {
-  const [isCameraActive, setIsCameraActive] = useState(false);
-  const videoRef                            = useRef(null);
-  const [imageSrc, setImageSrc]             = useState(null);
-
-  const baseUrl                 = process.env.REACT_APP_API_URL;
-  const [idPlante, setIdPlante] = useState( Number(sessionStorage.getItem('plante') ) );
-
+const RegisterGarde = () => {
+  const baseUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
-  const handleStartCamera = () => {
-    setIsCameraActive(true);
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-        videoRef.current.srcObject = stream;
-      });
+  const [garde, setGarde] = useState({
+    id_plante: Number(window.sessionStorage.getItem('plante')),
+    begining: "",
+    finish: ""
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setGarde(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
-  const handleStopCamera = () => {
-    setIsCameraActive(false);
-    const stream = videoRef.current.srcObject;
-    stream.getTracks().forEach(track => track.stop());
-  };
-
-  const handleTakePhoto = () => {
-    const canvas        = document.createElement('canvas');
-          canvas.width  = videoRef.current.videoWidth;
-          canvas.height = videoRef.current.videoHeight;
-    canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
-    
-    const image     = new Image();
-          image.src = canvas.toDataURL();
-    handleStopCamera();
-    setImageSrc(image.src);
-  };
-
-  const handleUploadPhoto = () => {
-    async function postPhoto(){
+  const handleOnClick = (event) => {
+    try {
+      const gardeData = {
+        id_plante: garde.id_plante,
+        begining: garde.begining + ':00.000Z',
+        finish: garde.finish + ':00.000Z'
+      }
+      event.preventDefault();
       const accessToken = window.sessionStorage.getItem("access_token");
-      await axios.post(`${baseUrl}/image`, {id_plante: idPlante, data: imageSrc}, {
-        headers: {
+      axios
+        .post(`${baseUrl}/plants_garde`, gardeData, {
+          headers: {
             Authorization: `Bearer ${accessToken}`,
-        }
-      })
-      // need to become a real error managment
-        .then(() => {
-          setImageSrc(null);
-          navigate(`/Plante/${idPlante}`)
-        } )
+          },
+        })
+        .then(res => navigate(`/Plante/${garde.id_plante}`))
         .catch(err => console.error(err));
+    } catch (error) {
+      console.error(error);
     }
-    postPhoto();;
   };
 
-
-  const handleTakeNewPhoto = () => {
-    setImageSrc(null);
-    handleStartCamera();
-  };
 
   return (
-    <div className = 'body'>
 
-    
-    <div>
-      {
-        isCameraActive && (
-          <div   className = "d-flex justify-content-center margin-login-card" style = {{margin:"5em"}}>
-          <div   className = "card">
-          <video ref       = {videoRef} autoPlay />
-          <div   className = "card-body">
-          <div   className = "d-flex justify-content-center align-items-center">
-          <b><p  className = "card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
-                </div>
-                <div    className = "d-flex justify-content-center align-items-center">
-                <button className = 'btn btn-success' style = {{margin:"1em"}} onClick = {handleTakePhoto}>Prendre une Photo</button>
-                <button className = 'btn btn-success' style = {{margin:"1em"}} onClick = {handleStopCamera}>Arreter la Camera</button>
-                </div>
+    <>
+      <div className="body">
+        <div className=" d-flex align-items-center justify-content-center">
+          <h1><b><u>Enregister ici une demande de garde de votre plante </u></b></h1>
+        </div>
+        <div className="d-flex align-items-center justify-content-center mx-auto m-5">
+          <div className="card card-register card-color d-flex align-items-center justify-content-center " style={{ width: "33%", borderRadius: "75px", border: "1px solid black" }}>
+            <form>
+              <div className=" align-items-center justify-content-center m-4">
+                <label htmlFor="begining"><b>Début de la garde :</b></label>
+                <input
+                  className="form-control m-2 w-auto"
+                  type="datetime-local"
+                  id="begining"
+                  name="begining"
+                  onChange={handleChange}
+                  value={garde.begining}
+                />
               </div>
-            </div> 
+              <div className="align-items-center justify-content-center m-4">
+                <label htmlFor="finish"><b>Fin de la garde :</b></label>
+                <input
+                  className="form-control m-2 w-auto"
+                  type="datetime-local"
+                  id="finish"
+                  name="finish"
+                  onChange={handleChange}
+                  value={garde.finish}
+                />
+              </div>
+              <div className="d-flex align-items-center justify-content-center m-3">
+                <Link className="btn btn-success m-2" onClick={handleOnClick} to="/">Valider</Link>
+                <Link className="btn btn-success m-2" type="submit" to="/">Retour</Link>
+              </div>
+            </form>
           </div>
-        )
-      }
-      {
-        !isCameraActive && !imageSrc && (
-          <div  className = "d-flex justify-content-center align-items-center" style = {{margin:"5em"}}>
-          <div  className = "card  d-flex justify-content-center align-items-center">
-          <img  src       = {Logo} className                                         = "card-img-top" alt = "logo"/>
-          <div  className = "card-body ">
-          <b><p className = "card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
-              </div>
-                <div    className = "d-flex justify-content-center">
-                <button className = 'btn btn-success' style = {{margin:"2em"}} onClick = {handleStartCamera}>Lancer la Camera</button>
-                </div>
-              </div>
-            </div> 
-        )
-      }
-      {
-        imageSrc && (
-          <div    className = "d-flex justify-content-center align-items-center"  >
-          <div    className = "card" style            = {{margin:"5em"}}>
-          <img    src       = {imageSrc} alt          = "" />
-          <div    className = "card-body">
-          <div    className = "d-flex justify-content-center align-items-center">
-          <button className = 'btn btn-success' style = {{margin:"1em"}} onClick = {handleUploadPhoto}>Enregister la Photo</button>
-          <button className = 'btn btn-success' style = {{margin:"1em"}} onClick = {handleTakeNewPhoto}>Prendre une nouvelle Photo</button>
-                </div>
-              </div>
-            </div> 
-          </div>
-        )
-      }
-    </div>
-    </div>
+        </div>
+      </div>
+    </>
   );
 };
-export default RegisterPhoto;
+
+export default RegisterGarde;

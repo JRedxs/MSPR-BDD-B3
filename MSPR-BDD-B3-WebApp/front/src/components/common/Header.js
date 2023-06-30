@@ -5,9 +5,11 @@ import { FaUser } from 'react-icons/fa';
 import jwt_decode from "jwt-decode";
 
 
+
 const Header = () => {
     const navigate = useNavigate();
-    const { isOpen, onToggle } = useDisclosure();
+    const { isOpen, onClose } = useDisclosure();
+
 
 
     const handleLogout = () => {
@@ -38,7 +40,7 @@ const Header = () => {
         });
 
         window.sessionStorage.removeItem('access_token');
-        setIsOpen(false);  // Ferme le menu si ouvert
+        onClose();  // Ferme le menu si ouvert
         navigate('/login');  // Redirige vers la page de connexion
     };
     
