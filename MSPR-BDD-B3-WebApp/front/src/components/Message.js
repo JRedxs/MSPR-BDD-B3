@@ -19,19 +19,19 @@ class Message extends React.Component {
     this.handleWriteConversation = this.handleWriteConversation.bind(this);
     
     this.update_clock = setInterval(()=>{
-    const accessToken = window.sessionStorage.getItem("access_token");
-    if (!accessToken){
-      return
-    }
-    const url = this.state.baseUrl + `/conversation?id_contact=${this.state.id_contact}`;
-    axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      }, 
-    })
-      .then((response) => {
-        this.handleWriteConversation(response.data[0])
+      const accessToken = window.sessionStorage.getItem("access_token");
+      if (!accessToken){
+        return
+      }
+      const url = this.state.baseUrl + `/conversation?id_contact=${this.state.id_contact}`;
+      axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }, 
       })
+        .then((response) => {
+          this.handleWriteConversation(response.data[0])
+        })
     }, 10000) //10s
   }
 
@@ -63,7 +63,6 @@ class Message extends React.Component {
   }
 
   handleWriteConversation(conversation) {
-    console.log(conversation);
     const messagesList = []
     for(let index = 0; index < conversation.length; index++)
     {

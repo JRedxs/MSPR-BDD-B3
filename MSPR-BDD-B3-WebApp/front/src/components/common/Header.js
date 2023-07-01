@@ -4,19 +4,74 @@ import { ChevronDownIcon } from '@chakra-ui/icons'
 import { FaUser } from 'react-icons/fa'
 import jwt_decode from "jwt-decode"
 import Message from '../Message'
-
+import { useState, useEffect  } from 'react';
+import axios from 'axios';
 
 const Header = () => {
     const navigate = useNavigate()
     const { isOpen, onClose } = useDisclosure()
     const baseUrl = process.env.REACT_APP_API_URL
+    const [ messageIsOpen, setMessageIsOpen ] = useState(false);
+    const [ id_contact, setId_contact ] = useState(0);
+    const [ conversations, setConversations ] = useState();
 
+    const MenuConversations = ({ options, onOptionClick }) => {
+        return (
+          <Menu>
+            <MenuButton as={Button} colorScheme="teal">
+              Conversations
+            </MenuButton>
+            <MenuList>
+              {options.map((option, index) => (
+                <MenuItem key={index} onClick={() => onOptionClick(option.id)}>
+                  {option.text}
+                </MenuItem>
+              ))}
+            </MenuList>
+          </Menu>
+        )
+      }
+    
+    const openMessages = (id) => {
+        setId_contact(id);
+    };
+
+
+    useEffect(() => {
+        setInterval(()=>{
+            console.log(conversations);
+            let url = process.env.REACT_APP_API_URL;
+            url += "/conversations";
+            const accessToken = window.sessionStorage.getItem("access_token");
+            if (! accessToken){
+                return;
+            }
+            axios.get(url, {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                }
+            }
+            ).then((response) => {
+                const conversationList = response.data[0];
+                const newConversations=[];
+                for (let index = 0; index < conversationList.length; index++){
+                    newConversations.push( {number: conversationList[index][0], text: conversationList[index][2], wasRead: conversationList[index][1]});
+                }
+                setConversations(newConversations);
+            });
+        }, 1000)
+      }, []);
 
     const handleLogout = () => {
-        const clientId = window.sessionStorage.getItem("access_token")
-        const decoded_token = jwt_decode(clientId)
-        const userId = decoded_token.user_id
-        console.log(userId)
+        
+
+        // Récupère l'ID utilisateur à partir du sessionStorage
+        const clientId = window.sessionStorage.getItem("access_token");
+    
+        const decoded_token = jwt_decode(clientId);
+        const userId = decoded_token.user_id;
+    
+        // Envoie la requête de déconnexion
         fetch(`${baseUrl}/disconnect_user/${userId}`, {
             method: 'PUT',
             headers: {
@@ -46,6 +101,10 @@ const Header = () => {
                 <Flex>
                     {isLoggedIn ? (
                         <>
+                            {conversations && (<MenuConversations options={conversations} onOptionClick={openMessages}/>)}
+                            <Button as={RouterLink} to="/Map" colorScheme="green" variant="outline" mr={2}>
+                                Garder une plante
+                            </Button>
                             <Button as={RouterLink} to="/Map" colorScheme="green" variant="outline" mr={2}>
                                 Garder une plante
                             </Button>
@@ -85,7 +144,7 @@ const Header = () => {
             </Flex>
             
         </Box>
-        <Message id_contact={1}/>
+        {messageIsOpen && (<Message id_contact={id_contact}/>)}
         </>
     )
 }

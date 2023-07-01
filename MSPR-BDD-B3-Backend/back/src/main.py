@@ -687,7 +687,10 @@ async def conversations(token: Tuple[str, str] = Depends(BearerAuth())):
      with connection.cursor() as cursor:
         try:
             sql = """
-                select id_emetteur, was_read from Message
+                select id_emetteur, was_read, firstname
+                from Message
+                inner join Person
+                    on id_emetteur = id_person
                 where id_receveur = %s;
             """
             val = (token[0])
@@ -696,16 +699,42 @@ async def conversations(token: Tuple[str, str] = Depends(BearerAuth())):
             conversations=[]
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                print(row)
                 unknow = True
                 for conversation in conversations:
                     if conversation[0] == row[0]:
                         conversation[1] += row[1]
                         unknow = False
                 if unknow:
-                    conversations.append([row[0], row[1]])
+                    conversations.append([row[0], row[1], row[2]])
             cursor.close()
             return conversations, 200
         except:
             cursor.close()
             raise HTTPException(status_code=500, detail="Error while looking for Conversation")
+
+@app.get("/new_conversation/{id_garde}")
+async def new_conversation(id_garde: int, token: Tuple[str, str] = Depends(BearerAuth())):
+    if token[1] != 2 and token[1] != 3:
+        raise HTTPException(status_code=401, detail="User is not a client")
+    with connection.cursor() as cursor:
+        try:
+            sql = """
+                select Person.id_person
+                from Person
+                inner join Plante
+                    on Person.id_person = Plante.id_person
+                inner join Garde
+                    on Plante.id_plante = Garde.id_plante
+                where id_garde = %s
+                LIMIT 1;
+            """
+            cursor.execute(sql, (id_garde))
+            result = cursor.fetchone()
+            row = takeLatinTupleGetUtf8List(result)
+            contact = {'contact' : row[0]}
+            
+            cursor.close()
+            return contact, 200
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Error while searching for the contact")
