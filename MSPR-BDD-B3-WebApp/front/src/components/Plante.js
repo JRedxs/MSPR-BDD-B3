@@ -31,8 +31,6 @@ function Plante(props) {
         navigate(`/AddAdvice/`);
     };
 
-    const [reloadPlante, setReloadPlante] = useState(false);
-
     useEffect(() => {
         const accessToken = window.sessionStorage.getItem("access_token");
         axios
@@ -52,7 +50,7 @@ function Plante(props) {
                 console.log(plante);
             })
             .catch((error) => console.log(error));
-    }, [reloadPlante]);
+    }, []);
 
     const renderCarouselItems = () => {
         const filteredPhotos = plante.filter((photo, index) => {

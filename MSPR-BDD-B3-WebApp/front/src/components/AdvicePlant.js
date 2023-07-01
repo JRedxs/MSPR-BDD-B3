@@ -23,7 +23,6 @@ const AdvicePlant = () => {
   const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
-  const [reloadPlante, setReloadPlante] = useState(false);
   const toast = useToast();
 
   const handleInputChange = (event) => {
@@ -70,9 +69,6 @@ const AdvicePlant = () => {
         },
       });
       console.log(response.data);
-
-      setReloadPlante((prevReload) => !prevReload); // Mettre à jour l'état reloadPlante pour recharger les données de la plante
-
       navigate(`/Plante/${id_plante}`);
     } catch (error) {
       console.error(error);
@@ -100,43 +96,43 @@ const AdvicePlant = () => {
           Proposer un conseil
         </Text>
         <Box mx="auto" maxW="500px">
-  {user && (
-    <Center mb="6">
-      <Image src={user[1].image_data} alt="" w="55%" rounded="md" />
-    </Center>
-  )}
-  <form>
-    <FormControl mb="4">
-      <FormLabel htmlFor="advice_title">Titre du conseil :</FormLabel>
-      <Input
-        id="advice_title"
-        name="advice_title"
-        type="text"
-        placeholder="Titre"
-        value={advice.advice_title}
-        onChange={handleInputChange}
-        size="sm"
-      />
-    </FormControl>
-    <FormControl mb="4">
-      <FormLabel htmlFor="advice">Conseil :</FormLabel>
-      <Input
-        id="advice"
-        name="advice"
-        type="text"
-        placeholder="Conseil"
-        value={advice.advice}
-        onChange={handleInputChange}
-        size="sm"
-      />
-    </FormControl>
-    <Center mt="8">
-      <Button colorScheme="green" onClick={handleSubmit} size="sm">
-        Ajouter votre conseil
-      </Button>
-    </Center>
-  </form>
-</Box>
+          {user && (
+            <Center mb="6">
+              <Image src={user[1].image_data} alt="" w="55%" rounded="md" />
+            </Center>
+          )}
+          <form>
+            <FormControl mb="4">
+              <FormLabel htmlFor="advice_title">Titre du conseil :</FormLabel>
+              <Input
+                id="advice_title"
+                name="advice_title"
+                type="text"
+                placeholder="Titre"
+                value={advice.advice_title}
+                onChange={handleInputChange}
+                size="sm"
+              />
+            </FormControl>
+            <FormControl mb="4">
+              <FormLabel htmlFor="advice">Conseil :</FormLabel>
+              <Input
+                id="advice"
+                name="advice"
+                type="text"
+                placeholder="Conseil"
+                value={advice.advice}
+                onChange={handleInputChange}
+                size="sm"
+              />
+            </FormControl>
+            <Center mt="8">
+              <Button colorScheme="green" onClick={handleSubmit} size="sm">
+                Ajouter votre conseil
+              </Button>
+            </Center>
+          </form>
+        </Box>
 
       </Box>
     </Center>
