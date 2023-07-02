@@ -18,7 +18,7 @@ function Chat() {
   const baseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    let ws = new WebSocket(`ws://${baseUrl}/ws/${decoded_token.user_id}`);
+    let ws = new WebSocket(`ws://127.0.0.1:8000/ws/${decoded_token.user_id}`);
     setWebsckt(ws);
 
     const handleOpen = () => {
