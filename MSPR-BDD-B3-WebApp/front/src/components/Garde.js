@@ -34,7 +34,7 @@ const Garde = () => {
                     headers: {
                       Authorization: `Bearer ${accessToken}`,
                     },
-                  }
+                }
             );
             const gardeData = response_garde.data;
             console.log("Garde ajouté :", gardeData);
@@ -42,6 +42,9 @@ const Garde = () => {
             console.error(error);
         }
     };
+    
+
+    
 
     return (
         <div className="body">
