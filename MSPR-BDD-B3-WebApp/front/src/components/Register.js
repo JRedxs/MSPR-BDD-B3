@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { useCustomToast } from "../libs/alert"
 import { GenericButton } from "../libs/Button"
 import axios from 'axios'
-import { Box, VStack, Flex, Heading, HStack, Input, FormControl, Checkbox } from "@chakra-ui/react"
+import { Box, VStack, Flex, Heading, HStack, Input, FormControl, Checkbox, Link } from "@chakra-ui/react"
 import backgroundImage from '../styles/image.png'
 
 const Register = () => {
@@ -215,7 +215,7 @@ const Register = () => {
                                 <Checkbox
                                     isChecked={termsAndConditions}
                                     onChange={event => setTermsAndConditions(event.target.checked)}>
-                                    J'accepte les termes et conditions
+                                    <Link href='/rgpd/NoticeTraitementsDesDonnées.pdf' target="_blank"> J'accepte les termes et conditions </Link>
                                 </Checkbox>
                             </Flex>
                         </FormControl>
