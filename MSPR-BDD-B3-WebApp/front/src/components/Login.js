@@ -130,7 +130,7 @@ const LoginPage = () => {
                         </Box>
                     </Flex>
                     <Text mt = {4} textAlign = "center">
-                        Pas encore de code ? Inscrivez-vous
+                        Pas encore de compte ? Inscrivez-vous
                         <Link to = "/Register" color = "green.500">
                         <Text as = "span" fontWeight = "bold"> ici</Text>
                         </Link>
