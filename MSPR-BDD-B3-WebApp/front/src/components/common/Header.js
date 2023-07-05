@@ -13,16 +13,10 @@ const Header = () => {
 
 
     const handleLogout = () => {
-
-
-        // Récupère l'ID utilisateur à partir du sessionStorage
         const clientId = window.sessionStorage.getItem("access_token")
-
         const decoded_token = jwt_decode(clientId)
         const userId = decoded_token.user_id
         console.log(userId)
-
-        // Envoie la requête de déconnexion
         fetch(`${baseUrl}/disconnect_user/${userId}`, {
             method: 'PUT',
             headers: {
@@ -32,22 +26,16 @@ const Header = () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                // Effectuer les autres actions de déconnexion
             })
             .catch(error => {
                 console.error(error)
-                // Gérer l'erreur de déconnexion
             })
-
         window.sessionStorage.removeItem('access_token')
-        onClose()  // Ferme le menu si ouvert
-        navigate('/login')  // Redirige vers la page de connexion
+        onClose()  
+        navigate('/login')  
     }
 
     const isLoggedIn = !!window.sessionStorage.getItem('access_token')
-
-
-
     return (
         <Box as="header" p={12} bg="green" color="white">
             <Flex justifyContent="space-between" alignItems="center">
@@ -59,31 +47,26 @@ const Header = () => {
                         <>
                             <Button as={RouterLink} to="/Map" colorScheme="green" variant="outline" mr={2}>
                                 Garder une plante
-                            </Button>&nbsp
-
+                            </Button>
                             <Button as={RouterLink} to="/SearchPlant" colorScheme="green" variant="outline" mr={2}>
                                 Rechercher une plante
-                            </Button>&nbsp
-
+                            </Button>
                             <Menu>
                             <Avatar size="md" boxSize="1.5rem" src='https://bit.ly/broken-link' ml={2} />
-
                                 <MenuButton as={Button} colorScheme="green" rightIcon={<ChevronDownIcon />} borderRadius="full">
                                 </MenuButton>
                                 <Box borderRadius="md">
                                     <MenuList bg="green" color="white">
                                         <MenuItem as={RouterLink} to="/UserProfil">
-                                            &nbspProfil
+                                            Profil
                                         </MenuItem>
                                         <MenuItem as={RouterLink} to="/Chat">
-                                            &nbspChat
+                                            Chat
                                         </MenuItem>
-                                        <MenuItem onClick={handleLogout}>&nbspSe déconnecter</MenuItem>
+                                        <MenuItem onClick={handleLogout}>Se déconnecter</MenuItem>
                                     </MenuList>
                                 </Box>
                             </Menu>
-
-
                         </>
                     ) : (
                         <>
@@ -95,15 +78,12 @@ const Header = () => {
                                     S'inscrire
                                 </Button>
                             </Stack>
-                            
                         </>
                     )}
-
                 </Flex>
             </Flex>
             
         </Box>
     )
 }
-
 export default Header

@@ -112,7 +112,6 @@ def login_token(email: str, password: str):
                 access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
                 access_token = create_access_token(user_id=user_id, data={'id_role':result[8]}, expires_delta=access_token_expires)
                 
-                # Mettre à jour la date et l'heure de la dernière connexion de l'utilisateur
                 current_time = datetime.now()
                 update_query = "UPDATE Person SET last_login = %s, is_connected = TRUE WHERE id_person = %s"
                 cursor.execute(update_query, (current_time.strftime("%Y-%m-%dT%H:%M:%S"), user_id))
@@ -120,9 +119,9 @@ def login_token(email: str, password: str):
 
                 return {"access_token": access_token, "token_type": "bearer"}
             else:
-                raise HTTPException(status_code=400, detail="Incorrect email or password")
+                return {"detail": "Incorrect email or password"}, 200
         else:
-            raise HTTPException(status_code=400, detail="Incorrect email or password")
+            return {"detail": "Incorrect email or password"}, 200
         
         
 
