@@ -77,14 +77,21 @@ def login(person: Person):
     hashed_password = pwd_context.hash(person.password)
     encrypted_phone = encryption.encrypt(person.phone)
     
-    current_time = datetime.now()  # Obtenir la date et l'heure actuelles
+    current_time = datetime.now()  
     
     with connection.cursor() as cursor:
+
+        select_query = "SELECT email FROM Person WHERE email = %s"
+        cursor.execute(select_query, (person.email,))
+        existing_email = cursor.fetchone()
+
+        if existing_email:
+            raise HTTPException(status_code=409, detail="Cet email est déjà associé à un compte existant.")
+
         insert_query = "INSERT INTO Person (name, firstname, pwd, email, phone, last_login, id_role) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         cursor.execute(insert_query, (person.name, person.firstname, hashed_password, person.email, person.phone, current_time.strftime("%Y-%m-%dT%H:%M:%S"), person.id_role))
         connection.commit()
 
-        # Get inserted person's ID
         cursor.execute("SELECT LAST_INSERT_ID()")
         person_id = cursor.fetchone()[0]
 

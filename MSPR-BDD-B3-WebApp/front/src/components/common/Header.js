@@ -1,15 +1,14 @@
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Avatar, Box, Button, Flex, Heading, Menu, MenuButton, MenuItem, MenuList, useDisclosure, Stack } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
-import { FaUser } from 'react-icons/fa';
-import jwt_decode from "jwt-decode";
-
-import Message from '../Message';
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { Avatar, Box, Button, Flex, Heading, Menu, MenuButton, MenuItem, MenuList, useDisclosure, Stack } from '@chakra-ui/react'
+import { ChevronDownIcon } from '@chakra-ui/icons'
+import { FaUser } from 'react-icons/fa'
+import jwt_decode from "jwt-decode"
+import Message from '../Message'
 
 
 const Header = () => {
-    const navigate = useNavigate();
-    const { isOpen, onClose } = useDisclosure();
+    const navigate = useNavigate()
+    const { isOpen, onClose } = useDisclosure()
     const baseUrl = process.env.REACT_APP_API_URL
 
 
@@ -17,10 +16,10 @@ const Header = () => {
 
 
         // Récupère l'ID utilisateur à partir du sessionStorage
-        const clientId = window.sessionStorage.getItem("access_token");
+        const clientId = window.sessionStorage.getItem("access_token")
 
-        const decoded_token = jwt_decode(clientId);
-        const userId = decoded_token.user_id;
+        const decoded_token = jwt_decode(clientId)
+        const userId = decoded_token.user_id
         console.log(userId)
 
         // Envoie la requête de déconnexion
@@ -32,25 +31,25 @@ const Header = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                console.log(data)
                 // Effectuer les autres actions de déconnexion
             })
             .catch(error => {
-                console.error(error);
+                console.error(error)
                 // Gérer l'erreur de déconnexion
-            });
+            })
 
-        window.sessionStorage.removeItem('access_token');
-        onClose();  // Ferme le menu si ouvert
-        navigate('/login');  // Redirige vers la page de connexion
-    };
+        window.sessionStorage.removeItem('access_token')
+        onClose()  // Ferme le menu si ouvert
+        navigate('/login')  // Redirige vers la page de connexion
+    }
 
-    const isLoggedIn = !!window.sessionStorage.getItem('access_token');
+    const isLoggedIn = !!window.sessionStorage.getItem('access_token')
 
 
 
     return (
-        <Box as="header" Size='2rem' p={12} bg="green" color="white">
+        <Box as="header" p={12} bg="green" color="white">
             <Flex justifyContent="space-between" alignItems="center">
                 <RouterLink to="/">
                     <Heading><b>Arosa-Je</b></Heading>
@@ -60,11 +59,11 @@ const Header = () => {
                         <>
                             <Button as={RouterLink} to="/Map" colorScheme="green" variant="outline" mr={2}>
                                 Garder une plante
-                            </Button>&nbsp;
+                            </Button>&nbsp
 
                             <Button as={RouterLink} to="/SearchPlant" colorScheme="green" variant="outline" mr={2}>
                                 Rechercher une plante
-                            </Button>&nbsp;
+                            </Button>&nbsp
 
                             <Menu>
                             <Avatar size="md" boxSize="1.5rem" src='https://bit.ly/broken-link' ml={2} />
@@ -74,12 +73,12 @@ const Header = () => {
                                 <Box borderRadius="md">
                                     <MenuList bg="green" color="white">
                                         <MenuItem as={RouterLink} to="/UserProfil">
-                                            &nbsp;Profil
+                                            &nbspProfil
                                         </MenuItem>
                                         <MenuItem as={RouterLink} to="/Chat">
-                                            &nbsp;Chat
+                                            &nbspChat
                                         </MenuItem>
-                                        <MenuItem onClick={handleLogout}>&nbsp;Se déconnecter</MenuItem>
+                                        <MenuItem onClick={handleLogout}>&nbspSe déconnecter</MenuItem>
                                     </MenuList>
                                 </Box>
                             </Menu>
@@ -104,7 +103,7 @@ const Header = () => {
             </Flex>
             
         </Box>
-    );
-};
+    )
+}
 
-export default Header;
+export default Header
