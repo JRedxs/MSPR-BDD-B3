@@ -275,7 +275,7 @@ def get_user_by_id(user_id: int):
             return {"Person": users}
         except:
             cursor.close()
-            raise HTTPException(status_code=404, detail="Personne inexistante",tags=["Plant"])
+            raise HTTPException(status_code=404, detail="Personne inexistante")
 
 
 @app.post("/image", summary="Insertion d'une image",tags=["Plant"])
