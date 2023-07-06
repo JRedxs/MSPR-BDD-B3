@@ -1,115 +1,127 @@
-import { useState, useRef } from 'react';
+import { useState, useRef } from 'react'
+import { Box, Button, Center, HStack, Text, VStack, Image, Input } from '@chakra-ui/react'
+import { Carousel } from 'react-responsive-carousel'
+import { useNavigate } from 'react-router-dom'
 import Logo from '../assets/images/logo.png'
-import { useNavigate } from "react-router-dom";
-import '../styles/RegisterFirstPhoto.css'; // import de la feuille de style CSS
-
-
+import { useCustomToast } from '../libs/alert'
+import backgroundImage from '../styles/image.png'
 
 const RegisterFirstPhoto = () => {
-  const [isCameraActive, setIsCameraActive] = useState(false);
-  const videoRef = useRef(null);
-  const [imageSrc, setImageSrc] = useState(null);
-  const baseUrl = process.env.REACT_APP_API_URL;
-  const [idPlante, setIdPlante] = useState(1);
+  const [isCameraActive, setIsCameraActive] = useState(false)
+  const videoRef = useRef(null)
+  const [imageSrcs, setImageSrcs] = useState([])
+  const baseUrl = process.env.REACT_APP_API_URL
+  const [idPlante, setIdPlante] = useState(1)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const showToast = useCustomToast()
 
-  const handleStartCamera = () => {
-    setIsCameraActive(true);
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-        videoRef.current.srcObject = stream;
-      });
-  };
+  const handleStartCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+      videoRef.current.srcObject = stream
+      setIsCameraActive(true)
+    } catch (err) {
+      showToast({
+        title: 'Erreur de caméra',
+        description: "Votre appareil n'a pas de caméra ou elle n'est pas accessible.",
+        status: 'error',
+      })
+    }
+  }
 
   const handleStopCamera = () => {
-    setIsCameraActive(false);
-    const stream = videoRef.current.srcObject;
-    stream.getTracks().forEach(track => track.stop());
-  };
+    setIsCameraActive(false)
+    const stream = videoRef.current.srcObject
+    stream.getTracks().forEach((track) => track.stop())
+  }
 
   const handleTakePhoto = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = videoRef.current.videoWidth;
-    canvas.height = videoRef.current.videoHeight;
-    canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
-    
-    const image = new Image();
-    image.src = canvas.toDataURL();
-    handleStopCamera();
-    setImageSrc(image.src);
-  };
+    const canvas = document.createElement('canvas')
+    canvas.width = videoRef.current.videoWidth
+    canvas.height = videoRef.current.videoHeight
+    canvas.getContext('2d').drawImage(videoRef.current, 0, 0)
+
+    const image = new Image()
+    image.src = canvas.toDataURL()
+    handleStopCamera()
+    setImageSrcs((oldSrcs) => [...oldSrcs, image.src])
+  }
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setImageSrcs((oldSrcs) => [...oldSrcs, reader.result])
+    }
+    reader.readAsDataURL(file)
+  }
 
   const handleUploadPhoto = () => {
-    
-    window.sessionStorage.setItem('photo', JSON.stringify(imageSrc));
-
-    setImageSrc(null);
-    
-    navigate("/RegisterPlante");
-  };
-
+    window.sessionStorage.setItem('photo', JSON.stringify(imageSrcs))
+    setImageSrcs([])
+    navigate('/RegisterPlante')
+  }
 
   const handleTakeNewPhoto = () => {
-    setImageSrc(null);
-    handleStartCamera();
-  };
+    setImageSrcs([])
+    handleStartCamera()
+  }
 
   return (
-    <div className='body'>
-
- 
-    <div>
-      {
-        isCameraActive && (
-          <div className="d-flex justify-content-center margin-login-card" style={{margin:"5em"}}>
-            <div className="card">
+    <Box bgImage  = {`url(${backgroundImage})`} bgRepeat = "no-repeat" bgSize   = "cover" minH= "120vh" pt= "100px" w= "100%">
+      <Center minHeight="100vh" flexDirection="column">
+        <Box boxShadow="xl" p="6" rounded="md" bg="white">
+          {isCameraActive ? (
+            <VStack spacing={5}>
               <video ref={videoRef} autoPlay />
-              <div className="card-body">
-                <div className="d-flex justify-content-center align-items-center">
-                  <b><p className="card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
-                </div>
-                <div className="d-flex justify-content-center align-items-center">
-                  <button className='btn btn-success' id="TakePhoto" style={{margin:"1em"}} onClick={handleTakePhoto}>Prendre une Photo</button>
-                  <button className='btn btn-success' style={{margin:"1em"}} onClick={handleStopCamera}>Arreter la Camera</button>
-                </div>
-              </div>
-            </div> 
-          </div>
-        )
-      }
-      {
-        !isCameraActive && !imageSrc && (
-          <div className="d-flex justify-content-center align-items-center" style={{margin:"5em"}}>
-            <div className="card  d-flex justify-content-center align-items-center">
-            <img src={Logo} className="card-img-top" alt="logo"/>
-              <div className="card-body ">
-                <b><p className="card-text">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</p></b>
-              </div>
-                <div className="d-flex justify-content-center">
-                  <button className='btn btn-success' id="StartCamera" style={{margin:"2em"}} onClick={handleStartCamera}>Lancer la Camera</button>
-                </div>
-              </div>
-            </div> 
-        )
-      }
-      {
-        imageSrc && (
-          <div className="d-flex justify-content-center align-items-center"  >
-            <div className="card" style={{margin:"5em"}}>
-              <img src={imageSrc} alt="" />
-              <div className="card-body">
-                <div className="d-flex justify-content-center align-items-center"> 
-                  <button className='btn btn-success' id="UploadPhoto" style={{margin:"1em"}} onClick={handleUploadPhoto}>Enregister la Photo</button>
-                  <button className='btn btn-success' style={{margin:"1em"}} onClick={handleTakeNewPhoto}>Prendre une nouvelle Photo</button>
-                </div>
-              </div>
-            </div> 
-          </div>
-        )
-      }
-    </div>
-    </div>
-  );
-};
-export default RegisterFirstPhoto;
+              <Text fontWeight="bold">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</Text>
+              <HStack spacing={3}>
+                <Button colorScheme="green" onClick={handleTakePhoto}>
+                  Prendre une Photo
+                </Button>
+                <Button colorScheme="green" onClick={handleStopCamera}>
+                  Arrêter la Caméra
+                </Button>
+              </HStack>          
+            </VStack>
+          ) : (
+            <VStack spacing={5}>
+              {imageSrcs.length ? (
+                <Carousel dynamicHeight={false} showThumbs={false}>
+                  {imageSrcs.map((src, index) => (
+                    <div key={index}>
+                      <Image src={src} alt={`photo ${index}`} boxSize="100%" objectFit="cover" />
+                    </div>
+                  ))}
+                </Carousel>
+              ) : (
+                <Image src={Logo} boxSize="300px" objectFit="contain" />
+              )}
+              <Text fontWeight="bold">Vous pouvez enregistrer ici une nouvelle photo pour votre plante</Text>
+              <HStack spacing={3}>
+                <Button colorScheme="green" onClick={handleStartCamera}>
+                  Lancer la Caméra
+                </Button>
+                <Input type="file" accept="image/*" multiple onChange={handleFileUpload} />
+                {imageSrcs.length ? (
+                  <Button colorScheme="green" onClick={handleUploadPhoto}>
+                    Enregistrer les Photos
+                  </Button>
+                ) : null}
+              </HStack>
+            </VStack>
+          )}
+        </Box>
+      </Center>
+    </Box>
+  )
+}
+
+export default RegisterFirstPhoto
+
+
+
+
+
