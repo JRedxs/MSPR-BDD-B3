@@ -11,13 +11,20 @@ const Header = () => {
   const baseUrl = process.env.REACT_APP_API_URL
 
   const handleLogout = () => {
-    const clientId = window.sessionStorage.getItem("access_token")
-    const decoded_token = jwt_decode(clientId)
+    const token = window.sessionStorage.getItem("access_token")
+
+    if (!token) {
+      console.error("No access token found.")
+      return
+    }
+
+    const decoded_token = jwt_decode(token)
     const userId = decoded_token.user_id
     console.log(userId)
     fetch(`${baseUrl}/disconnect_user/${userId}`, {
       method: 'PUT',
       headers: {
+        'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json',
       },
     })
@@ -44,7 +51,7 @@ const Header = () => {
   }
 
   return (
-    <Box as="header" p={12} bg="green" color="white" overflowX="hidden">
+    <Box as="header" p={12} bg="green" color="white" overflowX="hidden" position="sticky" top="0" zIndex="docked">
       <Flex justifyContent="space-between" alignItems="center" flexWrap="wrap">
         <RouterLink to="/">
           <Heading><b>Arosa-Je</b></Heading>
@@ -106,49 +113,49 @@ const Header = () => {
               <DrawerBody>
                 {isLoggedIn ? (
                   <Box mt={36}>
-										<Box mt={24} boxShadow="2xl">
-                    <Button as={RouterLink} to="/Map" colorScheme="green" variant="outline" my={2} w="100%" fontWeight="bold" color="white">
-                      Garder une plante
-                    </Button>
-										</Box>
-										<Box mt={24} boxShadow="2xl">
-                    <Button as={RouterLink} to="/SearchPlant" colorScheme="green" variant="outline" my={2} w="100%" fontWeight="bold" color="white">
-                      Rechercher une plante
-                    </Button>
-										</Box>
-										<Box mt={24} boxShadow="2xl">
-                    <Button as={RouterLink} to="/UserProfil" my={2} w="100%" fontWeight="bold" color="white">
-                      Profil
-                    </Button>
-										</Box>
-										<Box mt={24} boxShadow="2xl">
-                    <Button as={RouterLink} to="/Chat" my={2} w="100%" fontWeight="bold" color="white">
-                      Chat
-                    </Button>
-										</Box>
-										<Box mt={24} boxShadow="2xl">
-                    <Button onClick={handleLogout} my={2} w="100%" fontWeight="bold" color="white">
-                      Se déconnecter
-                    </Button>
-										</Box>
+                    <Box mt={24} boxShadow="2xl">
+                      <Button as={RouterLink} to="/Map" colorScheme="green" variant="outline" my={2} w="100%" fontWeight="bold" color="white">
+                        Garder une plante
+                      </Button>
+                    </Box>
+                    <Box mt={24} boxShadow="2xl">
+                      <Button as={RouterLink} to="/SearchPlant" colorScheme="green" variant="outline" my={2} w="100%" fontWeight="bold" color="white">
+                        Rechercher une plante
+                      </Button>
+                    </Box>
+                    <Box mt={24} boxShadow="2xl">
+                      <Button as={RouterLink} to="/UserProfil" my={2} w="100%" fontWeight="bold" color="white">
+                        Profil
+                      </Button>
+                    </Box>
+                    <Box mt={24} boxShadow="2xl">
+                      <Button as={RouterLink} to="/Chat" my={2} w="100%" fontWeight="bold" color="white">
+                        Chat
+                      </Button>
+                    </Box>
+                    <Box mt={24} boxShadow="2xl">
+                      <Button onClick={handleLogout} my={2} w="100%" fontWeight="bold" color="white">
+                        Se déconnecter
+                      </Button>
+                    </Box>
                   </Box>
                 ) : (
                   <Box mt={36}>
-										<Box boxShadow="2xl">
-											<Button as={RouterLink} to="/login" colorScheme="blue" variant="solid" my={2} w="100%" fontWeight="bold" color="white" boxShadow="2xl">
-                      	Se connecter
+                    <Box boxShadow="2xl">
+                      <Button as={RouterLink} to="/login" colorScheme="blue" variant="solid" my={2} w="100%" fontWeight="bold" color="white" boxShadow="2xl">
+                        Se connecter
                       </Button>
-										</Box>
-										<Box mt={24} boxShadow="2xl">
-                    <Button as={RouterLink} to="/Register" colorScheme="blue" variant="solid" my={2} w="100%" fontWeight="bold" color="white">
-                      S'inscrire
-                    </Button>
-										</Box>
+                    </Box>
+                    <Box mt={24} boxShadow="2xl">
+                      <Button as={RouterLink} to="/Register" colorScheme="blue" variant="solid" my={2} w="100%" fontWeight="bold" color="white">
+                        S'inscrire
+                      </Button>
+                    </Box>
                   </Box>
 
                 )}
               </DrawerBody>
-            </DrawerContent>
+							</DrawerContent>
           </Drawer>
         </Flex>
       </Flex>

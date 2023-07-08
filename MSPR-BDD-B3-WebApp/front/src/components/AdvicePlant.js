@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import {
   Box,
   Button,
@@ -12,37 +12,37 @@ import {
   Text,
   useToast,
   Image
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 
 const AdvicePlant = () => {
-  const id_plante = Number(sessionStorage.getItem('plante'));
-  const id_photo = Number(sessionStorage.getItem('photo'));
-  const baseUrl = process.env.REACT_APP_API_URL;
+  const id_plante = Number(sessionStorage.getItem('plante'))
+  const id_photo = Number(sessionStorage.getItem('photo'))
+  const baseUrl = process.env.REACT_APP_API_URL
 
-  const [advice, setAdvice] = useState({ advice_title: '', advice: '', id_photo: id_photo });
-  const [user, setUser] = useState(null);
+  const [advice, setAdvice] = useState({ advice_title: '', advice: '', id_photo: id_photo })
+  const [user, setUser] = useState(null)
 
-  const navigate = useNavigate();
-  const toast = useToast();
+  const navigate = useNavigate()
+  const toast = useToast()
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setAdvice({ ...advice, [name]: value, id_photo: id_photo });
-  };
+    const { name, value } = event.target
+    setAdvice({ ...advice, [name]: value, id_photo: id_photo })
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const accessToken = window.sessionStorage.getItem('access_token');
+        const accessToken = window.sessionStorage.getItem('access_token')
         const response_user = await axios.get(`${baseUrl}/plantandgallery/${id_plante}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        });
-        const userData = response_user.data[0].Plante;
-        setUser(userData);
-        console.log(userData);
-        sessionStorage.setItem('user_plante', JSON.stringify(userData));
+        })
+        const userData = response_user.data[0].Plante
+        setUser(userData)
+        console.log(userData)
+        sessionStorage.setItem('user_plante', JSON.stringify(userData))
 
         // Mettre à jour les conseils dans l'état advice
         if (userData && userData[id_photo]) {
@@ -50,37 +50,37 @@ const AdvicePlant = () => {
             ...advice,
             advice_title: userData[id_photo].advice_title || '',
             advice: userData[id_photo].advice || '',
-          });
+          })
         }
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
-    };
-    fetchData();
-  }, []);
+    }
+    fetchData()
+  }, [])
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
-      const accessToken = window.sessionStorage.getItem('access_token');
+      const accessToken = window.sessionStorage.getItem('access_token')
       const response = await axios.put(`${process.env.REACT_APP_API_URL}/advices`, advice, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      });
-      console.log(response.data);
-      navigate(`/Plante/${id_plante}`);
+      })
+      console.log(response.data)
+      navigate(`/Plante/${id_plante}`)
     } catch (error) {
-      console.error(error);
+      console.error(error)
       toast({
         title: 'Erreur',
         description: "Une erreur s'est produite lors de l'ajout du conseil.",
         status: 'error',
         duration: 3000,
         isClosable: true,
-      });
+      })
     }
-  };
+  }
 
   return (
     <Center py="5">
@@ -136,7 +136,7 @@ const AdvicePlant = () => {
 
       </Box>
     </Center>
-  );
-};
+  )
+}
 
-export default AdvicePlant;
+export default AdvicePlant
