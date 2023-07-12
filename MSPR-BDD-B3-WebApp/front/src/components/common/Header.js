@@ -23,7 +23,7 @@ const Header = () => {
             </MenuButton>
             <MenuList>
               {options.map((option, index) => (
-                <MenuItem key={index} onClick={() => onOptionClick(option.id)}>
+                <MenuItem key={index} onClick={() => onOptionClick(option.number)}>
                   {option.text}
                 </MenuItem>
               ))}
@@ -33,13 +33,17 @@ const Header = () => {
       }
     
     const openMessages = (id) => {
+        console.log(id);
         setId_contact(id);
+        setMessageIsOpen(true);
     };
 
+    const closeMessages = () => {
+        setMessageIsOpen(false);
+      };
 
     useEffect(() => {
         setInterval(()=>{
-            console.log(conversations);
             let url = process.env.REACT_APP_API_URL;
             url += "/conversations";
             const accessToken = window.sessionStorage.getItem("access_token");
@@ -58,19 +62,16 @@ const Header = () => {
                     newConversations.push( {number: conversationList[index][0], text: conversationList[index][2], wasRead: conversationList[index][1]});
                 }
                 setConversations(newConversations);
+                console.log(newConversations);
             });
-        }, 1000)
+        }, 10000) // 30s
       }, []);
 
     const handleLogout = () => {
-        
-
         // Récupère l'ID utilisateur à partir du sessionStorage
         const clientId = window.sessionStorage.getItem("access_token");
-    
         const decoded_token = jwt_decode(clientId);
         const userId = decoded_token.user_id;
-    
         // Envoie la requête de déconnexion
         fetch(`${baseUrl}/disconnect_user/${userId}`, {
             method: 'PUT',
@@ -102,9 +103,6 @@ const Header = () => {
                     {isLoggedIn ? (
                         <>
                             {conversations && (<MenuConversations options={conversations} onOptionClick={openMessages}/>)}
-                            <Button as={RouterLink} to="/Map" colorScheme="green" variant="outline" mr={2}>
-                                Garder une plante
-                            </Button>
                             <Button as={RouterLink} to="/Map" colorScheme="green" variant="outline" mr={2}>
                                 Garder une plante
                             </Button>
@@ -144,7 +142,7 @@ const Header = () => {
             </Flex>
             
         </Box>
-        {messageIsOpen && (<Message id_contact={id_contact}/>)}
+        {messageIsOpen && id_contact && (<Message id_contact={id_contact} onClose={closeMessages}/>)}
         </>
     )
 }

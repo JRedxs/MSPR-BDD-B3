@@ -1,5 +1,7 @@
 import React from 'react';
 import '../styles/Message.css';
+import { Flex, Button } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 import axios from 'axios';
 
 class Message extends React.Component {
@@ -17,6 +19,7 @@ class Message extends React.Component {
     this.handleNewMessageChange = this.handleNewMessageChange.bind(this);
     this.toggleMinimize = this.toggleMinimize.bind(this);
     this.handleWriteConversation = this.handleWriteConversation.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     
     this.update_clock = setInterval(()=>{
       const accessToken = window.sessionStorage.getItem("access_token");
@@ -32,7 +35,7 @@ class Message extends React.Component {
         .then((response) => {
           this.handleWriteConversation(response.data[0])
         })
-    }, 10000) //10s
+    }, 1000) //1s
   }
 
   handleSendMessage() {
@@ -62,6 +65,12 @@ class Message extends React.Component {
     this.setState(state => ({ isMinimized: !state.isMinimized }));
   }
 
+  handleClose(event) {
+    event.stopPropagation();
+    clearInterval(this.update_clock);
+    this.props.onClose();
+  }
+
   handleWriteConversation(conversation) {
     const messagesList = []
     for(let index = 0; index < conversation.length; index++)
@@ -83,9 +92,12 @@ class Message extends React.Component {
   render() {
     return (
       <div className={`chatbox ${this.state.isMinimized ? 'minimized' : ''}`}>
-        <div className="header" onClick={this.toggleMinimize}>
-          Chat Box
-        </div>
+        <Flex className="header" justifyContent="space-between" onClick={this.toggleMinimize}>
+          Conversation
+          <Button onClick={this.handleClose} size="sm">
+            <CloseIcon />
+          </Button>
+        </Flex>
         {!this.state.isMinimized && (
           <div className="content">
             {this.state.messages.map((message, index) => (
