@@ -5,7 +5,7 @@ import { Box, VStack, Flex, Heading, Input, FormControl, Image, Text } from "@ch
 import backgroundImage from '../styles/image.png'
 import logo from '../styles/arosaje.png'
 import { GenericButton } from "../libs/Button"
-import { useCustomToast } from "../libs/alert" 
+import { useCustomToast } from "../libs/Alert" 
 
 const LoginPage = () => {
     const baseUrl                 = process.env.REACT_APP_API_URL

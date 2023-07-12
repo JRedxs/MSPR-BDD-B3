@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import React, { useState } from "react"
-import { useCustomToast } from "../libs/alert"
+import { useCustomToast } from "../libs/Alert"
 import { GenericButton } from "../libs/Button"
 import axios from 'axios'
 import { Box, VStack, Flex, Heading, HStack, Input, FormControl, Checkbox, Link } from "@chakra-ui/react"
