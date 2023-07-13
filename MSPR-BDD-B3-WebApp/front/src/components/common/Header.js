@@ -33,7 +33,6 @@ const Header = () => {
       }
     
     const openMessages = (id) => {
-        console.log(id);
         setId_contact(id);
         setMessageIsOpen(true);
     };
@@ -65,6 +64,10 @@ const Header = () => {
                 console.log(newConversations);
             });
         }, 10000) // 30s
+        document.addEventListener("new_conversation", () => {
+            const contact = parseInt(window.sessionStorage.getItem('contact'));
+            openMessages(contact);
+        });
       }, []);
 
     const handleLogout = () => {

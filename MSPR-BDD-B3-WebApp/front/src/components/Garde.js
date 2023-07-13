@@ -55,8 +55,10 @@ const Garde = () => {
                 },
               }
         ).then((response) => {
-            window.sessionStorage.setItem('new_conversation', 'true');
+            console.log(response);
             window.sessionStorage.setItem('contact', response.data[0].contact);
+            const startEvent = new Event("new_conversation");
+            document.dispatchEvent(startEvent);
         });
         
     };
