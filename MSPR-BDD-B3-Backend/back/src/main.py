@@ -476,7 +476,7 @@ async def register_plante(plante: PlantToCreate, token: Tuple[str, str] = Depend
     with connection.cursor() as cursor:
         try:
             sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-            val = (plante.id_person, plante.name, plante.number, plante.road_first, 
+            val = (token[0], plante.name, plante.number, plante.road_first, 
                     plante.road_second, plante.town, plante.postal_code,
                     plante.latitude, plante.longitude)
             cursor.execute(sql, val)
