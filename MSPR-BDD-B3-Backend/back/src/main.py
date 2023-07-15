@@ -104,7 +104,6 @@ def login_token(email: str, password: str):
         query = "SELECT * FROM Person WHERE email=%s"
         cursor.execute(query, (email,))
         result = cursor.fetchone()
-        print(result)
         if result:
             user_id = result[0]
             hashed_password = result[3]
@@ -116,12 +115,11 @@ def login_token(email: str, password: str):
                 update_query = "UPDATE Person SET last_login = %s, is_connected = TRUE WHERE id_person = %s"
                 cursor.execute(update_query, (current_time.strftime("%Y-%m-%dT%H:%M:%S"), user_id))
                 connection.commit()
-
-                return {"access_token": access_token, "token_type": "bearer"}
+                return {"access_token": access_token, "token_type": "bearer"}, 200
             else:
-                return {"detail": "Incorrect email or password"}, 200
+                return {"detail": "Incorrect email or password"}, 401
         else:
-            return {"detail": "Incorrect email or password"}, 200
+            return {"detail": "Service unavailable"}, 503
         
         
 
