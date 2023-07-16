@@ -70,19 +70,20 @@ function RegisterPlante(){
                         Authorization: `Bearer ${accessToken}`,
                     }
                 })
-                    .then( async (planteResponse) => {
-                        await axios.post(`${baseUrl}/image`, {id_plante: planteResponse.data.id_plante, data: photo}, {
+                .then( async (planteResponse) => {
+                    const uploadPromises = photo.map(image =>
+                        axios.post(`${baseUrl}/image`, {id_plante: planteResponse.data.id_plante, data: image}, {
                             headers: {
-                                //'Access-Control-Allow-Origin': '*',
                                 Authorization: `Bearer ${accessToken}`,
                             }
                         })
-                        .then( () => {
-                            navigate(`/SearchPlant`)
-                        })
-                    })
+                    );
+                    return Promise.all(uploadPromises);
+                })
+                .then( () => {
+                    navigate(`/SearchPlant`)
+                })
             })
-    
     }
 
     return (
