@@ -3,7 +3,7 @@ import { Box, Button, Center, HStack, Text, VStack, Image, Input } from '@chakra
 import { Carousel } from 'react-responsive-carousel'
 import { useNavigate } from 'react-router-dom'
 import Logo from '../assets/images/logo.png'
-import { useCustomToast } from '../libs/alert'
+import { useCustomToast } from '../libs/Alert'
 import backgroundImage from '../styles/image.png'
 
 const RegisterFirstPhoto = () => {
@@ -16,19 +16,20 @@ const RegisterFirstPhoto = () => {
   const navigate = useNavigate()
   const showToast = useCustomToast()
 
-  const handleStartCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-      videoRef.current.srcObject = stream
-      setIsCameraActive(true)
-    } catch (err) {
-      showToast({
-        title: 'Erreur de caméra',
-        description: "Votre appareil n'a pas de caméra ou elle n'est pas accessible.",
-        status: 'error',
+  const handleStartCamera = () => {
+    setIsCameraActive(true);
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        videoRef.current.srcObject = stream;
       })
-    }
-  }
+      .catch((err) =>{
+        showToast({
+          title: 'Erreur de caméra',
+          description: "Votre appareil n'a pas de caméra ou elle n'est pas accessible.",
+          status: 'error',
+        })
+      });
+  };
 
   const handleStopCamera = () => {
     setIsCameraActive(false)
@@ -42,7 +43,7 @@ const RegisterFirstPhoto = () => {
     canvas.height = videoRef.current.videoHeight
     canvas.getContext('2d').drawImage(videoRef.current, 0, 0)
 
-    const image = new Image()
+    const image = new window.Image()
     image.src = canvas.toDataURL()
     handleStopCamera()
     setImageSrcs((oldSrcs) => [...oldSrcs, image.src])

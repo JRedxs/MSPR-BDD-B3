@@ -1,5 +1,6 @@
 import React from 'react';
-import '../styles/Message.css';
+import { Flex, Button, Box, Input, VStack, IconButton, Text, Tag } from "@chakra-ui/react";
+import { CloseIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import axios from 'axios';
 
 class Message extends React.Component {
@@ -17,22 +18,23 @@ class Message extends React.Component {
     this.handleNewMessageChange = this.handleNewMessageChange.bind(this);
     this.toggleMinimize = this.toggleMinimize.bind(this);
     this.handleWriteConversation = this.handleWriteConversation.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     
     this.update_clock = setInterval(()=>{
-    const accessToken = window.sessionStorage.getItem("access_token");
-    if (!accessToken){
-      return
-    }
-    const url = this.state.baseUrl + `/conversation?id_contact=${this.state.id_contact}`;
-    axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      }, 
-    })
-      .then((response) => {
-        this.handleWriteConversation(response.data[0])
+      const accessToken = window.sessionStorage.getItem("access_token");
+      if (!accessToken){
+        return
+      }
+      const url = this.state.baseUrl + `/conversation?id_contact=${this.state.id_contact}`;
+      axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }, 
       })
-    }, 10000) //10s
+        .then((response) => {
+          this.handleWriteConversation(response.data[0])
+        })
+    }, 1000) //1s
   }
 
   handleSendMessage() {
@@ -62,12 +64,23 @@ class Message extends React.Component {
     this.setState(state => ({ isMinimized: !state.isMinimized }));
   }
 
+  handleClose(event) {
+    event.stopPropagation();
+    clearInterval(this.update_clock);
+    this.props.onClose();
+  }
+
   handleWriteConversation(conversation) {
-    console.log(conversation);
     const messagesList = []
     for(let index = 0; index < conversation.length; index++)
     {
-      const message = conversation[index].date_message + ' - ' + conversation[index].prenom_emetteur + ' ' + conversation[index].nom_emetteur + ' : ' + conversation[index].message
+      let message = conversation[index].date_message + ' - ' + conversation[index].prenom_emetteur + ' : ' + conversation[index].message
+      if (conversation[index].id_emetteur === this.state.id_contact){
+        message = ">>> " + message;
+      }
+      else {
+        message = "<<< " + message;
+      }
       messagesList.push(message) // date - Prenom Nom : message
     }
     this.setState({
@@ -77,24 +90,57 @@ class Message extends React.Component {
 
   render() {
     return (
-      <div className={`chatbox ${this.state.isMinimized ? 'minimized' : ''}`}>
-        <div className="header" onClick={this.toggleMinimize}>
-          Chat Box
-        </div>
+      <Box 
+        position="fixed"
+        bottom="0"
+        right="0"
+        w="300px"
+        h={this.state.isMinimized ? "20px" : "500px"}
+        border="1px"
+        borderColor="gray.300"
+        bgColor="white"
+        overflow="auto"
+        zIndex="9999"
+        pointerEvents="auto"
+        opacity="1"
+      >
+        <Flex 
+          h="40px"
+          bgColor="#3f8623f7"
+          p="5px"
+          cursor="pointer"
+          justifyContent="space-between" 
+          onClick={this.toggleMinimize}
+        >
+          <Text fontSize="lg" fontWeight="bold" color="white">Conversation</Text>
+          <IconButton icon={<CloseIcon />} onClick={this.handleClose} size="sm" />
+        </Flex>
         {!this.state.isMinimized && (
-          <div className="content">
-            {this.state.messages.map((message, index) => (
-              <div key={index}>{message}</div>
-            ))}
-            <input
-              value={this.state.newMessage}
-              onChange={this.handleNewMessageChange}
-              placeholder="Type a message..."
-            />
-            <button onClick={this.handleSendMessage}>Send</button>
-          </div>
+          <Box p="10px">
+            <VStack spacing={2} align="stretch">
+              {this.state.messages.map((message, index) => {
+                const isEmitter = message.startsWith('>>>');
+                const colorScheme = isEmitter ? "teal" : "blue";
+
+                return (
+                  <Tag key={index} colorScheme={colorScheme} rounded="full" px={2} py={1}>
+                    <Text fontSize="sm">{message}</Text>
+                  </Tag>
+                );
+              })}
+            </VStack>
+            <Flex mt={4}>
+              <Input
+                value={this.state.newMessage}
+                onChange={this.handleNewMessageChange}
+                placeholder="Type a message..."
+                w="100%"
+              />
+              <IconButton icon={<ArrowForwardIcon />} onClick={this.handleSendMessage} ml={2} />
+            </Flex>
+          </Box>
         )}
-      </div>
+      </Box>
     );
   }
 }

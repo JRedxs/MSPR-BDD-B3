@@ -37,7 +37,6 @@ const Garde = () => {
                 }
             );
             const gardeData = response_garde.data;
-            console.log("Garde ajouté :", gardeData);
         } catch (error) {
             console.error(error);
         }
@@ -45,6 +44,24 @@ const Garde = () => {
     
 
     
+
+    const handleContactOnClick= async () => {
+        const usersInfo = JSON.parse(sessionStorage.getItem("user"));
+        const accessToken = window.sessionStorage.getItem("access_token");
+        axios.get(
+            `${baseUrl}/new_conversation/${usersInfo.id_garde}`, {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }
+        ).then((response) => {
+            console.log(response);
+            window.sessionStorage.setItem('contact', response.data[0].contact);
+            const startEvent = new Event("new_conversation");
+            document.dispatchEvent(startEvent);
+        });
+        
+    };
 
     return (
         <div className="body">
@@ -84,7 +101,8 @@ const Garde = () => {
                                 </div>
                                 <div className="d-flex justify-content-center align-items-center flex-column flex-md-row">
                                     <Link className="btn mb-3 mb-md-0 me-md-3" type="submit" style={{ color: 'black', backgroundColor: '#48dbfb' }} to="/Map">Retour</Link>
-                                    <Link className="btn" type="submit" style={{ color: 'black', backgroundColor: '#48dbfb' }} onClick={handleOnClick} to="/">Valider</Link>
+                                    <Link className="btn mb-3 mb-md-0 me-md-3" type="submit" style={{ color: 'black', backgroundColor: '#48dbfb' }} onClick={handleOnClick} to="/">Valider</Link>
+                                    <Link className="btn mb-3 mb-md-0 me-md-3" type="submit" style={{ color: 'black', backgroundColor: '#48dbfb' }} onClick={handleContactOnClick} >Contacter</Link>
                                 </div>
                             </form>
                         </div>

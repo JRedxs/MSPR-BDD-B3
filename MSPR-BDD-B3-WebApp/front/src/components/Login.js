@@ -5,7 +5,7 @@ import { Box, VStack, Flex, Heading, Input, FormControl, Image, Text } from "@ch
 import backgroundImage from '../styles/image.png'
 import logo from '../styles/arosaje.png'
 import { GenericButton } from "../libs/Button"
-import { useCustomToast } from "../libs/alert" 
+import { useCustomToast } from "../libs/Alert" 
 
 const LoginPage = () => {
     const baseUrl                 = process.env.REACT_APP_API_URL
@@ -50,7 +50,8 @@ const LoginPage = () => {
 
         try {
             const response     = await axios.post(`${baseUrl}/token_log?email=${email}&password=${password}`)
-            const access_token = response.data.access_token
+            const access_token = response.data[0].access_token
+            console.log(response)
             if (access_token) {
                 window.sessionStorage.setItem('access_token', access_token)
                 navigate(`/SearchPlant`)

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
-import { Box, Heading, FormLabel, Input, Button, VStack, HStack, Text, FormControl, FormErrorMessage, Flex } from "@chakra-ui/react"
+import { Box, Heading, FormLabel, Input, Button, VStack, HStack, FormControl,  Flex } from "@chakra-ui/react"
 import backgroundImage from '../styles/image.png'
 
 function RegisterPlante(){

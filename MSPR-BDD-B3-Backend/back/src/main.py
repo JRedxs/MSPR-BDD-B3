@@ -104,7 +104,6 @@ def login_token(email: str, password: str):
         query = "SELECT * FROM Person WHERE email=%s"
         cursor.execute(query, (email,))
         result = cursor.fetchone()
-        print(result)
         if result:
             user_id = result[0]
             hashed_password = result[3]
@@ -116,12 +115,11 @@ def login_token(email: str, password: str):
                 update_query = "UPDATE Person SET last_login = %s, is_connected = TRUE WHERE id_person = %s"
                 cursor.execute(update_query, (current_time.strftime("%Y-%m-%dT%H:%M:%S"), user_id))
                 connection.commit()
-
-                return {"access_token": access_token, "token_type": "bearer"}
+                return {"access_token": access_token, "token_type": "bearer"}, 200
             else:
-                return {"detail": "Incorrect email or password"}, 200
+                return {"detail": "Incorrect email or password"}, 401
         else:
-            return {"detail": "Incorrect email or password"}, 200
+            return {"detail": "Service unavailable"}, 503
         
         
 
@@ -476,7 +474,7 @@ async def register_plante(plante: PlantToCreate, token: Tuple[str, str] = Depend
     with connection.cursor() as cursor:
         try:
             sql = "Insert into Plante (id_person, name, number, road_first, road_second, town, postal_code, latitude, longitude) values (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-            val = (plante.id_person, plante.name, plante.number, plante.road_first, 
+            val = (token[0], plante.name, plante.number, plante.road_first, 
                     plante.road_second, plante.town, plante.postal_code,
                     plante.latitude, plante.longitude)
             cursor.execute(sql, val)
@@ -653,7 +651,7 @@ async def conversation(id_contact: int, token: Tuple[str, str] = Depends(BearerA
     with connection.cursor() as cursor:
         try:
             sql = """
-                select date_message, message, Emetteur.id_person, Emetteur.firstname, Emetteur.name, Receveur.id_person
+                select date_message, message, Emetteur.id_person, Emetteur.firstname, Receveur.id_person
                 from Message
                 inner join Person as Emetteur on id_emetteur = Emetteur.id_person
                 inner join Person as Receveur on id_receveur = Receveur.id_person
@@ -674,8 +672,8 @@ async def conversation(id_contact: int, token: Tuple[str, str] = Depends(BearerA
                 date = str(row[0])
                 date = date.replace("-", "/")
                 messages.append({"date_message": date, "message": row[1], "id_emetteur": row[2],
-                                "prenom_emetteur": row[3], "nom_emetteur": row[4],
-                                "id_receveur": row[5]})
+                                "prenom_emetteur": row[3],
+                                "id_receveur": row[4]})
             cursor.close()
             return messages, 200
         except:
@@ -687,7 +685,10 @@ async def conversations(token: Tuple[str, str] = Depends(BearerAuth())):
      with connection.cursor() as cursor:
         try:
             sql = """
-                select id_emetteur, was_read from Message
+                select id_emetteur, was_read, firstname
+                from Message
+                inner join Person
+                    on id_emetteur = id_person
                 where id_receveur = %s;
             """
             val = (token[0])
@@ -696,16 +697,42 @@ async def conversations(token: Tuple[str, str] = Depends(BearerAuth())):
             conversations=[]
             for result in results:
                 row = takeLatinTupleGetUtf8List(result)
-                print(row)
                 unknow = True
                 for conversation in conversations:
                     if conversation[0] == row[0]:
                         conversation[1] += row[1]
                         unknow = False
                 if unknow:
-                    conversations.append([row[0], row[1]])
+                    conversations.append([row[0], row[1], row[2]])
             cursor.close()
             return conversations, 200
         except:
             cursor.close()
             raise HTTPException(status_code=500, detail="Error while looking for Conversation")
+
+@app.get("/new_conversation/{id_garde}")
+async def new_conversation(id_garde: int, token: Tuple[str, str] = Depends(BearerAuth())):
+    if token[1] != 2 and token[1] != 3:
+        raise HTTPException(status_code=401, detail="User is not a client")
+    with connection.cursor() as cursor:
+        try:
+            sql = """
+                select Person.id_person
+                from Person
+                inner join Plante
+                    on Person.id_person = Plante.id_person
+                inner join Garde
+                    on Plante.id_plante = Garde.id_plante
+                where id_garde = %s
+                LIMIT 1;
+            """
+            cursor.execute(sql, (id_garde))
+            result = cursor.fetchone()
+            row = takeLatinTupleGetUtf8List(result)
+            contact = {'contact' : row[0]}
+            
+            cursor.close()
+            return contact, 200
+        except:
+            cursor.close()
+            raise HTTPException(status_code=500, detail="Error while searching for the contact")
