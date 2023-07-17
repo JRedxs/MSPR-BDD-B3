@@ -24,9 +24,10 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 const App = () => {
   return (
-      <div>
-        <Header/>
+      
         <ChakraProvider>
+        <Header/>
+        
           <Routes>
             <Route exact path="/" element={<Home/>}/>
             <Route path="/login" element={<LoginPage/>} />
@@ -46,9 +47,9 @@ const App = () => {
             <Route path="/Chat" element={<Chat/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
-        </ChakraProvider>
         <Footer/>
-      </div>
+        </ChakraProvider>
+     
   );
 }
 export default App;
